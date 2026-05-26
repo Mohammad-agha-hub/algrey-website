@@ -3,12 +3,12 @@
 import Image from "next/image";
 
 const ITEMS = [
-  { id: 1, src: "/proof.jpg", alt: "Gutter cleaning work" },
+  { id: 1, src: "/roof-cleaning3.jpg", alt: "Gutter cleaning work" },
   { id: 2, src: "/2.webp", alt: "Gutter cleaning work" },
-  { id: 3, src: "/3.jpg", alt: "Gutter cleaning work" },
+  { id: 3, src: "/render-cleaning6.webp", alt: "Gutter cleaning work" },
   { id: 4, src: "/4.webp", alt: "Gutter cleaning work" },
   { id: 5, src: "/5.webp", alt: "Gutter cleaning work" },
-  { id: 6, src: "/6.jpg", alt: "Gutter cleaning work" },
+  { id: 6, src: "/pressure-washings.jpg", alt: "Gutter cleaning work" },
 ];
 
 export default function GallerySection() {

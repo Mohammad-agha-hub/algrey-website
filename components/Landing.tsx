@@ -13,59 +13,7 @@ const SERVICES = [
   "Gutter Repair",
 ];
 
-const TRUST_BADGES = [
-  {
-    icon: (
-      <svg
-        className="w-7 h-7 text-yellow-400"
-        fill="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-      </svg>
-    ),
-    title: "5-Star Rated",
-    desc: "Trusted by 2,000+ homeowners across London & Surrey.",
-  },
-  {
-    icon: (
-      <svg
-        className="w-7 h-7 text-blue-400"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={1.8}
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"
-        />
-      </svg>
-    ),
-    title: "Fully Insured",
-    desc: "£5M public liability insurance on every job we carry out.",
-  },
-  {
-    icon: (
-      <svg
-        className="w-7 h-7 text-blue-400"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={1.8}
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-        />
-      </svg>
-    ),
-    title: "Satisfaction Guaranteed",
-    desc: "Not happy? We'll return and fix it — completely free.",
-  },
-];
+
 
 // Real Pexels portrait photos
 const AVATARS = [

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 
 const QUICK_LINKS = [
@@ -286,17 +287,11 @@ export default function CTAAndFooter() {
 
               {/* Col 1 — Brand */}
               <div className="lg:max-w-[280px]">
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="inline-flex items-center justify-center size-9 rounded-lg bg-blue-600 flex-shrink-0">
-                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
-                    </svg>
-                  </div>
+
                   <div>
-                    <p className="cf-heading text-white font-extrabold text-[18px] tracking-tight leading-none">Al Grey's</p>
-                    <p className="cf-heading text-blue-500 text-[10px] font-bold uppercase tracking-[.16em] mt-0.5">Cleaning Services</p>
+                    <Image src={'/logos.png'} width={200} height={200} alt="logo"/>
                   </div>
-                </div>
+               
                 <p className="cf-body text-[#7a90bc] text-[13.5px] leading-relaxed mb-6">
                   Protecting Birmingham homes and businesses from costly water damage. Trusted, local and fully insured since 2010.
                 </p>

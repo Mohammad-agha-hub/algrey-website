@@ -2,14 +2,14 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
-  { label: "Services", href: "/services" },
   { label: "About Us", href: "/about" },
+  { label: "Services", href: "/services" },
   { label: "Roof Cleaning", href: "/roof-cleaning" },
-  { label: "Blogs", href: "/blogs" },
-  { label: "Contact Us", href: "/contact" },
+  { label: "Contact Us", href: "/contact-us" },
 ];
 
 export default function Navbar() {
@@ -98,13 +98,8 @@ export default function Navbar() {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 flex items-center justify-between h-[68px]">
           {/* ── Logo ── */}
-          <Link href="/" className="flex flex-col leading-none select-none">
-            <span className="text-white font-extrabold text-xl tracking-wide uppercase">
-              Al Grey&apos;s
-            </span>
-            <span className="text-blue-300 font-semibold text-[11px] tracking-[0.22em] uppercase">
-              Cleaning Services
-            </span>
+          <Link href="/" className="flex items-center mt-2 select-none">
+            <Image src={'/logos.png'} width={200} height={200} alt="logo"/>
           </Link>
 
           {/* ── Desktop Nav Links ── */}
@@ -130,7 +125,7 @@ export default function Navbar() {
 
           {/* ── Desktop CTA ── */}
           <Link
-            href="/quote"
+            href="/enquiry-now"
             className="hidden lg:inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white text-sm font-bold uppercase tracking-widest px-5 py-2.5 rounded transition-colors duration-200 shadow-md"
           >
             Get Quote
@@ -255,7 +250,7 @@ export default function Navbar() {
 
         {/* Mobile CTA */}
         <Link
-          href="/quote"
+          href="/enquiry-now"
           onClick={() => setMenuOpen(false)}
           className="mt-8 w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-bold uppercase tracking-widest text-sm py-4 rounded-lg transition-colors duration-200"
         >
