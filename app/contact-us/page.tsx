@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import CTAAndFooter from "@/components/Footer";
+import CTASection from "@/components/CTA";
 
 /* ═══════════════════════════════════════════════════════════════════
    STYLES
@@ -561,6 +562,7 @@ export default function ContactPage() {
       <QuoteCTASection />
       <FAQSection />
       <MapSection />
+      <CTASection/>
       <CTAAndFooter />
     </>
   );
