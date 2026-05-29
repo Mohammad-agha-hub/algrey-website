@@ -1,30 +1,10 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import CTAAndFooter from "@/components/Footer";
-
-/* ═══════════════════════════════════════════════════════════════════
-   CONSTANTS
-═══════════════════════════════════════════════════════════════════ */
-const ALL_SERVICES = [
-  "Gutter Cleaning",
-  "Roof Cleaning",
-  "Fascia & Soffit Cleaning",
-  "Pressure Washing",
-  "Window Cleaning",
-  "Driveway Cleaning",
-  "Patio Cleaning",
-  "Render Cleaning",
-  "Brick Cleaning",
-  "Cladding Cleaning",
-  "Downpipe Cleaning",
-  "Graffiti Removal",
-  "Commercial Gutter Cleaning",
-  "Conservatory Roof Cleaning",
-];
 
 /* ═══════════════════════════════════════════════════════════════════
    STYLES
@@ -46,22 +26,9 @@ function ContactStyles() {
         from { opacity: 0; }
         to   { opacity: 1; }
       }
-      @keyframes ct-dropdownIn {
-        from { opacity: 0; transform: translateY(-6px); }
-        to   { opacity: 1; transform: translateY(0); }
-      }
-      .ct-anim-1 { animation: ct-fadeUp .65s ease both; }
       .ct-anim-2 { animation: ct-fadeUp .65s .10s ease both; }
       .ct-anim-3 { animation: ct-fadeUp .65s .22s ease both; }
       .ct-anim-4 { animation: ct-fadeUp .65s .34s ease both; }
-      .ct-anim-5 { animation: ct-fadeIn  .8s .48s ease both; }
-
-      /* Breadcrumb */
-      .ct-breadcrumb { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-      .ct-breadcrumb a { color: rgba(255,255,255,0.5); font-size: 12px; font-weight: 500; text-decoration: none; transition: color .2s; }
-      .ct-breadcrumb a:hover { color: rgba(255,255,255,0.9); }
-      .ct-breadcrumb .bc-sep    { color: rgba(255,255,255,0.3); font-size: 12px; }
-      .ct-breadcrumb .bc-active { color: #FFF265; font-size: 12px; font-weight: 600; }
 
       /* Info Cards */
       .ct-info-card {
@@ -83,16 +50,6 @@ function ContactStyles() {
       .ct-info-card:hover .ct-ic-text { color: #081a3d; }
       .ct-info-card .ct-ic-link  { color: #2563eb; font-size: 13px; font-weight: 700; text-decoration: none; transition: color 0.3s ease; }
       .ct-info-card:hover .ct-ic-link { color: #081a3d; text-decoration: underline; }
-
-      /* Dropdown */
-      .ct-dropdown-list {
-        animation: ct-dropdownIn 0.15s ease both;
-        scrollbar-width: thin;
-        scrollbar-color: #d1d5db transparent;
-      }
-      .ct-dropdown-list::-webkit-scrollbar { width: 4px; }
-      .ct-dropdown-list::-webkit-scrollbar-track { background: transparent; }
-      .ct-dropdown-list::-webkit-scrollbar-thumb { background-color: #d1d5db; border-radius: 99px; }
 
       /* FAQ */
       .ct-faq-item {
@@ -135,27 +92,6 @@ function ContactStyles() {
         padding: 0 24px;
       }
       .ct-faq-item.open .ct-faq-body-text { max-height: 300px; padding: 0 24px 20px; }
-
-      /* Stat pill */
-      .ct-stat-pill {
-        display: flex; flex-direction: column; align-items: center; justify-content: center;
-        background: rgba(255,255,255,0.06);
-        border: 1px solid rgba(255,255,255,0.12);
-        border-radius: 16px; padding: 20px 16px; text-align: center;
-        backdrop-filter: blur(6px);
-      }
-
-      /* Map placeholder */
-      .ct-map-wrap {
-        border-radius: 20px;
-        overflow: hidden;
-        border: 1px solid #e8edf5;
-        box-shadow: 0 8px 40px rgba(13,34,87,.08);
-        background: #f0f4ff;
-        height: 360px;
-        display: flex; align-items: center; justify-content: center;
-        flex-direction: column; gap: 12px;
-      }
     `}</style>
   );
 }
@@ -182,7 +118,6 @@ function HeroSection() {
       </div>
 
       <div className="flex-1 max-w-7xl mx-auto w-full px-5 sm:px-8 lg:px-12 pt-36 pb-16 flex flex-col justify-end">
-        
         <p className="ct-anim-2 inline-flex items-center gap-2 text-[#FFF265] font-semibold text-sm uppercase tracking-[0.2em] mb-4">
           We'd Love to Hear From You
         </p>
@@ -197,27 +132,8 @@ function HeroSection() {
         </p>
         <div className="ct-anim-4 flex flex-col sm:flex-row gap-3">
           <a
-            href="#contact-form"
-            className="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white font-bold uppercase tracking-widest text-sm px-7 py-3.5 rounded-md transition-all duration-200 shadow-lg shadow-blue-900/40"
-          >
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2.5}
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
-              />
-            </svg>
-            Send a Message
-          </a>
-          <a
             href="tel:01215172372"
-            className="inline-flex items-center justify-center gap-2 border-2 border-white/60 hover:border-white text-white font-bold uppercase tracking-widest text-sm px-7 py-3.5 rounded-md transition-all duration-200 hover:bg-white/10"
+            className="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white font-bold uppercase tracking-widest text-sm px-7 py-3.5 rounded-md transition-all duration-200 shadow-lg shadow-blue-900/40"
           >
             <svg
               className="w-4 h-4"
@@ -234,13 +150,30 @@ function HeroSection() {
             </svg>
             Call Us Now
           </a>
+          <Link
+            href="/enquiry-now"
+            className="inline-flex items-center justify-center gap-2 border-2 border-white/60 hover:border-white text-white font-bold uppercase tracking-widest text-sm px-7 py-3.5 rounded-md transition-all duration-200 hover:bg-white/10"
+          >
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2.5}
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+              />
+            </svg>
+            Get a Free Quote
+          </Link>
         </div>
       </div>
     </section>
   );
 }
-
-
 
 /* ═══════════════════════════════════════════════════════════════════
    INFO CARDS
@@ -312,6 +245,26 @@ const INFO_CARDS = [
       </svg>
     ),
   },
+  {
+    title: "Opening Hours",
+    lines: ["Mon – Sat: 7:00am – 7:00pm", "Sun: 9:00am – 5:00pm"],
+    link: { label: "Book a Slot →", href: "/enquiry-now" },
+    icon: (
+      <svg
+        className="w-9 h-9"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.8}
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"
+        />
+      </svg>
+    ),
+  },
 ];
 
 function InfoCardsSection() {
@@ -326,7 +279,7 @@ function InfoCardsSection() {
             How to Reach Us
           </h2>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {INFO_CARDS.map((card) => (
             <div key={card.title} className="ct-info-card">
               <div className="ct-ic-icon">{card.icon}</div>
@@ -355,193 +308,39 @@ function InfoCardsSection() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   CONTACT FORM SECTION
+   QUOTE CTA BANNER
 ═══════════════════════════════════════════════════════════════════ */
-const TRUST_BULLETS = [
-  "Free, no-obligation quotes",
-  "Emergency services available",
-  "15+ years of experience",
-  "Fully insured and certified",
-  "Response within 2 hours",
-];
-
-function ContactFormSection() {
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    service: "",
-    message: "",
-  });
-  const [submitted, setSubmitted] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    function handleClickOutside(e: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node))
-        setDropdownOpen(false);
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-    setForm((p) => ({ ...p, [e.target.name]: e.target.value }));
-  const handleSubmit = () => {
-    if (!form.name || !form.email || !form.message) return;
-    setSubmitted(true);
-  };
-
+function QuoteCTASection() {
   return (
     <section
-      id="contact-form"
-      className="ct-body py-24 px-5 sm:px-8 lg:px-16"
+      className="ct-body py-20 px-5 sm:px-8 lg:px-16"
       style={{ background: "#f8f9ff" }}
     >
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-0 rounded-2xl overflow-hidden shadow-2xl">
-          {/* Left: trust panel */}
-          <div
-            className="lg:col-span-2 p-10 flex flex-col justify-between"
-            style={{ background: "#0d2257" }}
-          >
-            <div>
+        <div className="bg-[#0d2257] rounded-2xl overflow-hidden">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
+            {/* Left: text */}
+            <div className="p-10 lg:p-14 flex flex-col justify-center">
               <p className="inline-flex items-center gap-2 text-[#FFF265] font-semibold text-xs uppercase tracking-[0.22em] mb-4">
-                Let's Talk
+                Ready to get started?
               </p>
-              <h2 className="ct-heading text-[clamp(26px,3vw,38px)] font-extrabold text-white leading-tight tracking-tight mb-5">
-                Let's Start a Conversation
+              <h2 className="ct-heading text-[clamp(28px,3.5vw,42px)] font-extrabold text-white leading-tight tracking-tight mb-4">
+                Need a Price? <br />
+                Get a Free Quote
               </h2>
-              <p className="text-[#94a8cc] text-[14px] leading-relaxed mb-8">
-                We're here to answer any questions you may have about our
-                cleaning services. Reach out and we'll respond as soon as we
-                can.
+              <p className="text-[#94a8cc] text-[14px] leading-relaxed mb-8 max-w-md">
+                Fill in our quick enquiry form and we'll come back to you within
+                2 hours with a clear, no-obligation quote — no hidden fees, no
+                surprises.
               </p>
-              <div className="flex flex-col gap-3">
-                {TRUST_BULLETS.map((b) => (
-                  <div key={b} className="flex items-center gap-3">
-                    <span
-                      style={{
-                        width: 22,
-                        height: 22,
-                        borderRadius: "50%",
-                        background: "#2563eb",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        flexShrink: 0,
-                      }}
-                    >
-                      <svg
-                        width="12"
-                        height="12"
-                        viewBox="0 0 14 14"
-                        fill="none"
-                        stroke="#ffffff"
-                        strokeWidth={2.5}
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <polyline points="2,7 5.5,10.5 12,3" />
-                      </svg>
-                    </span>
-                    <span className="ct-body text-[13.5px] font-semibold text-[#94a8cc]">
-                      {b}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Contact quick-links */}
-            <div className="mt-10 flex flex-col gap-4">
-              <a
-                href="tel:01215172372"
-                className="flex items-center gap-3 text-white hover:text-[#FFF265] transition-colors duration-200"
-              >
-                <span
-                  style={{
-                    width: 40,
-                    height: 40,
-                    borderRadius: 10,
-                    background: "rgba(255,255,255,0.08)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    flexShrink: 0,
-                  }}
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Link
+                  href="/enquiry-now"
+                  className="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-bold uppercase tracking-widest text-sm px-7 py-3.5 rounded-lg transition-all duration-200 shadow-lg"
                 >
+                  Get Your Free Quote
                   <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106a1.125 1.125 0 00-1.31.52l-.97 1.293a15.727 15.727 0 01-6.684-6.684l1.293-.97a1.125 1.125 0 00.52-1.31L9.572 3.1a1.125 1.125 0 00-1.091-.852H7.25A2.25 2.25 0 005 4.5v.75a2.25 2.25 0 002.25 2.25z"
-                    />
-                  </svg>
-                </span>
-                <div>
-                  <p className="ct-body text-xs text-[#94a8cc] font-semibold uppercase tracking-wider">
-                    Call Us
-                  </p>
-                  <p className="ct-body text-sm font-bold">0121 517 2372</p>
-                </div>
-              </a>
-              <a
-                href="mailto:info@algreyscleaningservices.com"
-                className="flex items-center gap-3 text-white hover:text-[#FFF265] transition-colors duration-200"
-              >
-                <span
-                  style={{
-                    width: 40,
-                    height: 40,
-                    borderRadius: 10,
-                    background: "rgba(255,255,255,0.08)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    flexShrink: 0,
-                  }}
-                >
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
-                    />
-                  </svg>
-                </span>
-                <div>
-                  <p className="ct-body text-xs text-[#94a8cc] font-semibold uppercase tracking-wider">
-                    Email Us
-                  </p>
-                  <p className="ct-body text-sm font-bold">
-                    info@algreyscleaningservices.com
-                  </p>
-                </div>
-              </a>
-            </div>
-          </div>
-
-          {/* Right: form */}
-          <div className="lg:col-span-3 bg-white p-10">
-            {submitted ? (
-              <div className="flex flex-col items-center text-center py-16 gap-4">
-                <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
-                  <svg
-                    className="w-8 h-8 text-green-600"
+                    className="w-4 h-4"
                     fill="none"
                     stroke="currentColor"
                     strokeWidth={2.5}
@@ -550,219 +349,78 @@ function ContactFormSection() {
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      d="M4.5 12.75l6 6 9-13.5"
+                      d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
                     />
                   </svg>
-                </div>
-                <h3 className="ct-heading text-2xl font-bold text-gray-900">
-                  Message Sent!
-                </h3>
-                <p className="text-gray-500 text-sm leading-relaxed max-w-sm">
-                  Thanks, <strong>{form.name.split(" ")[0]}</strong>! We've
-                  received your message and will be in touch within 2 hours.
-                </p>
-                <button
-                  onClick={() => {
-                    setSubmitted(false);
-                    setForm({
-                      name: "",
-                      email: "",
-                      phone: "",
-                      service: "",
-                      message: "",
-                    });
-                  }}
-                  className="mt-2 text-blue-600 hover:text-blue-700 text-sm font-semibold underline underline-offset-2"
+                </Link>
+                <a
+                  href="tel:01215172372"
+                  className="inline-flex items-center justify-center gap-2 border-2 border-white/30 hover:border-white/70 text-white font-bold uppercase tracking-widest text-sm px-7 py-3.5 rounded-lg transition-all duration-200"
                 >
-                  Send another message
-                </button>
-              </div>
-            ) : (
-              <>
-                <div className="mb-7">
-                  <h2 className="ct-heading text-2xl sm:text-[1.6rem] font-bold text-gray-900 leading-tight tracking-tight">
-                    Send Us a Message
-                  </h2>
-                  <p className="text-gray-500 text-sm mt-1">
-                    We respond within 2 hours during business hours.
-                  </p>
-                </div>
-
-                <div className="flex flex-col gap-4">
-                  {/* Name */}
-                  <div className="relative">
-                    <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400">
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
-                        />
-                      </svg>
-                    </span>
-                    <input
-                      type="text"
-                      name="name"
-                      value={form.name}
-                      onChange={handleChange}
-                      placeholder="Full Name *"
-                      className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-                    />
-                  </div>
-
-                  {/* Email */}
-                  <div className="relative">
-                    <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400">
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
-                        />
-                      </svg>
-                    </span>
-                    <input
-                      type="email"
-                      name="email"
-                      value={form.email}
-                      onChange={handleChange}
-                      placeholder="Email Address *"
-                      className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-                    />
-                  </div>
-
-                  {/* Phone */}
-                  <div className="relative">
-                    <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400">
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106a1.125 1.125 0 00-1.31.52l-.97 1.293a15.727 15.727 0 01-6.684-6.684l1.293-.97a1.125 1.125 0 00.52-1.31L9.572 3.1a1.125 1.125 0 00-1.091-.852H7.25A2.25 2.25 0 005 4.5v.75a2.25 2.25 0 002.25 2.25z"
-                        />
-                      </svg>
-                    </span>
-                    <input
-                      type="tel"
-                      name="phone"
-                      value={form.phone}
-                      onChange={handleChange}
-                      placeholder="Phone Number"
-                      className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-                    />
-                  </div>
-
-                  {/* Service dropdown */}
-                  <div className="relative" ref={dropdownRef}>
-                    <button
-                      type="button"
-                      onClick={() => setDropdownOpen((o) => !o)}
-                      className={`w-full flex items-center justify-between px-4 py-3 border rounded-lg text-sm bg-white transition-all duration-150 focus:outline-none ${dropdownOpen ? "border-blue-500 ring-2 ring-blue-500" : "border-gray-200 hover:border-gray-300"} ${form.service ? "text-gray-800" : "text-gray-400"}`}
-                    >
-                      <span className="flex items-center gap-2.5">
-                        <svg
-                          className="w-4 h-4 shrink-0 text-gray-400"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth={2}
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437l1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008z"
-                          />
-                        </svg>
-                        {form.service || "Service Required"}
-                      </span>
-                      <svg
-                        className={`w-4 h-4 text-gray-400 shrink-0 transition-transform duration-200 ${dropdownOpen ? "rotate-180" : ""}`}
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-                        />
-                      </svg>
-                    </button>
-                    {dropdownOpen && (
-                      <div className="ct-dropdown-list absolute z-50 mt-1.5 w-full bg-white border border-gray-200 rounded-lg shadow-xl overflow-y-auto max-h-[180px]">
-                        {ALL_SERVICES.map((s) => {
-                          const isSel = form.service === s;
-                          return (
-                            <button
-                              key={s}
-                              type="button"
-                              onClick={() => {
-                                setForm((p) => ({ ...p, service: s }));
-                                setDropdownOpen(false);
-                              }}
-                              className={`w-full flex items-center justify-between px-4 py-2.5 text-sm text-left transition-colors duration-100 ${isSel ? "bg-blue-50 text-blue-600 font-medium" : "text-gray-700 hover:bg-gray-50"}`}
-                            >
-                              <span>{s}</span>
-                              {isSel && (
-                                <svg
-                                  className="w-4 h-4 text-blue-500 shrink-0"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  strokeWidth={2.5}
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M4.5 12.75l6 6 9-13.5"
-                                  />
-                                </svg>
-                              )}
-                            </button>
-                          );
-                        })}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Message */}
-                  <textarea
-                    name="message"
-                    value={form.message}
-                    onChange={handleChange}
-                    placeholder="Message *  — Tell us about your requirements..."
-                    rows={5}
-                    className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none"
-                  />
-
-                  <button
-                    onClick={handleSubmit}
-                    className="w-full bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white font-bold uppercase tracking-widest text-sm py-3.5 rounded-lg transition-all duration-200 shadow-md shadow-blue-900/40"
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2.5}
+                    viewBox="0 0 24 24"
                   >
-                    Send Message →
-                  </button>
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106a1.125 1.125 0 00-1.31.52l-.97 1.293a15.727 15.727 0 01-6.684-6.684l1.293-.97a1.125 1.125 0 00.52-1.31L9.572 3.1a1.125 1.125 0 00-1.091-.852H7.25A2.25 2.25 0 005 4.5v.75a2.25 2.25 0 002.25 2.25z"
+                    />
+                  </svg>
+                  Or Call Us
+                </a>
+              </div>
+            </div>
+
+            {/* Right: trust points */}
+            <div className="p-10 lg:p-14 border-t lg:border-t-0 lg:border-l border-white/10 flex flex-col justify-center gap-5">
+              {[
+                {
+                  label: "Response within 2 hours",
+                  sub: "We get back to every enquiry fast",
+                },
+                {
+                  label: "Transparent, fixed pricing",
+                  sub: "No hidden fees or surprise charges",
+                },
+                {
+                  label: "Fully insured & certified",
+                  sub: "Complete peace of mind guaranteed",
+                },
+                {
+                  label: "15+ years' experience",
+                  sub: "Trusted by thousands of homeowners",
+                },
+              ].map((item) => (
+                <div key={item.label} className="flex items-start gap-4">
+                  <span className="mt-0.5 w-5 h-5 rounded-full bg-blue-600 flex items-center justify-center shrink-0">
+                    <svg
+                      width="10"
+                      height="10"
+                      viewBox="0 0 14 14"
+                      fill="none"
+                      stroke="#fff"
+                      strokeWidth={2.5}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <polyline points="2,7 5.5,10.5 12,3" />
+                    </svg>
+                  </span>
+                  <div>
+                    <p className="ct-heading text-white text-[14px] font-bold">
+                      {item.label}
+                    </p>
+                    <p className="text-[#94a8cc] text-[12.5px] mt-0.5">
+                      {item.sub}
+                    </p>
+                  </div>
                 </div>
-              </>
-            )}
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -805,7 +463,7 @@ function FAQSection() {
             Frequently Asked Questions
           </h2>
           <p className="text-slate-500 text-[15px] leading-relaxed max-w-xl mx-auto">
-            Find answers to common questions about our gutter cleaning services.
+            Find answers to common questions about our cleaning services.
           </p>
         </div>
         <div className="flex flex-col gap-3">
@@ -899,9 +557,8 @@ export default function ContactPage() {
     <>
       <ContactStyles />
       <HeroSection />
-     
       <InfoCardsSection />
-      <ContactFormSection />
+      <QuoteCTASection />
       <FAQSection />
       <MapSection />
       <CTAAndFooter />

@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import CTAAndFooter from "@/components/Footer";
+import CTASection from "./CTA";
 
 /* ═══════════════════════════════════════════════════════════════════
    CONSTANTS
@@ -427,7 +428,12 @@ interface FaqData {
   subtext: string;
   items: FaqItem[];
 }
-
+interface CTAData {
+  badge: string;
+  headingLines: [string, string, string];
+  body: string;
+  pills: [string, string, string];
+}
 interface ServiceData {
   hero: HeroData;
   intro: IntroData;
@@ -435,6 +441,7 @@ interface ServiceData {
   process: ProcessData;
   gallery: GalleryData;
   faq: FaqData;
+  cta:CTAData
 }
 
 function HeroSection({ data }: { data: HeroData }) {
@@ -1302,6 +1309,7 @@ export default function ServicePageTemplate({
       <ProcessSection data={serviceData.process} />
       <GallerySection data={serviceData.gallery} />
       <FAQSection data={serviceData.faq} />
+      <CTASection data={serviceData.cta}/>
       <CTAAndFooter />
     </>
   );

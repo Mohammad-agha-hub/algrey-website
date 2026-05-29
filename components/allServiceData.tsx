@@ -5,6 +5,13 @@ import React from "react";
 // ─────────────────────────────────────────────────────────────────
 // TYPES
 // ─────────────────────────────────────────────────────────────────
+export interface CTAData {
+  badge: string;
+  headingLines: [string, string, string];
+  body: string;
+  pills: [string, string, string];
+}
+
 export interface CardItem {
   icon: React.ReactNode;
   title: string;
@@ -81,6 +88,7 @@ export interface ServiceData {
   process: ProcessData;
   gallery: GalleryData;
   faq: FaqData;
+  cta: CTAData;
 }
 
 // ─────────────────────────────────────────────────────────────────
@@ -116,6 +124,12 @@ const PI = ({ d, d2 }: { d: string; d2?: string }) => (
 // 1. GUTTER CLEANING
 // ─────────────────────────────────────────────────────────────────
 export const gutterCleaningData: ServiceData = {
+  cta: {
+    badge: "Same-Day Response",
+    headingLines: ["Stop Ignoring", "Your Gutters.", "Book Today."],
+    body: "Blocked gutters cause damp, cracked walls and costly repairs. Takes 60 seconds to book — we handle the rest.",
+    pills: ["No call-out fee", "Free quote in minutes", "Fully insured"],
+  },
   hero: {
     serviceName: "Gutter Cleaning",
     eyebrow: "Trusted Local Experts",
@@ -238,10 +252,7 @@ export const gutterCleaningData: ServiceData = {
     images: [
       { src: "/4.webp", alt: "Gutter cleaning before and after" },
       { src: "/5.webp", alt: "Downpipe clearing work" },
-      {
-        src: "/7.jpg",
-        alt: "Gutter cleaning on semi-detached home",
-      },
+      { src: "/7.jpg", alt: "Gutter cleaning on semi-detached home" },
       { src: "/gutter-cleaning.jpg", alt: "Blocked gutter cleared" },
       { src: "/gutter-5.jpg", alt: "Gutter repair and resealing" },
       { src: "/gutter-6.webp", alt: "Clean gutters after service" },
@@ -275,7 +286,17 @@ export const gutterCleaningData: ServiceData = {
     ],
   },
 };
+
+// ─────────────────────────────────────────────────────────────────
+// 2. RESIDENTIAL GUTTER CLEANING
+// ─────────────────────────────────────────────────────────────────
 export const residentialGutterCleaningData: ServiceData = {
+  cta: {
+    badge: "Same-Day Response",
+    headingLines: ["Protect Your Home.", "Start With Your", "Gutters."],
+    body: "Water damage from blocked gutters is costly and avoidable. Book in 60 seconds — we'll handle everything else.",
+    pills: ["No call-out fee", "Free quote in minutes", "Fully insured"],
+  },
   hero: {
     serviceName: "Residential Gutter Cleaning",
     eyebrow: "Trusted Local Experts",
@@ -286,7 +307,6 @@ export const residentialGutterCleaningData: ServiceData = {
       "Protect your home from water damage with our expert gutter cleaning and maintenance solutions.",
     bgImage: "/residential.jpg",
   },
-
   intro: {
     eyebrow: "Why It Matters",
     heading: "Why Gutter Cleaning is Essential for Your Home",
@@ -298,7 +318,6 @@ export const residentialGutterCleaningData: ServiceData = {
     image: "/residential-gutter-cleaning.webp",
     imageAlt: "Professional residential gutter cleaning in progress",
   },
-
   cards: {
     eyebrow: "What We Offer",
     heading: "Our Gutter Cleaning Services",
@@ -333,7 +352,6 @@ export const residentialGutterCleaningData: ServiceData = {
       },
     ],
   },
-
   process: {
     eyebrow: "Our Approach",
     heading: "Our Gutter Cleaning Process",
@@ -394,7 +412,6 @@ export const residentialGutterCleaningData: ServiceData = {
       },
     ],
   },
-
   gallery: {
     eyebrow: "Our Work",
     heading: "Our Gutter Cleaning Projects",
@@ -427,7 +444,6 @@ export const residentialGutterCleaningData: ServiceData = {
       },
     ],
   },
-
   faq: {
     eyebrow: "Got Questions?",
     heading: "Frequently Asked Questions",
@@ -461,6 +477,12 @@ export const residentialGutterCleaningData: ServiceData = {
 // 3. PRESSURE WASHING
 // ─────────────────────────────────────────────────────────────────
 export const pressureWashingData: ServiceData = {
+  cta: {
+    badge: "Instant Results",
+    headingLines: ["Dirty Surfaces?", "We'll Make Them", "Look New."],
+    body: "Embedded dirt, moss and oil stains don't stand a chance. Professional pressure washing — booked in 60 seconds.",
+    pills: ["No call-out fee", "Free quote in minutes", "Fully insured"],
+  },
   hero: {
     serviceName: "Pressure Washing",
     eyebrow: "Trusted Local Experts",
@@ -587,10 +609,7 @@ export const pressureWashingData: ServiceData = {
         src: "/pressure-washing1.jpg",
         alt: "Driveway pressure washing result",
       },
-      {
-        src: "/pressure-washing2.jpg",
-        alt: "Patio cleaning before and after",
-      },
+      { src: "/pressure-washing2.jpg", alt: "Patio cleaning before and after" },
       { src: "/pressure-washing3.webp", alt: "Building exterior cleaned" },
       { src: "/pressure-washing4.webp", alt: "Commercial car park cleaned" },
       {
@@ -633,6 +652,12 @@ export const pressureWashingData: ServiceData = {
 // 4. WINDOW CLEANING
 // ─────────────────────────────────────────────────────────────────
 export const windowCleaningData: ServiceData = {
+  cta: {
+    badge: "Crystal-Clear Results",
+    headingLines: ["Streak-Free Windows.", "Every Pane,", "Every Time."],
+    body: "Dirty windows reduce light and damage glass long-term. Professional cleaning — booked in just 60 seconds.",
+    pills: ["No call-out fee", "Free quote in minutes", "Fully insured"],
+  },
   hero: {
     serviceName: "Window Cleaning",
     eyebrow: "Trusted Local Experts",
@@ -809,6 +834,12 @@ export const windowCleaningData: ServiceData = {
 // 5. DRIVEWAY CLEANING
 // ─────────────────────────────────────────────────────────────────
 export const drivewayCleaningData: ServiceData = {
+  cta: {
+    badge: "Same-Day Response",
+    headingLines: ["First Impressions", "Start With Your", "Driveway."],
+    body: "Oil stains, moss and embedded grime restored in a single visit. Takes 60 seconds to book — we do the rest.",
+    pills: ["No call-out fee", "Free quote in minutes", "Fully insured"],
+  },
   hero: {
     serviceName: "Driveway Cleaning",
     eyebrow: "Trusted Local Experts",
@@ -981,6 +1012,12 @@ export const drivewayCleaningData: ServiceData = {
 // 6. PATIO CLEANING
 // ─────────────────────────────────────────────────────────────────
 export const patioCleaningData: ServiceData = {
+  cta: {
+    badge: "Same-Day Response",
+    headingLines: ["Reclaim Your", "Outdoor Space.", "Book Today."],
+    body: "Moss, algae and grime can ruin a patio fast. One professional clean is all it takes — book in 60 seconds.",
+    pills: ["No call-out fee", "Free quote in minutes", "Fully insured"],
+  },
   hero: {
     serviceName: "Patio Cleaning",
     eyebrow: "Trusted Local Experts",
@@ -1153,6 +1190,12 @@ export const patioCleaningData: ServiceData = {
 // 7. RENDER CLEANING
 // ─────────────────────────────────────────────────────────────────
 export const renderCleaningData: ServiceData = {
+  cta: {
+    badge: "Specialist Render Care",
+    headingLines: ["Bring Your", "Render Back", "To Life."],
+    body: "Algae and moss silently damage render over time. Our soft-wash system restores it safely — book in 60 seconds.",
+    pills: ["No call-out fee", "Free quote in minutes", "Fully insured"],
+  },
   hero: {
     serviceName: "Render Cleaning",
     eyebrow: "Trusted Local Experts",
@@ -1327,6 +1370,12 @@ export const renderCleaningData: ServiceData = {
 // 8. BRICK CLEANING
 // ─────────────────────────────────────────────────────────────────
 export const brickCleaningData: ServiceData = {
+  cta: {
+    badge: "Expert Brick Care",
+    headingLines: ["Restore Your", "Brickwork's", "Natural Look."],
+    body: "Staining, efflorescence and biological growth age your brickwork fast. Professional cleaning — 60 seconds to book.",
+    pills: ["No call-out fee", "Free quote in minutes", "Fully insured"],
+  },
   hero: {
     serviceName: "Brick Cleaning",
     eyebrow: "Trusted Local Experts",
@@ -1499,6 +1548,12 @@ export const brickCleaningData: ServiceData = {
 // 9. CLADDING CLEANING
 // ─────────────────────────────────────────────────────────────────
 export const claddingCleaningData: ServiceData = {
+  cta: {
+    badge: "Cladding Specialists",
+    headingLines: ["Your Cladding", "Deserves Better", "Than This."],
+    body: "Algae and pollution degrade cladding faster than you think. Our specialist soft-wash system restores it — book in 60 seconds.",
+    pills: ["No call-out fee", "Free quote in minutes", "Fully insured"],
+  },
   hero: {
     serviceName: "Cladding Cleaning",
     eyebrow: "Trusted Local Experts",
@@ -1675,6 +1730,12 @@ export const claddingCleaningData: ServiceData = {
 // 10. DOWNPIPE CLEANING
 // ─────────────────────────────────────────────────────────────────
 export const downpipeCleaningData: ServiceData = {
+  cta: {
+    badge: "Emergency Call-Outs",
+    headingLines: ["Blocked Downpipes?", "Don't Wait For", "Water Damage."],
+    body: "A blocked downpipe can cause serious damage to walls and foundations. 60 seconds to book — we'll clear it fast.",
+    pills: ["No call-out fee", "Free quote in minutes", "Fully insured"],
+  },
   hero: {
     serviceName: "Downpipe Cleaning",
     eyebrow: "Trusted Local Experts",
@@ -1849,6 +1910,12 @@ export const downpipeCleaningData: ServiceData = {
 // 11. GRAFFITI REMOVAL
 // ─────────────────────────────────────────────────────────────────
 export const graffitiRemovalData: ServiceData = {
+  cta: {
+    badge: "Rapid Response",
+    headingLines: ["Graffiti Today?", "Gone By", "Tomorrow."],
+    body: "Fast, professional removal before it attracts more vandalism. Takes 60 seconds to book — we respond within 24 hours.",
+    pills: ["No call-out fee", "Free quote in minutes", "Fully insured"],
+  },
   hero: {
     serviceName: "Graffiti Removal",
     eyebrow: "Fast & Effective",
@@ -2028,6 +2095,12 @@ export const graffitiRemovalData: ServiceData = {
 // 12. COMMERCIAL GUTTER CLEANING
 // ─────────────────────────────────────────────────────────────────
 export const commercialGutterData: ServiceData = {
+  cta: {
+    badge: "Commercial Specialists",
+    headingLines: ["Protect Your", "Commercial", "Property."],
+    body: "Blocked gutters on commercial buildings cause serious damage and liability. 60 seconds to book — minimal disruption guaranteed.",
+    pills: ["No hidden costs", "Free site survey", "Fully insured"],
+  },
   hero: {
     serviceName: "Commercial Gutter Cleaning",
     eyebrow: "Commercial Property Specialists",
@@ -2206,9 +2279,15 @@ export const commercialGutterData: ServiceData = {
 };
 
 // ─────────────────────────────────────────────────────────────────
-// ROOF CLEANING
+// 13. ROOF CLEANING
 // ─────────────────────────────────────────────────────────────────
 export const roofCleaningData: ServiceData = {
+  cta: {
+    badge: "Roof Care Specialists",
+    headingLines: ["Moss Destroying", "Your Roof?", "Act Today."],
+    body: "Moss and algae shorten your roof's lifespan and cause costly damage. Safe soft-wash cleaning — booked in 60 seconds.",
+    pills: ["No call-out fee", "Free quote in minutes", "Fully insured"],
+  },
   hero: {
     serviceName: "Roof Cleaning",
     eyebrow: "Trusted Local Experts",
@@ -2219,7 +2298,6 @@ export const roofCleaningData: ServiceData = {
       "Restore and protect your roof with our expert cleaning and maintenance solutions.",
     bgImage: "/roof-clean.jpg",
   },
-
   intro: {
     eyebrow: "Why It Matters",
     heading: "Why Roof Cleaning is Essential",
@@ -2231,7 +2309,6 @@ export const roofCleaningData: ServiceData = {
     image: "/Roof-Cleaning-2.webp",
     imageAlt: "Professional roof cleaning in progress",
   },
-
   cards: {
     eyebrow: "What We Offer",
     heading: "Our Roof Cleaning Services",
@@ -2270,7 +2347,6 @@ export const roofCleaningData: ServiceData = {
       },
     ],
   },
-
   process: {
     eyebrow: "Our Approach",
     heading: "Our Roof Cleaning Process",
@@ -2331,7 +2407,6 @@ export const roofCleaningData: ServiceData = {
       },
     ],
   },
-
   gallery: {
     eyebrow: "Our Work",
     heading: "Our Roof Cleaning Projects",
@@ -2351,7 +2426,6 @@ export const roofCleaningData: ServiceData = {
       },
     ],
   },
-
   faq: {
     eyebrow: "Got Questions?",
     heading: "Frequently Asked Questions",

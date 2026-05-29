@@ -6,6 +6,7 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import CTAAndFooter from "@/components/Footer";
 import FAQSection from "@/components/Faq";
+import CTASection from "@/components/CTA";
 
 /* ═══════════════════════════════════════════════════════════════════
    STYLES
@@ -297,19 +298,18 @@ function HeroSection() {
       </div>
 
       {/* Content */}
-      <div className="max-w-7xl mx-auto w-full px-5 sm:px-8 lg:px-12 pt-34 pb-16 flex flex-col items-center justify-end">
-      
+      <div className="max-w-7xl mx-auto w-full px-5 sm:px-8 lg:px-12 pt-34 pb-16 flex flex-col justify-end">
         {/* Eyebrow */}
         <p className="abt-anim-2 inline-flex items-center gap-2 text-[#FFF265] font-semibold text-sm uppercase tracking-[0.2em] mb-4">
           Trusted Since 2010
         </p>
 
         {/* Headline */}
-        <h1 className="abt-anim-3 abt-display text-center tracking-[4px] text-5xl sm:text-6xl xl:text-7xl leading-[0.95] font-bold uppercase mb-5 text-white">
+        <h1 className="abt-anim-3 abt-display tracking-[4px] text-5xl sm:text-6xl xl:text-7xl leading-[0.95] font-bold uppercase mb-5 text-white">
           About
-
+        
           <span className="text-blue-600"> Al Grey's </span>
-          
+          <br></br>
           Cleaning
         </h1>
 
@@ -1099,6 +1099,7 @@ export default function AboutPage() {
       <TeamSection />
       <WhySection />
         <FAQSection/>
+        <CTASection/>
       <CTAAndFooter />
     </>
   );

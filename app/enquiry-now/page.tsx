@@ -6,9 +6,6 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import CTAAndFooter from "@/components/Footer";
 
-/* ═══════════════════════════════════════════════════════════════════
-   CONSTANTS
-═══════════════════════════════════════════════════════════════════ */
 const ALL_SERVICES = [
   "Gutter Cleaning",
   "Roof Cleaning",
@@ -25,7 +22,6 @@ const ALL_SERVICES = [
   "Commercial Gutter Cleaning",
   "Conservatory Roof Cleaning",
 ];
-
 const PROPERTY_TYPES = [
   "Detached House",
   "Semi-Detached House",
@@ -36,7 +32,6 @@ const PROPERTY_TYPES = [
   "Industrial Unit",
   "Other",
 ];
-
 const URGENCY_OPTIONS = [
   "As soon as possible",
   "Within 1 week",
@@ -45,9 +40,7 @@ const URGENCY_OPTIONS = [
   "Just getting a price",
 ];
 
-/* ═══════════════════════════════════════════════════════════════════
-   STYLES
-═══════════════════════════════════════════════════════════════════ */
+/* ─────────────────────────────────────────────────── STYLES */
 function EnquiryStyles() {
   return (
     <style>{`
@@ -61,74 +54,145 @@ function EnquiryStyles() {
         from { opacity: 0; transform: translateY(28px); }
         to   { opacity: 1; transform: translateY(0); }
       }
-      @keyframes enq-fadeIn {
-        from { opacity: 0; }
-        to   { opacity: 1; }
-      }
+      @keyframes enq-fadeIn { from { opacity: 0; } to { opacity: 1; } }
       @keyframes enq-dropdownIn {
         from { opacity: 0; transform: translateY(-6px); }
         to   { opacity: 1; transform: translateY(0); }
       }
-      .enq-anim-1 { animation: enq-fadeUp .65s ease both; }
-      .enq-anim-2 { animation: enq-fadeUp .65s .10s ease both; }
       .enq-anim-3 { animation: enq-fadeUp .65s .22s ease both; }
       .enq-anim-4 { animation: enq-fadeUp .65s .34s ease both; }
-      .enq-anim-5 { animation: enq-fadeIn  .8s .48s ease both; }
 
-      /* Breadcrumb */
-      .enq-breadcrumb { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-      .enq-breadcrumb a { color: rgba(255,255,255,0.5); font-size: 12px; font-weight: 500; text-decoration: none; transition: color .2s; }
-      .enq-breadcrumb a:hover { color: rgba(255,255,255,0.9); }
-      .enq-breadcrumb .bc-sep    { color: rgba(255,255,255,0.3); font-size: 12px; }
-      .enq-breadcrumb .bc-active { color: #FFF265; font-size: 12px; font-weight: 600; }
-
-      /* Why-choose mini cards */
+      /* ── Premium Why-card ── */
       .enq-why-card {
-        display: flex;
-        align-items: flex-start;
-        gap: 16px;
-        padding: 20px;
-        border-radius: 14px;
-        border: 1px solid #e8edf5;
+        position: relative;
+        padding: 28px 24px;
+        border-radius: 16px;
+        border: 1px solid rgba(226,232,240,0.8);
         background: #ffffff;
-        transition: border-color .2s, box-shadow .2s, transform .25s;
+        overflow: hidden;
+        transition: border-color .25s, box-shadow .25s, transform .25s;
+      }
+      .enq-why-card::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(37,99,235,0.04) 0%, rgba(99,159,255,0.0) 60%);
+        opacity: 0;
+        transition: opacity .3s ease;
       }
       .enq-why-card:hover {
-        border-color: #2563eb;
-        box-shadow: 0 4px 24px rgba(37,99,235,.1);
-        transform: translateY(-3px);
+        border-color: rgba(37,99,235,0.35);
+        box-shadow: 0 0 0 1px rgba(37,99,235,0.12), 0 8px 32px rgba(37,99,235,0.10);
+        transform: translateY(-2px);
       }
-      .enq-why-icon {
-        width: 48px; height: 48px;
-        border-radius: 12px;
-        background: #0d2257;
-        display: flex; align-items: center; justify-content: center;
-        flex-shrink: 0;
-        color: #ffffff;
-        transition: background .3s ease;
-      }
-      .enq-why-card:hover .enq-why-icon { background: #2563eb; }
+      .enq-why-card:hover::before { opacity: 1; }
 
-      /* Service pricing cards */
+      /* accent line top */
+      .enq-why-card-accent {
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #2563eb, #60a5fa);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform .3s ease;
+        border-radius: 2px 2px 0 0;
+      }
+      .enq-why-card:hover .enq-why-card-accent { transform: scaleX(1); }
+
+      .enq-why-num {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 64px;
+        line-height: 1;
+        letter-spacing: 2px;
+        background: linear-gradient(135deg, #e8edf8 0%, #f1f5fd 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        position: absolute;
+        right: 20px;
+        top: 16px;
+        user-select: none;
+        transition: opacity .25s;
+      }
+      .enq-why-card:hover .enq-why-num { opacity: 0.6; }
+
+      .enq-why-icon-wrap {
+        width: 44px; height: 44px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #0d2257 0%, #1a3a7a 100%);
+        display: flex; align-items: center; justify-content: center;
+        color: #ffffff;
+        margin-bottom: 16px;
+        flex-shrink: 0;
+        transition: background .3s ease, transform .25s ease;
+        box-shadow: 0 4px 12px rgba(13,34,87,.2);
+      }
+      .enq-why-card:hover .enq-why-icon-wrap {
+        background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+        transform: scale(1.06);
+        box-shadow: 0 6px 20px rgba(37,99,235,.28);
+      }
+
+      /* ── Premium Service Cards ── */
       .enq-svc-card {
-        background: #0d2257;
+        position: relative;
         border-radius: 20px;
         overflow: hidden;
         display: flex;
         flex-direction: column;
-        transition: transform .28s ease, box-shadow .28s ease;
+        background: #0d1f4e;
+        border: 1px solid rgba(255,255,255,0.06);
+        transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+      }
+      .enq-svc-card::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(160deg, rgba(37,99,235,0.12) 0%, transparent 55%);
+        opacity: 0;
+        transition: opacity .3s ease;
+        pointer-events: none;
       }
       .enq-svc-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 24px 56px rgba(0,0,0,.3);
+        transform: translateY(-10px);
+        box-shadow: 0 28px 64px rgba(0,0,0,.45), 0 0 0 1px rgba(37,99,235,.3);
+        border-color: rgba(37,99,235,.35);
       }
-      .enq-svc-card-header {
-        padding: 28px 28px 20px;
-        background: #2563eb;
+      .enq-svc-card:hover::after { opacity: 1; }
+
+      .enq-svc-top {
+        padding: 28px 28px 0;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
       }
-      .enq-svc-card:nth-child(2) .enq-svc-card-header { background: #0d2257; border-bottom: 1px solid #1a3070; }
-      .enq-svc-card:nth-child(3) .enq-svc-card-header { background: #1a3070; }
-      .enq-svc-card-body { padding: 24px 28px 28px; flex: 1; display: flex; flex-direction: column; }
+      .enq-svc-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(37,99,235,0.18);
+        border: 1px solid rgba(37,99,235,0.3);
+        color: #93c5fd;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        padding: 5px 10px;
+        border-radius: 99px;
+      }
+      .enq-svc-divider {
+        height: 1px;
+        margin: 20px 28px;
+        background: linear-gradient(90deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
+      }
+      .enq-svc-body { padding: 0 28px 28px; flex: 1; display: flex; flex-direction: column; }
+      .enq-svc-price-tag {
+        display: inline-flex;
+        align-items: baseline;
+        gap: 4px;
+      }
 
       /* Dropdown */
       .enq-dropdown-list {
@@ -139,28 +203,18 @@ function EnquiryStyles() {
       .enq-dropdown-list::-webkit-scrollbar { width: 4px; }
       .enq-dropdown-list::-webkit-scrollbar-track { background: transparent; }
       .enq-dropdown-list::-webkit-scrollbar-thumb { background-color: #d1d5db; border-radius: 99px; }
-
-      /* Stat pill */
-      .enq-stat-pill {
-        display: flex; flex-direction: column; align-items: center; justify-content: center;
-        background: rgba(255,255,255,0.06);
-        border: 1px solid rgba(255,255,255,0.12);
-        border-radius: 16px; padding: 20px 16px; text-align: center;
-      }
     `}</style>
   );
 }
 
-/* ═══════════════════════════════════════════════════════════════════
-   HERO
-═══════════════════════════════════════════════════════════════════ */
+/* ─────────────────────────────────────────────────── HERO */
 function HeroSection() {
   return (
     <section className="enq-body relative min-h-[62vh] flex flex-col">
       <Navbar />
       <div className="absolute inset-0 -z-10">
         <Image
-          src="https://images.pexels.com/photos/5599611/pexels-photo-5599611.jpeg?auto=compress&cs=tinysrgb&w=1600"
+          src="/commercial-gutter-cleaning2.jpg"
           alt="Get a Free Quote from Al Grey's Cleaning Services"
           fill
           priority
@@ -171,25 +225,22 @@ function HeroSection() {
         <div className="lg:hidden absolute inset-0 bg-gradient-to-b from-[#081a3d]/90 via-[#0d2257]/85 to-[#061530]/95" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#061530]/90 via-transparent to-transparent" />
       </div>
-
       <div className="flex-1 max-w-7xl mx-auto w-full px-5 sm:px-8 lg:px-12 pt-36 pb-16 flex flex-col justify-end">
-
         <h1 className="enq-anim-3 enq-display tracking-[4px] text-5xl sm:text-6xl xl:text-7xl leading-[0.95] font-bold uppercase mb-5 text-white">
           Get Your
           <br />
-          <span className="text-blue-600">Free Quote</span>
+          <span className="text-blue-500">Free Quote</span>
           <br />
           Today
         </h1>
         <p className="enq-anim-4 text-gray-300 text-base leading-relaxed max-w-md mb-8">
-          Professional cleaning and property maintenance services with
-          transparent pricing and exceptional quality. Fill in your details and
-          we'll get back to you within 2 hours.
+          Professional cleaning with transparent pricing. Fill in your details
+          and we'll get back to you within 2 hours.
         </p>
         <div className="enq-anim-4">
           <a
             href="#quote-form"
-            className="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white font-bold uppercase tracking-widest text-sm px-7 py-3.5 rounded-md transition-all duration-200 shadow-lg shadow-blue-900/40"
+            className="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-bold uppercase tracking-widest text-sm px-7 py-3.5 rounded-md transition-all duration-200 shadow-lg shadow-blue-900/40"
           >
             <svg
               className="w-4 h-4"
@@ -212,23 +263,30 @@ function HeroSection() {
   );
 }
 
-
-
-/* ═══════════════════════════════════════════════════════════════════
-   SHARED: Custom Select
-═══════════════════════════════════════════════════════════════════ */
-function CustomSelect({ value, onChange, options, placeholder, icon }: { value: string; onChange: (val: string) => void; options: string[]; placeholder: string; icon: React.ReactNode }) {
+/* ─────────────────────────────────────────────────── CUSTOM SELECT */
+function CustomSelect({
+  value,
+  onChange,
+  options,
+  placeholder,
+  icon,
+}: {
+  value: string;
+  onChange: (val: string) => void;
+  options: string[];
+  placeholder: string;
+  icon: React.ReactNode;
+}) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
-    function handler(e: MouseEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
-    }
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
+    const h = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node))
+        setOpen(false);
+    };
+    document.addEventListener("mousedown", h);
+    return () => document.removeEventListener("mousedown", h);
   }, []);
-
   return (
     <div className="relative" ref={ref}>
       <button
@@ -293,16 +351,14 @@ function CustomSelect({ value, onChange, options, placeholder, icon }: { value: 
   );
 }
 
-/* ═══════════════════════════════════════════════════════════════════
-   QUOTE FORM + WHY CHOOSE US
-═══════════════════════════════════════════════════════════════════ */
+/* ─────────────────────────────────────────────────── WHY ITEMS */
 const WHY_ITEMS = [
   {
     title: "Fully Insured & Certified",
-    desc: "We carry comprehensive insurance and all necessary certifications for your peace of mind.",
+    desc: "Comprehensive coverage and all necessary industry certifications for complete peace of mind.",
     icon: (
       <svg
-        className="w-6 h-6"
+        className="w-5 h-5"
         fill="none"
         stroke="currentColor"
         strokeWidth={2}
@@ -318,10 +374,10 @@ const WHY_ITEMS = [
   },
   {
     title: "Fast Response Times",
-    desc: "We respond to all enquiries within 2 hours and offer emergency services when needed.",
+    desc: "Every enquiry answered within 2 hours. Emergency services available when you need us most.",
     icon: (
       <svg
-        className="w-6 h-6"
+        className="w-5 h-5"
         fill="none"
         stroke="currentColor"
         strokeWidth={2}
@@ -337,10 +393,10 @@ const WHY_ITEMS = [
   },
   {
     title: "Transparent Pricing",
-    desc: "No hidden fees or surprise charges. We provide clear, upfront pricing for all our services.",
+    desc: "Clear, upfront costs with zero hidden fees. What we quote is exactly what you pay.",
     icon: (
       <svg
-        className="w-6 h-6"
+        className="w-5 h-5"
         fill="none"
         stroke="currentColor"
         strokeWidth={2}
@@ -356,10 +412,10 @@ const WHY_ITEMS = [
   },
   {
     title: "15+ Years' Experience",
-    desc: "With over a decade in the industry, we have the expertise to handle any cleaning challenge.",
+    desc: "Over a decade of expertise means we've seen it all and can handle any cleaning challenge.",
     icon: (
       <svg
-        className="w-6 h-6"
+        className="w-5 h-5"
         fill="none"
         stroke="currentColor"
         strokeWidth={2}
@@ -375,10 +431,10 @@ const WHY_ITEMS = [
   },
   {
     title: "Satisfaction Guarantee",
-    desc: "We stand behind our work with a 100% satisfaction guarantee on all services provided.",
+    desc: "100% satisfaction or we come back and put it right. Your trust is our most important asset.",
     icon: (
       <svg
-        className="w-6 h-6"
+        className="w-5 h-5"
         fill="none"
         stroke="currentColor"
         strokeWidth={2}
@@ -394,6 +450,7 @@ const WHY_ITEMS = [
   },
 ];
 
+/* ─────────────────────────────────────────────────── QUOTE FORM SECTION */
 function QuoteFormSection() {
   const [form, setForm] = useState({
     firstName: "",
@@ -408,16 +465,17 @@ function QuoteFormSection() {
   });
   const [submitted, setSubmitted] = useState(false);
 
-  const set = (key: string) => (val: string) => setForm((p) => ({ ...p, [key]: val }));
-  const handleInput = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-    setForm((p) => ({ ...p, [e.target.name]: e.target.value }));
-
+  const set = (key: string) => (val: string) =>
+    setForm((p) => ({ ...p, [key]: val }));
+  const handleInput = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => setForm((p) => ({ ...p, [e.target.name]: e.target.value }));
   const handleSubmit = () => {
     if (!form.firstName || !form.email || !form.phone || !form.service) return;
     setSubmitted(true);
   };
 
-  const serviceIcon = (
+  const svcIcon = (
     <svg
       className="w-4 h-4 shrink-0 text-gray-400"
       fill="none"
@@ -470,7 +528,7 @@ function QuoteFormSection() {
     >
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 lg:gap-14 items-start">
-          {/* LEFT: Form */}
+          {/* ── LEFT: Form ── */}
           <div className="lg:col-span-3 bg-white rounded-2xl border border-[#e8edf5] shadow-xl p-8 sm:p-10">
             {submitted ? (
               <div className="flex flex-col items-center text-center py-16 gap-4">
@@ -527,67 +585,42 @@ function QuoteFormSection() {
                     Request Your Quote
                   </h2>
                   <p className="text-gray-500 text-sm mt-2">
-                    Fill out the form below and we'll get back to you within 2
-                    hours.
+                    Fill out the form and we'll get back to you within 2 hours.
                   </p>
                 </div>
-
                 <div className="flex flex-col gap-4">
-                  {/* Name row */}
                   <div className="grid grid-cols-2 gap-4">
-                    <div className="relative">
-                      <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400">
-                        <svg
-                          className="w-4 h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth={2}
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
-                          />
-                        </svg>
-                      </span>
-                      <input
-                        type="text"
-                        name="firstName"
-                        value={form.firstName}
-                        onChange={handleInput}
-                        placeholder="First Name *"
-                        className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-                      />
-                    </div>
-                    <div className="relative">
-                      <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400">
-                        <svg
-                          className="w-4 h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth={2}
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
-                          />
-                        </svg>
-                      </span>
-                      <input
-                        type="text"
-                        name="lastName"
-                        value={form.lastName}
-                        onChange={handleInput}
-                        placeholder="Last Name *"
-                        className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-                      />
-                    </div>
+                    {[
+                      ["firstName", "First Name *"],
+                      ["lastName", "Last Name *"],
+                    ].map(([name, ph]) => (
+                      <div key={name} className="relative">
+                        <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400">
+                          <svg
+                            className="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
+                            />
+                          </svg>
+                        </span>
+                        <input
+                          type="text"
+                          name={name}
+                          value={(form as any)[name]}
+                          onChange={handleInput}
+                          placeholder={ph}
+                          className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                        />
+                      </div>
+                    ))}
                   </div>
-
-                  {/* Email */}
                   <div className="relative">
                     <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400">
                       <svg
@@ -613,8 +646,6 @@ function QuoteFormSection() {
                       className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                     />
                   </div>
-
-                  {/* Phone + Postcode row */}
                   <div className="grid grid-cols-2 gap-4">
                     <div className="relative">
                       <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400">
@@ -667,17 +698,13 @@ function QuoteFormSection() {
                       />
                     </div>
                   </div>
-
-                  {/* Service */}
                   <CustomSelect
                     value={form.service}
                     onChange={set("service")}
                     options={ALL_SERVICES}
                     placeholder="Service Required *"
-                    icon={serviceIcon}
+                    icon={svcIcon}
                   />
-
-                  {/* Property Type */}
                   <CustomSelect
                     value={form.propertyType}
                     onChange={set("propertyType")}
@@ -685,8 +712,6 @@ function QuoteFormSection() {
                     placeholder="Property Type"
                     icon={homeIcon}
                   />
-
-                  {/* Urgency */}
                   <CustomSelect
                     value={form.urgency}
                     onChange={set("urgency")}
@@ -694,24 +719,20 @@ function QuoteFormSection() {
                     placeholder="How Urgent Is This?"
                     icon={clockIcon}
                   />
-
-                  {/* Details */}
                   <textarea
                     name="details"
                     value={form.details}
                     onChange={handleInput}
-                    placeholder="Additional Details  — Tell us about your requirements, any specific issues, or questions you may have..."
+                    placeholder="Additional Details — Tell us about your requirements, any specific issues, or questions..."
                     rows={5}
                     className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none"
                   />
-
                   <button
                     onClick={handleSubmit}
                     className="w-full bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white font-bold uppercase tracking-widest text-sm py-3.5 rounded-lg transition-all duration-200 shadow-md shadow-blue-900/40 mt-1"
                   >
                     Submit Enquiry →
                   </button>
-
                   <p className="text-center text-gray-400 text-xs">
                     No obligation · Free quote · Respond within 2 hours
                   </p>
@@ -720,9 +741,9 @@ function QuoteFormSection() {
             )}
           </div>
 
-          {/* RIGHT: Why Choose Us */}
-          <div className="lg:col-span-2 flex flex-col gap-4 lg:sticky lg:top-8">
-            <div className="mb-4">
+          {/* ── RIGHT: Premium Why Cards ── */}
+          <div className="lg:col-span-2 flex flex-col gap-3 lg:sticky lg:top-8">
+            <div className="mb-5">
               <p className="inline-flex items-center gap-2 text-blue-600 font-semibold text-xs uppercase tracking-[0.22em] mb-3">
                 The Al Grey's Difference
               </p>
@@ -730,19 +751,67 @@ function QuoteFormSection() {
                 Why Choose Us
               </h2>
             </div>
-            {WHY_ITEMS.map((item) => (
+
+            {WHY_ITEMS.map((item, i) => (
               <div key={item.title} className="enq-why-card">
-                <div className="enq-why-icon">{item.icon}</div>
-                <div>
-                  <h3 className="enq-heading text-[15px] font-extrabold text-[#0d2257] leading-snug mb-1">
-                    {item.title}
-                  </h3>
-                  <p className="enq-body text-gray-500 text-[13px] leading-relaxed">
-                    {item.desc}
-                  </p>
-                </div>
+              
+                {/* Ghost number */}
+                <span className="enq-why-num">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                {/* Icon */}
+                <div className="enq-why-icon-wrap">{item.icon}</div>
+                {/* Text */}
+                <h3 className="enq-heading text-[14px] font-extrabold text-[#0d2257] leading-snug mb-1.5 relative">
+                  {item.title}
+                </h3>
+                <p className="enq-body text-gray-500 text-[13px] leading-relaxed relative">
+                  {item.desc}
+                </p>
               </div>
             ))}
+
+            {/* Trust strip */}
+            <div className="mt-2 flex items-center gap-3 px-4 py-3 bg-[#f8f9ff] rounded-xl border border-[#e8edf5]">
+              <div className="flex -space-x-2">
+                {["#0d2257", "#1a3a7a", "#2563eb"].map((c, i) => (
+                  <span
+                    key={i}
+                    style={{
+                      width: 28,
+                      height: 28,
+                      borderRadius: "50%",
+                      background: c,
+                      border: "2px solid #fff",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="#fff"
+                      strokeWidth={2}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0"
+                      />
+                    </svg>
+                  </span>
+                ))}
+              </div>
+              <p className="enq-body text-[12px] text-gray-500 leading-snug">
+                <span className="font-bold text-[#0d2257]">
+                  2,400+ customers
+                </span>{" "}
+                trust Al Grey's across London &amp; Surrey
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -750,14 +819,13 @@ function QuoteFormSection() {
   );
 }
 
-/* ═══════════════════════════════════════════════════════════════════
-   POPULAR SERVICES
-═══════════════════════════════════════════════════════════════════ */
+/* ─────────────────────────────────────────────────── POPULAR SERVICES */
 const SERVICES = [
   {
     title: "Gutter Cleaning",
     tagline: "Complete gutter maintenance",
-    price: "From £65",
+    badge: "Most Popular",
+    price: "65",
     note: "Standard 3-bed house",
     bullets: [
       "Complete debris removal",
@@ -765,12 +833,14 @@ const SERVICES = [
       "Minor repairs included",
       "Gutter guard installation",
     ],
-    href: "/services/gutter-cleaning",
+    href: "/gutter-cleaning",
+    accent: "from-blue-600 to-blue-500",
   },
   {
     title: "Window Cleaning",
     tagline: "Crystal clear results",
-    price: "From £45",
+    badge: "Residential",
+    price: "45",
     note: "Standard 3-bed house",
     bullets: [
       "Interior & exterior cleaning",
@@ -778,12 +848,14 @@ const SERVICES = [
       "High-rise capability",
       "Commercial properties",
     ],
-    href: "/services/window-cleaning",
+    href: "/window-cleaning",
+    accent: "from-[#1a3a7a] to-[#0d2257]",
   },
   {
     title: "Pressure Washing",
     tagline: "Restore your surfaces",
-    price: "From £80",
+    badge: "Best Value",
+    price: "80",
     note: "Small driveway",
     bullets: [
       "Driveway & patio cleaning",
@@ -791,7 +863,8 @@ const SERVICES = [
       "Decking restoration",
       "Graffiti removal",
     ],
-    href: "/services/pressure-washing",
+    href: "/pressure-washing",
+    accent: "from-[#0f3170] to-[#0d2257]",
   },
 ];
 
@@ -799,7 +872,7 @@ function PopularServicesSection() {
   return (
     <section
       className="enq-body py-24 px-5 sm:px-8 lg:px-16"
-      style={{ background: "#f8f9ff" }}
+      style={{ background: "#f0f4ff" }}
     >
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-14">
@@ -810,33 +883,57 @@ function PopularServicesSection() {
             Our Popular Services
           </h2>
           <p className="text-gray-500 text-[15px] leading-relaxed max-w-2xl mx-auto">
-            Professional cleaning solutions for your home or business — all with
-            upfront pricing and no hidden fees.
+            Professional cleaning for your home or business — all with upfront
+            pricing and no hidden fees.
           </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
           {SERVICES.map((svc) => (
             <div key={svc.title} className="enq-svc-card">
-              {/* Header */}
-              <div className="enq-svc-card-header">
+              {/* Top section */}
+              <div className="enq-svc-top">
+                <div>
+                  <span className="enq-svc-badge">
+                    <svg width="8" height="8" viewBox="0 0 8 8" fill="#93c5fd">
+                      <circle cx="4" cy="4" r="4" />
+                    </svg>
+                    {svc.badge}
+                  </span>
+                </div>
+                {/* Price tag top-right */}
+                <div className="text-right">
+                  <p className="enq-display text-[#FFF265] text-3xl tracking-wide leading-none">
+                    £{svc.price}
+                  </p>
+                  <p className="enq-body text-[#94a8cc] text-[10px] mt-0.5">
+                    {svc.note}
+                  </p>
+                </div>
+              </div>
+
+              {/* Title area */}
+              <div className="px-7 pt-5">
                 <h3 className="enq-heading text-[22px] font-extrabold text-white leading-snug tracking-tight">
                   {svc.title}
                 </h3>
-                <p className="text-white/70 text-sm mt-1">{svc.tagline}</p>
+                <p className="text-[#94a8cc] text-sm mt-1">{svc.tagline}</p>
               </div>
 
+              <div className="enq-svc-divider" />
+
               {/* Body */}
-              <div className="enq-svc-card-body">
-                <ul className="flex flex-col gap-3 mb-8 flex-1">
+              <div className="enq-svc-body">
+                <ul className="flex flex-col gap-2.5 mb-7 flex-1">
                   {svc.bullets.map((b) => (
                     <li key={b} className="flex items-center gap-3">
                       <span
                         style={{
-                          width: 20,
-                          height: 20,
+                          width: 18,
+                          height: 18,
                           borderRadius: "50%",
-                          background: "#2563eb",
+                          background: "rgba(37,99,235,0.25)",
+                          border: "1px solid rgba(37,99,235,0.4)",
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
@@ -844,11 +941,11 @@ function PopularServicesSection() {
                         }}
                       >
                         <svg
-                          width="11"
-                          height="11"
+                          width="9"
+                          height="9"
                           viewBox="0 0 14 14"
                           fill="none"
-                          stroke="#ffffff"
+                          stroke="#93c5fd"
                           strokeWidth={2.5}
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -856,42 +953,31 @@ function PopularServicesSection() {
                           <polyline points="2,7 5.5,10.5 12,3" />
                         </svg>
                       </span>
-                      <span className="enq-body text-[#94a8cc] text-[13.5px] font-medium">
+                      <span className="enq-body text-[#94a8cc] text-[13px] font-medium">
                         {b}
                       </span>
                     </li>
                   ))}
                 </ul>
-
-                <div className="mt-auto">
-                  <div className="mb-4">
-                    <p className="enq-display tracking-wider text-3xl text-[#FFF265]">
-                      {svc.price}
-                    </p>
-                    <p className="enq-body text-[#94a8cc] text-xs mt-0.5">
-                      {svc.note}
-                    </p>
-                  </div>
-                  <Link
-                    href={svc.href}
-                    className="w-full inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-bold uppercase tracking-widest text-xs px-6 py-3 rounded-lg transition-all duration-200"
+                <Link
+                  href={svc.href}
+                  className="w-full inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-blue-600 border border-white/15 hover:border-blue-500 text-white font-bold uppercase tracking-widest text-xs px-6 py-3 rounded-xl transition-all duration-250"
+                >
+                  Learn More
+                  <svg
+                    className="w-3.5 h-3.5"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2.5}
+                    viewBox="0 0 24 24"
                   >
-                    Learn More
-                    <svg
-                      className="w-3.5 h-3.5"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={2.5}
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                      />
-                    </svg>
-                  </Link>
-                </div>
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                    />
+                  </svg>
+                </Link>
               </div>
             </div>
           ))}
@@ -901,9 +987,6 @@ function PopularServicesSection() {
   );
 }
 
-/* ═══════════════════════════════════════════════════════════════════
-   EXPORT
-═══════════════════════════════════════════════════════════════════ */
 export default function EnquiryPage() {
   return (
     <>

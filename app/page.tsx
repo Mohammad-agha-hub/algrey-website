@@ -1,5 +1,6 @@
 import AboutSection from '@/components/About'
 import ApproachSection from '@/components/Approach'
+import CTASection from '@/components/CTA'
 import FAQSection from '@/components/Faq'
 import CTAAndFooter from '@/components/Footer'
 
@@ -21,6 +22,7 @@ const page = () => {
       <GallerySection/>
       <FAQSection/>
       <TestimonialsSection/>
+      <CTASection/>
       <CTAAndFooter/>
     </div>
   )
