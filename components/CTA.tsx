@@ -266,7 +266,7 @@ export default function CTASection({ data=DEFAULT_CTA_DATA }: CTASectionProps) {
               {/* Right */}
               <div className="flex flex-col justify-center gap-5 lg:items-start">
                 <div className="flex flex-col sm:flex-row gap-3">
-                  <a href="#quote" className="cta-btn-primary">
+                  <a href="#hero" className="cta-btn-primary">
                     <svg
                       className="w-4 h-4"
                       fill="none"

@@ -186,11 +186,11 @@ export default function Navbar() {
                 d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
               />
             </svg>
-            Serving London &amp; Surrey
+            Serving Birmingham &amp; Surrounding Areas
           </span>
         </div>
         <span className="text-gray-300">
-          Mon – Sat: 7am – 7pm &nbsp;|&nbsp; Sun: 9am – 5pm
+          Mon – Sat: 7am – 7pm &nbsp;|&nbsp; Emergency: 24/7
         </span>
       </div>
 
@@ -206,7 +206,7 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 flex items-center justify-between h-[68px]">
           {/* Logo */}
           <Link href="/" className="flex items-center mt-2 select-none">
-            <Image src={"/logos.png"} width={200} height={200} alt="logo" />
+            <Image src={"/logos.webp"} width={200} height={200} alt="logo" />
           </Link>
 
           {/* ── Desktop Nav ── */}
@@ -354,7 +354,6 @@ export default function Navbar() {
                           </a>
                         </p>
                       </div>
-                      
                     </div>
                   </div>
                 </div>
@@ -479,7 +478,7 @@ export default function Navbar() {
                 d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
               />
             </svg>
-            Serving London &amp; Surrey
+            Serving Birmingham &amp; Surrounding Areas
           </span>
         </div>
 

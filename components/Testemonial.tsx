@@ -166,26 +166,7 @@ export default function TestimonialsSection() {
             ))}
           </div>
 
-          {/* Bottom trust bar */}
-          <div className="mt-14 flex flex-col sm:flex-row items-center justify-center gap-8 text-center">
-            {[
-              { num: "2,000+", label: "Happy Homeowners" },
-              { num: "4.9/5", label: "Average Rating" },
-              { num: "13+", label: "Years of Experience" },
-            ].map((stat) => (
-              <div
-                key={stat.label}
-                className="flex flex-col items-center gap-1"
-              >
-                <span className="tm-heading text-[32px] font-extrabold text-white tracking-tight">
-                  {stat.num}
-                </span>
-                <span className="text-slate-400 text-[13px] font-medium">
-                  {stat.label}
-                </span>
-              </div>
-            ))}
-          </div>
+         
         </div>
       </section>
     </>

@@ -4,18 +4,23 @@ import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Navbar from "./Navbar";
 
+// ── Synced with enquiry page ──────────────────────────────────────────────────
 const SERVICES = [
   "Gutter Cleaning",
+  "Window Cleaning",
+  "Pressure Washing",
   "Roof Cleaning",
   "Fascia & Soffit Cleaning",
   "Driveway Cleaning",
-  "Conservatory Cleaning",
-  "Gutter Repair",
+  "Commercial Gutter Cleaning",
+  "Patio Cleaning",
+  "Render Cleaning",
+  "Brick Cleaning",
+  "Cladding Cleaning",
+  "Downpipe Cleaning",
+  "Graffiti Removal",
 ];
 
-
-
-// Real Pexels portrait photos
 const AVATARS = [
   {
     src: "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=60&h=60&dpr=1",
@@ -38,16 +43,17 @@ const AVATARS = [
 export default function HeroSection() {
   const [form, setForm] = useState({
     postcode: "",
-    name: "",
+    name: "", // we split this into firstName / lastName before sending
     email: "",
     phone: "",
     service: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [apiError, setApiError] = useState<string | null>(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       if (
@@ -61,12 +67,13 @@ export default function HeroSection() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-  ) => setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
-  const handleSubmit = (e: React.MouseEvent) => {
+  const handleSubmit = async (e: React.MouseEvent) => {
     e.preventDefault();
+    setApiError(null);
+
     if (
       !form.postcode ||
       !form.name ||
@@ -75,12 +82,52 @@ export default function HeroSection() {
       !form.service
     )
       return;
-    setSubmitted(true);
+
+    setLoading(true);
+
+    // Split full name into first / last
+    const nameParts = form.name.trim().split(/\s+/);
+    const firstName = nameParts[0];
+    const lastName = nameParts.slice(1).join(" ") || undefined;
+
+    try {
+      const res = await fetch("/api/quote", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          source: "hero", // ← identifies this form
+          firstName,
+          lastName,
+          email: form.email,
+          phone: form.phone,
+          postcode: form.postcode,
+          service: form.service,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        setApiError(data.error ?? "Something went wrong. Please try again.");
+        return;
+      }
+
+      setSubmitted(true);
+    } catch {
+      setApiError("Network error. Please check your connection and try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const resetForm = () => {
+    setSubmitted(false);
+    setApiError(null);
+    setForm({ postcode: "", name: "", email: "", phone: "", service: "" });
   };
 
   return (
     <>
-      {/* ── Google Fonts ── */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
         .font-display { font-family: 'Bebas Neue', sans-serif; }
@@ -104,8 +151,6 @@ export default function HeroSection() {
         .anim-4 { animation: fadeUp .65s .40s ease both; }
         .anim-5 { animation: fadeIn  .8s .55s ease both; }
 
-        .badge-card:hover { transform: translateY(-3px); }
-
         .trust-pill {
           display: inline-flex;
           align-items: center;
@@ -116,12 +161,9 @@ export default function HeroSection() {
           border-radius: 999px;
           padding: 7px 16px 7px 8px;
         }
-        .trust-pill-avatars {
-          display: flex;
-        }
+        .trust-pill-avatars { display: flex; }
         .trust-pill-avatars img {
-          width: 28px;
-          height: 28px;
+          width: 28px; height: 28px;
           border-radius: 50%;
           border: 2px solid rgba(255,255,255,0.5);
           object-fit: cover;
@@ -136,49 +178,42 @@ export default function HeroSection() {
           scrollbar-width: thin;
           scrollbar-color: #d1d5db transparent;
         }
-        .custom-dropdown-list::-webkit-scrollbar {
-          width: 4px;
-        }
-        .custom-dropdown-list::-webkit-scrollbar-track {
-          background: transparent;
-        }
+        .custom-dropdown-list::-webkit-scrollbar { width: 4px; }
+        .custom-dropdown-list::-webkit-scrollbar-track { background: transparent; }
         .custom-dropdown-list::-webkit-scrollbar-thumb {
           background-color: #d1d5db;
           border-radius: 99px;
         }
       `}</style>
 
-      <section className="font-body relative min-h-screen flex flex-col">
+      <section
+        id="hero"
+        className="font-body relative min-h-screen flex flex-col"
+      >
         <Navbar />
 
-        {/* ── Background Image + Overlays ── */}
+        {/* Background */}
         <div className="absolute inset-0 -z-10">
           <Image
-            src="/landing-bg.jpg"
+            src="/landing-bg.webp"
             alt="Beautiful brick house exterior"
             fill
             priority
             className="object-cover object-center"
             sizes="100vw"
           />
-          {/* Desktop: left-to-right dark gradient */}
           <div className="hidden lg:block absolute inset-0 bg-gradient-to-r from-[#081a3d]/95 via-[#0d2257]/80 to-transparent" />
-          {/* Mobile: full dark overlay */}
           <div className="lg:hidden absolute inset-0 bg-gradient-to-b from-[#081a3d]/90 via-[#0d2257]/85 to-[#061530]/95" />
-          {/* Bottom vignette */}
           <div className="absolute inset-0 bg-gradient-to-t from-[#061530]/90 via-transparent to-transparent" />
         </div>
 
-        {/* ── Main Content ── */}
+        {/* Main content */}
         <div className="flex-1 max-w-7xl mx-auto w-full px-5 sm:px-8 lg:px-12 pt-32 pb-10 lg:pt-36 flex flex-col lg:flex-row items-center lg:items-start gap-10 lg:gap-8">
-          {/* ── Left: Copy ── */}
+          {/* Left: Copy */}
           <div className="flex-1 flex flex-col justify-center text-white text-center lg:text-left">
-            {/* Eyebrow */}
             <p className="anim-1 inline-flex items-center justify-center lg:justify-start gap-2 text-[#FFF265] font-semibold text-sm uppercase tracking-[0.2em] mb-4">
               Trusted Local Experts
             </p>
-
-            {/* Headline */}
             <h1 className="anim-2 font-display tracking-[4px] text-5xl sm:text-6xl xl:text-7xl leading-[0.95] font-bold uppercase mb-5">
               Professional
               <br />
@@ -186,14 +221,11 @@ export default function HeroSection() {
               <br />
               And Roof Cleaning
             </h1>
-
-            {/* Subheadline */}
             <p className="anim-3 text-gray-300 text-base leading-relaxed max-w-md mx-auto lg:mx-0 mb-8">
               Protect your property from costly water damage with our expert
               gutter cleaning, clearing, and maintenance solutions.
             </p>
 
-            {/* CTA buttons */}
             <div className="anim-4 flex flex-col gap-4">
               <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
                 <a
@@ -216,7 +248,7 @@ export default function HeroSection() {
                   Our Services
                 </a>
                 <a
-                  href="#quote"
+                  href="/about-us"
                   className="inline-flex items-center justify-center gap-2 border-2 border-white/60 hover:border-white text-white font-bold uppercase tracking-widest text-sm px-7 py-3.5 rounded-md transition-all duration-200 hover:bg-white/10"
                 >
                   <svg
@@ -232,11 +264,11 @@ export default function HeroSection() {
                       d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
                     />
                   </svg>
-                  Get Free Quote
+                  Learn More About Us
                 </a>
               </div>
 
-              {/* ── Trust Pill ── */}
+              {/* Trust Pill */}
               <div className="flex justify-center lg:justify-start pt-2">
                 <div className="trust-pill">
                   <div className="trust-pill-avatars">
@@ -268,7 +300,7 @@ export default function HeroSection() {
             </div>
           </div>
 
-          {/* ── Right: Quote Form ── */}
+          {/* Right: Quote Form */}
           <div
             id="quote"
             className="anim-5 w-full lg:w-[400px] xl:w-[420px] bg-white rounded-2xl shadow-2xl p-7 sm:p-8 shrink-0"
@@ -295,19 +327,11 @@ export default function HeroSection() {
                 </h3>
                 <p className="text-gray-500 text-sm leading-relaxed">
                   Thanks, <strong>{form.name.split(" ")[0]}</strong>! We'll be
-                  in touch within 2 hours with your free quote.
+                  in touch within 2 hours with your free quote. Check your inbox
+                  for a confirmation email.
                 </p>
                 <button
-                  onClick={() => {
-                    setSubmitted(false);
-                    setForm({
-                      postcode: "",
-                      name: "",
-                      email: "",
-                      phone: "",
-                      service: "",
-                    });
-                  }}
+                  onClick={resetForm}
                   className="mt-2 text-blue-600 hover:text-blue-700 text-sm font-semibold underline underline-offset-2"
                 >
                   Submit another request
@@ -315,7 +339,6 @@ export default function HeroSection() {
               </div>
             ) : (
               <>
-                {/* ── Form heading — Inter instead of Bebas Neue ── */}
                 <div className="mb-6">
                   <h2 className="font-body text-2xl sm:text-[1.6rem] font-bold text-gray-900 leading-tight tracking-tight">
                     Request a Free Quote
@@ -434,23 +457,16 @@ export default function HeroSection() {
                     />
                   </div>
 
-                  {/* ── Custom Scrollable Service Dropdown ── */}
+                  {/* Service Dropdown */}
                   <div className="relative" ref={dropdownRef}>
-                    {/* Trigger button */}
                     <button
                       type="button"
                       onClick={() => setDropdownOpen((o) => !o)}
                       className={`w-full flex items-center justify-between px-4 py-3 border rounded-lg text-sm bg-white transition-all duration-150 focus:outline-none
-                        ${
-                          dropdownOpen
-                            ? "border-blue-500 ring-2 ring-blue-500 ring-offset-0"
-                            : "border-gray-200 hover:border-gray-300"
-                        }
-                        ${form.service ? "text-gray-800" : "text-gray-400"}
-                      `}
+                        ${dropdownOpen ? "border-blue-500 ring-2 ring-blue-500" : "border-gray-200 hover:border-gray-300"}
+                        ${form.service ? "text-gray-800" : "text-gray-400"}`}
                     >
                       <span className="flex items-center gap-2.5">
-                        {/* Wrench icon */}
                         <svg
                           className="w-4 h-4 shrink-0 text-gray-400"
                           fill="none"
@@ -481,7 +497,6 @@ export default function HeroSection() {
                       </svg>
                     </button>
 
-                    {/* Dropdown list */}
                     {dropdownOpen && (
                       <div className="custom-dropdown-list absolute z-50 mt-1.5 w-full bg-white border border-gray-200 rounded-lg shadow-xl overflow-y-auto max-h-[180px]">
                         {SERVICES.map((s) => {
@@ -495,12 +510,7 @@ export default function HeroSection() {
                                 setDropdownOpen(false);
                               }}
                               className={`w-full flex items-center justify-between px-4 py-2.5 text-sm text-left transition-colors duration-100
-                                ${
-                                  isSelected
-                                    ? "bg-blue-50 text-blue-600 font-medium"
-                                    : "text-gray-700 hover:bg-gray-50"
-                                }
-                              `}
+                                ${isSelected ? "bg-blue-50 text-blue-600 font-medium" : "text-gray-700 hover:bg-gray-50"}`}
                             >
                               <span>{s}</span>
                               {isSelected && (
@@ -525,12 +535,58 @@ export default function HeroSection() {
                     )}
                   </div>
 
+                  {/* API Error */}
+                  {apiError && (
+                    <div className="flex items-center gap-2 px-4 py-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">
+                      <svg
+                        className="w-4 h-4 shrink-0"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"
+                        />
+                      </svg>
+                      {apiError}
+                    </div>
+                  )}
+
                   {/* Submit */}
                   <button
                     onClick={handleSubmit}
-                    className="w-full bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white font-bold uppercase tracking-widest text-sm py-3.5 rounded-lg transition-all duration-200 shadow-md shadow-blue-900/40 mt-1"
+                    disabled={loading}
+                    className="w-full bg-blue-600 hover:bg-blue-500 active:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold uppercase tracking-widest text-sm py-3.5 rounded-lg transition-all duration-200 shadow-md shadow-blue-900/40 mt-1 flex items-center justify-center gap-2"
                   >
-                    Get My Free Quote →
+                    {loading ? (
+                      <>
+                        <svg
+                          className="w-4 h-4 animate-spin"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          />
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                          />
+                        </svg>
+                        Sending...
+                      </>
+                    ) : (
+                      "Get My Free Quote →"
+                    )}
                   </button>
                 </div>
               </>

@@ -138,7 +138,7 @@ export const gutterCleaningData: ServiceData = {
     line3: "Cleaning",
     subtext:
       "Protect your property from costly water damage with our expert gutter cleaning, clearing, and maintenance solutions.",
-    bgImage: "/gutter-cleaning.jpg",
+    bgImage: "/gutter-cleaning.webp",
   },
   intro: {
     eyebrow: "Why It Matters",
@@ -252,9 +252,9 @@ export const gutterCleaningData: ServiceData = {
     images: [
       { src: "/4.webp", alt: "Gutter cleaning before and after" },
       { src: "/5.webp", alt: "Downpipe clearing work" },
-      { src: "/7.jpg", alt: "Gutter cleaning on semi-detached home" },
-      { src: "/gutter-cleaning.jpg", alt: "Blocked gutter cleared" },
-      { src: "/gutter-5.jpg", alt: "Gutter repair and resealing" },
+      { src: "/7.webp", alt: "Gutter cleaning on semi-detached home" },
+      { src: "/gutter-cleaning.webp", alt: "Blocked gutter cleared" },
+      { src: "/gutter-5.webp", alt: "Gutter repair and resealing" },
       { src: "/gutter-6.webp", alt: "Clean gutters after service" },
     ],
   },
@@ -305,7 +305,7 @@ export const residentialGutterCleaningData: ServiceData = {
     line3: "Gutter Cleaning",
     subtext:
       "Protect your home from water damage with our expert gutter cleaning and maintenance solutions.",
-    bgImage: "/residential.jpg",
+    bgImage: "/residential.webp",
   },
   intro: {
     eyebrow: "Why It Matters",
@@ -419,7 +419,7 @@ export const residentialGutterCleaningData: ServiceData = {
       "See the difference our professional residential gutter cleaning makes.",
     images: [
       {
-        src: "/residential-gutter-cleaning5.jpg",
+        src: "/residential-gutter-cleaning5.webp",
         alt: "Residential gutter cleaning before and after",
       },
       {
@@ -427,11 +427,11 @@ export const residentialGutterCleaningData: ServiceData = {
         alt: "Downpipe clearing on detached home",
       },
       {
-        src: "/residential-gutter-cleaning3.jpg",
+        src: "/residential-gutter-cleaning3.webp",
         alt: "Gutter cleaning on semi-detached property",
       },
       {
-        src: "/residential-gutter-cleaning4.jpg",
+        src: "/residential-gutter-cleaning4.webp",
         alt: "Blocked residential gutter cleared",
       },
       {
@@ -439,7 +439,7 @@ export const residentialGutterCleaningData: ServiceData = {
         alt: "Gutter repair and resealing on terrace house",
       },
       {
-        src: "/residential-gutter-cleaning6.jpg",
+        src: "/residential-gutter-cleaning6.webp",
         alt: "Clean gutters after residential service",
       },
     ],
@@ -491,7 +491,7 @@ export const pressureWashingData: ServiceData = {
     line3: "Washing",
     subtext:
       "Restore your property's appearance with our expert pressure washing and surface cleaning solutions.",
-    bgImage: "/pressure-washing.png",
+    bgImage: "/pressure-washing-1.webp",
   },
   intro: {
     eyebrow: "Why It Matters",
@@ -501,7 +501,7 @@ export const pressureWashingData: ServiceData = {
       "At Al Grey's Cleaning Services, we use professional-grade pressure washing equipment and industry-approved techniques that effectively remove even the most stubborn staining. Our team has over 15 years of experience working with various surface types, ensuring we apply the right pressure and cleaning solutions for each job.",
       "We understand that your comprehensive pressure washing services are designed to restore your property's appearance while protecting the long-term integrity of your surfaces.",
     ],
-    image: "/pressure-washings.jpg",
+    image: "/pressure-washings.webp",
     imageAlt: "Pressure washing driveway",
   },
   cards: {
@@ -606,17 +606,17 @@ export const pressureWashingData: ServiceData = {
       "See the transformation our professional pressure washing delivers.",
     images: [
       {
-        src: "/pressure-washing1.jpg",
+        src: "/pressure-washing1.webp",
         alt: "Driveway pressure washing result",
       },
-      { src: "/pressure-washing2.jpg", alt: "Patio cleaning before and after" },
+      { src: "/pressure-washing2.webp", alt: "Patio cleaning before and after" },
       { src: "/pressure-washing3.webp", alt: "Building exterior cleaned" },
       { src: "/pressure-washing4.webp", alt: "Commercial car park cleaned" },
       {
         src: "/pressure-washing5.webp",
         alt: "Decking restored with pressure washing",
       },
-      { src: "/pressure-washing.jpg", alt: "Pathway cleaning completed" },
+      { src: "/pressure-washing.webp", alt: "Pathway cleaning completed" },
     ],
   },
   faq: {
@@ -666,7 +666,7 @@ export const windowCleaningData: ServiceData = {
     line3: "Cleaning",
     subtext:
       "Crystal clear results that enhance your property's appearance and let the light in all year round.",
-    bgImage: "/window.jpg",
+    bgImage: "/window.webp",
   },
   intro: {
     eyebrow: "Why It Matters",
@@ -782,7 +782,7 @@ export const windowCleaningData: ServiceData = {
       "See the transformation our professional window cleaning delivers.",
     images: [
       {
-        src: "/window-cleaning1.jpg",
+        src: "/window-cleaning1.webp",
         alt: "Residential window cleaning completed",
       },
       {
@@ -793,12 +793,12 @@ export const windowCleaningData: ServiceData = {
         src: "/window-cleaning3.webp",
         alt: "High-level window cleaning with pole",
       },
-      { src: "/window-cleaning4.avif", alt: "Hard water stain removal result" },
+      { src: "/window-cleaning4.webp", alt: "Hard water stain removal result" },
       {
         src: "/window-cleaning5.webp",
         alt: "Before and after window cleaning",
       },
-      { src: "/window-cleaning6.jpg", alt: "Office building windows cleaned" },
+      { src: "/window-cleaning6.webp", alt: "Office building windows cleaned" },
     ],
   },
   faq: {
@@ -848,7 +848,7 @@ export const drivewayCleaningData: ServiceData = {
     line3: "Cleaning",
     subtext:
       "Restore and protect your driveway with our expert cleaning and maintenance solutions.",
-    bgImage: "/driveway.jpg",
+    bgImage: "/driveway.webp",
   },
   intro: {
     eyebrow: "Why It Matters",
@@ -858,7 +858,7 @@ export const drivewayCleaningData: ServiceData = {
       "At Al Grey's Cleaning Services, we specialise in professional driveway cleaning using advanced pressure washing and specialist treatments to deliver a surface that looks as good as new. Our team has over 15 years of experience working with block paving, tarmac, concrete, resin and natural stone surfaces.",
       "We understand that a clean driveway is more than aesthetics — it's about protecting your investment, maintaining a safe surface for family and visitors, and ensuring your property makes the right first impression.",
     ],
-    image: "/driveway-cleaning8.jpeg",
+    image: "/driveway-cleaning8.webp",
     imageAlt: "Driveway cleaning in progress",
   },
   cards: {
@@ -962,21 +962,21 @@ export const drivewayCleaningData: ServiceData = {
     subtext:
       "See the finished results our professional driveway cleaning delivers.",
     images: [
-      { src: "/driveway-cleaning5.png", alt: "Block paving driveway cleaned" },
-      { src: "/driveway-cleaning2.jpg", alt: "Tarmac driveway restored" },
+      { src: "/driveway-cleaning5.webp", alt: "Block paving driveway cleaned" },
+      { src: "/driveway-cleaning2.webp", alt: "Tarmac driveway restored" },
       {
         src: "/driveway-cleaning3.webp",
         alt: "Oil stain removal from concrete driveway",
       },
       {
-        src: "/driveway-cleaning.jpg",
+        src: "/driveway-cleaning.webp",
         alt: "Driveway before and after cleaning",
       },
       {
-        src: "/driveway-cleaning6.jpg",
+        src: "/driveway-cleaning6.webp",
         alt: "Resin driveway professionally cleaned",
       },
-      { src: "/driveway-cleaning7.jpg", alt: "Driveway sealed after cleaning" },
+      { src: "/driveway-cleaning7.webp", alt: "Driveway sealed after cleaning" },
     ],
   },
   faq: {
@@ -1026,7 +1026,7 @@ export const patioCleaningData: ServiceData = {
     line3: "Cleaning",
     subtext:
       "Restore and revitalise your outdoor space with our expert patio and paving cleaning solutions.",
-    bgImage: "/patio.jpg",
+    bgImage: "/patio.webp",
   },
   intro: {
     eyebrow: "Why It Matters",
@@ -1036,7 +1036,7 @@ export const patioCleaningData: ServiceData = {
       "At Al Grey's Cleaning Services, we specialise in professional patio cleaning using the right techniques for every surface — from natural stone and block paving to porcelain tiles and concrete slabs. Our team has over 15 years of experience working with all types of patio surfaces, ensuring we always get the right results without causing damage.",
       "We understand that a clean patio is more than just about aesthetics — it's essential for maintaining your property's outdoor value, safety, and enjoyment for your family and guests.",
     ],
-    image: "/patio-cleaning.jpg",
+    image: "/patio-cleaning.webp",
     imageAlt: "Patio cleaning before and after",
   },
   cards: {
@@ -1141,7 +1141,7 @@ export const patioCleaningData: ServiceData = {
     subtext: "See the transformation our professional patio cleaning delivers.",
     images: [
       {
-        src: "/patio-cleaning1.jpg",
+        src: "/patio-cleaning1.webp",
         alt: "Sandstone patio cleaned and restored",
       },
       {
@@ -1149,12 +1149,12 @@ export const patioCleaningData: ServiceData = {
         alt: "Block paving patio after cleaning",
       },
       {
-        src: "/patio-cleaning3.jpg",
+        src: "/patio-cleaning3.webp",
         alt: "Patio before and after moss removal",
       },
-      { src: "/patio-cleaning4.jpg", alt: "Porcelain patio tiles cleaned" },
-      { src: "/patio-cleaning5.jpg", alt: "Patio sealing completed" },
-      { src: "/patio-cleaning6.jpg", alt: "Garden patio fully restored" },
+      { src: "/patio-cleaning4.webp", alt: "Porcelain patio tiles cleaned" },
+      { src: "/patio-cleaning5.webp", alt: "Patio sealing completed" },
+      { src: "/patio-cleaning6.webp", alt: "Garden patio fully restored" },
     ],
   },
   faq: {
@@ -1204,7 +1204,7 @@ export const renderCleaningData: ServiceData = {
     line3: "Cleaning",
     subtext:
       "Restore and protect your property's exterior with our expert render cleaning and maintenance solutions.",
-    bgImage: "/render.jpg",
+    bgImage: "/render.webp",
   },
   intro: {
     eyebrow: "Why It Matters",
@@ -1214,7 +1214,7 @@ export const renderCleaningData: ServiceData = {
       "At Al Grey's Cleaning Services, we use specialist soft-wash render cleaning methods that effectively remove biological growth and staining without the risk of damage that high-pressure washing can cause. Our biocidal treatments kill contamination at the root for long-lasting results.",
       "We understand that clean render is more than just a cosmetic issue — it's essential for maintaining your property's structural protection, energy efficiency, and market value while enhancing your property's appearance.",
     ],
-    image: "/render-cleaning4.jpg",
+    image: "/render-cleaning4.webp",
     imageAlt: "Render cleaning in progress",
   },
   cards: {
@@ -1320,8 +1320,8 @@ export const renderCleaningData: ServiceData = {
     heading: "Our Render Cleaning Projects",
     subtext: "See the results our professional render cleaning delivers.",
     images: [
-      { src: "/render-cleaning1.png", alt: "Render cleaning before and after" },
-      { src: "/render-cleaning2.jpg", alt: "Algae removed from white render" },
+      { src: "/render-cleaning1.webp", alt: "Render cleaning before and after" },
+      { src: "/render-cleaning2.webp", alt: "Algae removed from white render" },
       {
         src: "/render-cleaning3.webp",
         alt: "Monocouche render professionally cleaned",
@@ -1331,7 +1331,7 @@ export const renderCleaningData: ServiceData = {
         alt: "Render soft wash treatment applied",
       },
       {
-        src: "/render-cleaning7.jpg",
+        src: "/render-cleaning7.webp",
         alt: "Property render restored to original colour",
       },
       { src: "/render-cleaning6.webp", alt: "Render cleaned and sealed" },
@@ -1384,7 +1384,7 @@ export const brickCleaningData: ServiceData = {
     line3: "Cleaning",
     subtext:
       "Restore and rejuvenate your brickwork with our expert brick cleaning and restoration solutions.",
-    bgImage: "/brick.jpg",
+    bgImage: "/brick.webp",
   },
   intro: {
     eyebrow: "Why It Matters",
@@ -1500,15 +1500,15 @@ export const brickCleaningData: ServiceData = {
     images: [
       { src: "/2.webp", alt: "Brick cleaning before and after" },
       {
-        src: "/brick-cleaning2.jpg",
+        src: "/brick-cleaning2.webp",
         alt: "Efflorescence removed from brickwork",
       },
-      { src: "/brick-cleaning3.jpeg", alt: "Soft wash on Victorian brickwork" },
+      { src: "/brick-cleaning3.webp", alt: "Soft wash on Victorian brickwork" },
       {
-        src: "/brick-cleaning4.jpg",
+        src: "/brick-cleaning4.webp",
         alt: "Commercial brick exterior restored",
       },
-      { src: "/brick-cleaning5.jpg", alt: "Staining removed from red brick" },
+      { src: "/brick-cleaning5.webp", alt: "Staining removed from red brick" },
       {
         src: "/brick-cleaning6.webp",
         alt: "Brick sealed and protected after cleaning",
@@ -1562,7 +1562,7 @@ export const claddingCleaningData: ServiceData = {
     line3: "Cleaning",
     subtext:
       "Restore and protect your building's exterior with our expert cladding cleaning solutions.",
-    bgImage: "/cladding.jpg",
+    bgImage: "/cladding.webp",
   },
   intro: {
     eyebrow: "Why It Matters",
@@ -1572,7 +1572,7 @@ export const claddingCleaningData: ServiceData = {
       "At Al Grey's Cleaning Services, we specialise in professional cladding cleaning using cleaning methods designed specifically for each material type — without damaging the surface, protective coatings or sealants. Our team has extensive experience with UPVC, composite, metal and rendered cladding systems.",
       "We understand that clean cladding is more than just about appearance — it's essential for maintaining your building's weatherproofing ability, structural protection and market value while enhancing your property's visual appeal.",
     ],
-    image: "/cladding-cleaning.jpg",
+    image: "/cladding-cleaning.webp",
     imageAlt: "Cladding cleaning in progress",
   },
   cards: {
@@ -1679,11 +1679,11 @@ export const claddingCleaningData: ServiceData = {
         alt: "UPVC cladding cleaned and restored",
       },
       {
-        src: "/cladding-cleaning2.jpg",
+        src: "/cladding-cleaning2.webp",
         alt: "Composite panel cladding after cleaning",
       },
       {
-        src: "/cladding-cleaning3.jpg",
+        src: "/cladding-cleaning3.webp",
         alt: "Metal cladding before and after",
       },
       {
@@ -1691,7 +1691,7 @@ export const claddingCleaningData: ServiceData = {
         alt: "Commercial building cladding cleaned",
       },
       {
-        src: "/cladding-cleaning5.jpg",
+        src: "/cladding-cleaning5.webp",
         alt: "Cladding algae removal completed",
       },
       { src: "/cladding-cleaning6.webp", alt: "Rendered cladding restored" },
@@ -1744,7 +1744,7 @@ export const downpipeCleaningData: ServiceData = {
     line3: "Cleaning",
     subtext:
       "Prevent blockages and protect your property with our expert downpipe clearing and maintenance solutions.",
-    bgImage: "/downpipe.jpg",
+    bgImage: "/downpipe.webp",
   },
   intro: {
     eyebrow: "Why It Matters",
@@ -1861,10 +1861,10 @@ export const downpipeCleaningData: ServiceData = {
         src: "/downpipe-cleaning1.webp",
         alt: "Downpipe unblocking in progress",
       },
-      { src: "/downpipe-cleaning2.jpeg", alt: "Blocked downpipe cleared" },
+      { src: "/downpipe-cleaning2.webp", alt: "Blocked downpipe cleared" },
       { src: "/downpipe-cleaning3.webp", alt: "CCTV downpipe inspection" },
       {
-        src: "/downpipe-cleaning4.jpg",
+        src: "/downpipe-cleaning4.webp",
         alt: "Downpipe cleaning on detached house",
       },
       {
@@ -1872,7 +1872,7 @@ export const downpipeCleaningData: ServiceData = {
         alt: "High-pressure jetting of downpipe",
       },
       {
-        src: "/downpipe-cleaning6.jpeg",
+        src: "/downpipe-cleaning6.webp",
         alt: "Clean drainage system after service",
       },
     ],
@@ -1924,7 +1924,7 @@ export const graffitiRemovalData: ServiceData = {
     line3: "Removal",
     subtext:
       "Effective graffiti removal and prevention solutions for commercial and residential properties.",
-    bgImage: "/graffiti.jpg",
+    bgImage: "/graffiti.webp",
   },
   intro: {
     eyebrow: "Why It Matters",
@@ -1934,7 +1934,7 @@ export const graffitiRemovalData: ServiceData = {
       "At Al Grey's Cleaning Services, we have extensive experience dealing with all types of graffiti — from spray paint and permanent markers to stickers and painted murals — across all surface types. Each surface requires a different approach and we always test our products to ensure effective removal without damage to the underlying surface.",
       "We understand that rapid response is key to minimising cost and spread. Our emergency graffiti removal services are designed to respond quickly and efficiently to protect your property's appearance and deter further incidents.",
     ],
-    image: "/graffiti-removal-hero-mobile.jpg",
+    image: "/graffiti-removal-hero-mobile.webp",
     imageAlt: "Graffiti removal in progress",
   },
   cards: {
@@ -2040,24 +2040,24 @@ export const graffitiRemovalData: ServiceData = {
       "See the transformation our professional graffiti cleaning services deliver.",
     images: [
       {
-        src: "/grafitti-removal1.jpg",
+        src: "/grafitti-removal1.webp",
         alt: "Spray paint graffiti removed from wall",
       },
       {
-        src: "/grafitti-removal2.jpg",
+        src: "/grafitti-removal2.webp",
         alt: "Graffiti removed from commercial building",
       },
       {
-        src: "/grafitti-removal3.jpeg",
+        src: "/grafitti-removal3.webp",
         alt: "Brick wall graffiti removal completed",
       },
       {
         src: "/grafitti-removal4.webp",
         alt: "Graffiti before and after removal",
       },
-      { src: "/grafitti-removal5.jpg", alt: "Paint removal from masonry" },
+      { src: "/grafitti-removal5.webp", alt: "Paint removal from masonry" },
       {
-        src: "/grafitti-removal6.jpg",
+        src: "/grafitti-removal6.webp",
         alt: "Anti-graffiti coating applied after removal",
       },
     ],
@@ -2109,7 +2109,7 @@ export const commercialGutterData: ServiceData = {
     line3: "Cleaning",
     subtext:
       "Protect your commercial property with our expert gutter cleaning and maintenance solutions.",
-    bgImage: "/commercial.jpg",
+    bgImage: "/commercial.webp",
   },
   intro: {
     eyebrow: "Why It Matters",
@@ -2224,27 +2224,27 @@ export const commercialGutterData: ServiceData = {
     subtext: "See our professional commercial gutter cleaning in action.",
     images: [
       {
-        src: "/commercial-gutter-cleaning1.jpg",
+        src: "/commercial-gutter-cleaning1.webp",
         alt: "Office block gutter cleaning",
       },
       {
-        src: "/commercial-gutter-cleaning2.jpg",
+        src: "/commercial-gutter-cleaning2.webp",
         alt: "Industrial unit gutter cleared",
       },
       {
-        src: "/commercial-gutter-cleaning3.jpg",
+        src: "/commercial-gutter-cleaning3.webp",
         alt: "Retail centre gutter maintenance",
       },
       {
-        src: "/commercial-gutter-cleaning4.jpg",
+        src: "/commercial-gutter-cleaning4.webp",
         alt: "Apartment block gutters cleaned",
       },
       {
-        src: "/commercial-gutter-cleaning5.png",
+        src: "/commercial-gutter-cleaning5.webp",
         alt: "Commercial gutter inspection",
       },
       {
-        src: "/commercial-gutter-cleaning6.jpg",
+        src: "/commercial-gutter-cleaning6.webp",
         alt: "Large commercial site gutter cleaning",
       },
     ],
@@ -2296,7 +2296,7 @@ export const roofCleaningData: ServiceData = {
     line3: "Cleaning",
     subtext:
       "Restore and protect your roof with our expert cleaning and maintenance solutions.",
-    bgImage: "/roof-clean.jpg",
+    bgImage: "/roof-clean.webp",
   },
   intro: {
     eyebrow: "Why It Matters",
@@ -2412,16 +2412,16 @@ export const roofCleaningData: ServiceData = {
     heading: "Our Roof Cleaning Projects",
     subtext: "See the transformation our professional roof cleaning delivers.",
     images: [
-      { src: "/roof-cleaning1.jpg", alt: "Roof cleaning before and after" },
-      { src: "/roof-cleaning7.jpg", alt: "Moss removal from tiled roof" },
-      { src: "/roof-cleaning3.jpg", alt: "Slate roof professionally cleaned" },
+      { src: "/roof-cleaning1.webp", alt: "Roof cleaning before and after" },
+      { src: "/roof-cleaning7.webp", alt: "Moss removal from tiled roof" },
+      { src: "/roof-cleaning3.webp", alt: "Slate roof professionally cleaned" },
       {
-        src: "/roof-cleaning4.jpg",
+        src: "/roof-cleaning4.webp",
         alt: "Algae removal on detached house roof",
       },
       { src: "/roof-cleaning5.webp", alt: "Roof soft wash treatment applied" },
       {
-        src: "/roof-cleaning6.jpg",
+        src: "/roof-cleaning6.webp",
         alt: "Roof restored after cleaning service",
       },
     ],

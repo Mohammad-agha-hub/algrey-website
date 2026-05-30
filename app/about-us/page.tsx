@@ -439,7 +439,7 @@ function StorySection() {
           {/* Image */}
           <div className="abt-intro-img h-[360px] lg:h-[480px]">
             <Image
-              src="/gutter-5.jpg"
+              src="/gutter-5.webp"
               alt="Al Grey's Cleaning Services team at work"
               fill
               className="object-cover"
@@ -701,19 +701,19 @@ const TEAM = [
     name: "Al Grey",
     role: "Founder & CEO",
     bio: "With over 15 years of experience in the cleaning industry, Al founded the company with a vision to provide high-quality services that customers can trust. His hands-on approach ensures that our standards never slip.",
-    img: "/al.avif",
+    img: "/al.webp",
   },
   {
     name: "Sarah Johnson",
     role: "Operations Manager",
     bio: "Sarah brings 8 years of operations experience to our team, ensuring that every project runs smoothly from start to finish. Her attention to detail and outstanding customer service skills make her an invaluable part of our company.",
-    img: "/sarah.avif",
+    img: "/sarah.webp",
   },
   {
     name: "Mike Thompson",
     role: "Head of Technical Services",
     bio: "Mike leads our technical team with 10 years of specialised experience in gutter systems and exterior cleaning. His expertise ensures that even the most challenging projects are completed to the highest standards.",
-    img: "/mike.avif",
+    img: "/mike.webp",
   },
 ];
 

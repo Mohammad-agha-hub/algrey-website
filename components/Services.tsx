@@ -7,7 +7,7 @@ const SERVICES = [
   {
     title: "Gutter Cleaning",
     tag: "Most Popular",
-    image: "/gutter-cleaning.jpg",
+    image: "/gutter-cleaning.webp",
     href: "/services/gutter-cleaning",
     bullets: [
       "Full debris removal — leaves, moss & silt",
@@ -20,7 +20,7 @@ const SERVICES = [
   {
     title: "Roof Cleaning",
     tag: "Specialist Service",
-    image: "/roof-cleaning.jpg",
+    image: "/roof-cleaning.webp",
     href: "/roof-cleaning",
     bullets: [
       "Moss, lichen & algae removal",
@@ -33,7 +33,7 @@ const SERVICES = [
   {
     title: "Pressure Washing",
     tag: "Driveways & Patios",
-    image: "/pressure-washing.png",
+    image: "/pressure-washing.webp",
     href: "/services/pressure-washing",
     bullets: [
       "Driveways, patios & pathways",
@@ -46,7 +46,7 @@ const SERVICES = [
   {
     title: "Window Cleaning",
     tag: "Residential & Commercial",
-    image: "/window-cleaning.jpg",
+    image: "/window-cleaning.webp",
     href: "/services/window-cleaning",
     bullets: [
       "Pure water fed-pole system — streak-free",
@@ -59,7 +59,7 @@ const SERVICES = [
   {
     title: "Fascia & Soffit Cleaning",
     tag: "Residential",
-    image: "/facia.jpeg",
+    image: "/facia.webp",
     href: "/services/fascia-soffit-cleaning",
     bullets: [
       "uPVC, wood & aluminium fascia boards",

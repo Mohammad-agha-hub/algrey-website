@@ -106,7 +106,7 @@ function HeroSection() {
       <Navbar />
       <div className="absolute inset-0 -z-10">
         <Image
-          src="/contact.jpg"
+          src="/contact.webp"
           alt="Contact Al Grey's Cleaning Services"
           fill
           priority

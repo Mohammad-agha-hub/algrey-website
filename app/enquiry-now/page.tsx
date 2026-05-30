@@ -8,19 +8,18 @@ import CTAAndFooter from "@/components/Footer";
 
 const ALL_SERVICES = [
   "Gutter Cleaning",
+  "Window Cleaning",
+  "Pressure Washing",
   "Roof Cleaning",
   "Fascia & Soffit Cleaning",
-  "Pressure Washing",
-  "Window Cleaning",
   "Driveway Cleaning",
+  "Commercial Gutter Cleaning",
   "Patio Cleaning",
   "Render Cleaning",
   "Brick Cleaning",
   "Cladding Cleaning",
   "Downpipe Cleaning",
   "Graffiti Removal",
-  "Commercial Gutter Cleaning",
-  "Conservatory Roof Cleaning",
 ];
 const PROPERTY_TYPES = [
   "Detached House",
@@ -29,15 +28,13 @@ const PROPERTY_TYPES = [
   "Flat / Apartment",
   "Bungalow",
   "Commercial Property",
-  "Industrial Unit",
   "Other",
 ];
 const URGENCY_OPTIONS = [
-  "As soon as possible",
-  "Within 1 week",
-  "Within 2 weeks",
-  "Within a month",
-  "Just getting a price",
+  "Emergency - Need ASAP",
+  "Urgent - Within 1 week",
+  "Standard - Within 2 weeks",
+  "Flexible - No specific timeframe",
 ];
 
 /* ─────────────────────────────────────────────────── STYLES */
@@ -62,7 +59,6 @@ function EnquiryStyles() {
       .enq-anim-3 { animation: enq-fadeUp .65s .22s ease both; }
       .enq-anim-4 { animation: enq-fadeUp .65s .34s ease both; }
 
-      /* ── Premium Why-card ── */
       .enq-why-card {
         position: relative;
         padding: 28px 24px;
@@ -87,7 +83,6 @@ function EnquiryStyles() {
       }
       .enq-why-card:hover::before { opacity: 1; }
 
-      /* accent line top */
       .enq-why-card-accent {
         position: absolute;
         top: 0; left: 0; right: 0;
@@ -134,7 +129,6 @@ function EnquiryStyles() {
         box-shadow: 0 6px 20px rgba(37,99,235,.28);
       }
 
-      /* ── Premium Service Cards ── */
       .enq-svc-card {
         position: relative;
         border-radius: 20px;
@@ -188,13 +182,7 @@ function EnquiryStyles() {
         background: linear-gradient(90deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
       }
       .enq-svc-body { padding: 0 28px 28px; flex: 1; display: flex; flex-direction: column; }
-      .enq-svc-price-tag {
-        display: inline-flex;
-        align-items: baseline;
-        gap: 4px;
-      }
 
-      /* Dropdown */
       .enq-dropdown-list {
         animation: enq-dropdownIn 0.15s ease both;
         scrollbar-width: thin;
@@ -214,7 +202,7 @@ function HeroSection() {
       <Navbar />
       <div className="absolute inset-0 -z-10">
         <Image
-          src="/commercial-gutter-cleaning2.jpg"
+          src="/commercial-gutter-cleaning2.webp"
           alt="Get a Free Quote from Al Grey's Cleaning Services"
           fill
           priority
@@ -464,15 +452,74 @@ function QuoteFormSection() {
     details: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [apiError, setApiError] = useState<string | null>(null);
 
   const set = (key: string) => (val: string) =>
     setForm((p) => ({ ...p, [key]: val }));
   const handleInput = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => setForm((p) => ({ ...p, [e.target.name]: e.target.value }));
-  const handleSubmit = () => {
-    if (!form.firstName || !form.email || !form.phone || !form.service) return;
-    setSubmitted(true);
+
+  const handleSubmit = async () => {
+    setApiError(null);
+    if (
+      !form.firstName ||
+      !form.email ||
+      !form.phone ||
+      !form.postcode ||
+      !form.service
+    )
+      return;
+
+    setLoading(true);
+    try {
+      const res = await fetch("/api/quote", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          source: "enquiry", // ← identifies this form
+          firstName: form.firstName,
+          lastName: form.lastName || undefined,
+          email: form.email,
+          phone: form.phone,
+          postcode: form.postcode,
+          service: form.service,
+          propertyType: form.propertyType || undefined,
+          urgency: form.urgency || undefined,
+          details: form.details || undefined,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        setApiError(data.error ?? "Something went wrong. Please try again.");
+        return;
+      }
+
+      setSubmitted(true);
+    } catch {
+      setApiError("Network error. Please check your connection and try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const resetForm = () => {
+    setSubmitted(false);
+    setApiError(null);
+    setForm({
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      postcode: "",
+      service: "",
+      propertyType: "",
+      urgency: "",
+      details: "",
+    });
   };
 
   const svcIcon = (
@@ -552,24 +599,11 @@ function QuoteFormSection() {
                 </h3>
                 <p className="text-gray-500 text-sm leading-relaxed max-w-sm">
                   Thanks, <strong>{form.firstName}</strong>! We'll review your
-                  details and get back to you within 2 hours with your free,
-                  no-obligation quote.
+                  details and get back to you within 2 hours. A confirmation
+                  email has been sent to <strong>{form.email}</strong>.
                 </p>
                 <button
-                  onClick={() => {
-                    setSubmitted(false);
-                    setForm({
-                      firstName: "",
-                      lastName: "",
-                      email: "",
-                      phone: "",
-                      postcode: "",
-                      service: "",
-                      propertyType: "",
-                      urgency: "",
-                      details: "",
-                    });
-                  }}
+                  onClick={resetForm}
                   className="mt-2 text-blue-600 hover:text-blue-700 text-sm font-semibold underline underline-offset-2"
                 >
                   Submit another request
@@ -588,11 +622,13 @@ function QuoteFormSection() {
                     Fill out the form and we'll get back to you within 2 hours.
                   </p>
                 </div>
+
                 <div className="flex flex-col gap-4">
+                  {/* Name row */}
                   <div className="grid grid-cols-2 gap-4">
                     {[
                       ["firstName", "First Name *"],
-                      ["lastName", "Last Name *"],
+                      ["lastName", "Last Name"],
                     ].map(([name, ph]) => (
                       <div key={name} className="relative">
                         <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400">
@@ -621,6 +657,8 @@ function QuoteFormSection() {
                       </div>
                     ))}
                   </div>
+
+                  {/* Email */}
                   <div className="relative">
                     <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400">
                       <svg
@@ -646,6 +684,8 @@ function QuoteFormSection() {
                       className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                     />
                   </div>
+
+                  {/* Phone + Postcode */}
                   <div className="grid grid-cols-2 gap-4">
                     <div className="relative">
                       <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400">
@@ -698,6 +738,7 @@ function QuoteFormSection() {
                       />
                     </div>
                   </div>
+
                   <CustomSelect
                     value={form.service}
                     onChange={set("service")}
@@ -719,6 +760,7 @@ function QuoteFormSection() {
                     placeholder="How Urgent Is This?"
                     icon={clockIcon}
                   />
+
                   <textarea
                     name="details"
                     value={form.details}
@@ -727,11 +769,58 @@ function QuoteFormSection() {
                     rows={5}
                     className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none"
                   />
+
+                  {/* API Error */}
+                  {apiError && (
+                    <div className="flex items-center gap-2 px-4 py-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">
+                      <svg
+                        className="w-4 h-4 shrink-0"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"
+                        />
+                      </svg>
+                      {apiError}
+                    </div>
+                  )}
+
                   <button
                     onClick={handleSubmit}
-                    className="w-full bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white font-bold uppercase tracking-widest text-sm py-3.5 rounded-lg transition-all duration-200 shadow-md shadow-blue-900/40 mt-1"
+                    disabled={loading}
+                    className="w-full bg-blue-600 hover:bg-blue-500 active:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold uppercase tracking-widest text-sm py-3.5 rounded-lg transition-all duration-200 shadow-md shadow-blue-900/40 mt-1 flex items-center justify-center gap-2"
                   >
-                    Submit Enquiry →
+                    {loading ? (
+                      <>
+                        <svg
+                          className="w-4 h-4 animate-spin"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          />
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                          />
+                        </svg>
+                        Sending...
+                      </>
+                    ) : (
+                      "Submit Enquiry →"
+                    )}
                   </button>
                   <p className="text-center text-gray-400 text-xs">
                     No obligation · Free quote · Respond within 2 hours
@@ -741,7 +830,7 @@ function QuoteFormSection() {
             )}
           </div>
 
-          {/* ── RIGHT: Premium Why Cards ── */}
+          {/* ── RIGHT: Why Cards ── */}
           <div className="lg:col-span-2 flex flex-col gap-3 lg:sticky lg:top-8">
             <div className="mb-5">
               <p className="inline-flex items-center gap-2 text-blue-600 font-semibold text-xs uppercase tracking-[0.22em] mb-3">
@@ -754,14 +843,10 @@ function QuoteFormSection() {
 
             {WHY_ITEMS.map((item, i) => (
               <div key={item.title} className="enq-why-card">
-              
-                {/* Ghost number */}
                 <span className="enq-why-num">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                {/* Icon */}
                 <div className="enq-why-icon-wrap">{item.icon}</div>
-                {/* Text */}
                 <h3 className="enq-heading text-[14px] font-extrabold text-[#0d2257] leading-snug mb-1.5 relative">
                   {item.title}
                 </h3>
@@ -820,7 +905,7 @@ function QuoteFormSection() {
 }
 
 /* ─────────────────────────────────────────────────── POPULAR SERVICES */
-const SERVICES = [
+const SERVICES_CARDS = [
   {
     title: "Gutter Cleaning",
     tagline: "Complete gutter maintenance",
@@ -834,7 +919,6 @@ const SERVICES = [
       "Gutter guard installation",
     ],
     href: "/gutter-cleaning",
-    accent: "from-blue-600 to-blue-500",
   },
   {
     title: "Window Cleaning",
@@ -849,7 +933,6 @@ const SERVICES = [
       "Commercial properties",
     ],
     href: "/window-cleaning",
-    accent: "from-[#1a3a7a] to-[#0d2257]",
   },
   {
     title: "Pressure Washing",
@@ -864,7 +947,6 @@ const SERVICES = [
       "Graffiti removal",
     ],
     href: "/pressure-washing",
-    accent: "from-[#0f3170] to-[#0d2257]",
   },
 ];
 
@@ -889,9 +971,8 @@ function PopularServicesSection() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          {SERVICES.map((svc) => (
+          {SERVICES_CARDS.map((svc) => (
             <div key={svc.title} className="enq-svc-card">
-              {/* Top section */}
               <div className="enq-svc-top">
                 <div>
                   <span className="enq-svc-badge">
@@ -901,7 +982,6 @@ function PopularServicesSection() {
                     {svc.badge}
                   </span>
                 </div>
-                {/* Price tag top-right */}
                 <div className="text-right">
                   <p className="enq-display text-[#FFF265] text-3xl tracking-wide leading-none">
                     £{svc.price}
@@ -911,18 +991,13 @@ function PopularServicesSection() {
                   </p>
                 </div>
               </div>
-
-              {/* Title area */}
               <div className="px-7 pt-5">
                 <h3 className="enq-heading text-[22px] font-extrabold text-white leading-snug tracking-tight">
                   {svc.title}
                 </h3>
                 <p className="text-[#94a8cc] text-sm mt-1">{svc.tagline}</p>
               </div>
-
               <div className="enq-svc-divider" />
-
-              {/* Body */}
               <div className="enq-svc-body">
                 <ul className="flex flex-col gap-2.5 mb-7 flex-1">
                   {svc.bullets.map((b) => (
