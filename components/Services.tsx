@@ -326,7 +326,7 @@ const ServiceCard = memo(
           </ul>
 
           {/* Row 4 — CTA */}
-          <div className="px-6 lg:px-7 pb-6 lg:pb-7 pt-4">
+          <div className="px-6 lg:px-7 pb-6 lg:pb-7 pt-8">
             <Link
               href={href}
               className="svc-cta inline-flex items-center justify-center gap-2 w-full px-4 lg:px-5 py-3 lg:py-3.5 text-[13px] lg:text-[14px] font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-all duration-200 hover:shadow-lg hover:shadow-blue-600/20 focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2 group"
