@@ -1,7 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { useRef, useEffect, useState, useCallback, memo } from "react";
+import Link from "next/link";
+import KeenSlider from "keen-slider";
+import "keen-slider/keen-slider.min.css";
 
 const ALL_SERVICES = [
   {
@@ -9,7 +11,8 @@ const ALL_SERVICES = [
     tag: "Most Popular",
     image: "/gutter-cleaning.webp",
     href: "/gutter-cleaning",
-    linkText: "Learn about our professional gutter cleaning service",
+    linkText:
+      "Book professional gutter cleaning - debris removal, downpipe flushing, and minor repairs",
     bullets: [
       "Full debris removal — leaves, moss & silt",
       "Downpipe flushing & blockage clearing",
@@ -23,7 +26,8 @@ const ALL_SERVICES = [
     tag: "Specialist Service",
     image: "/roof-cleaning.webp",
     href: "/roof-cleaning",
-    linkText: "Discover our safe roof cleaning solutions",
+    linkText:
+      "Schedule safe roof cleaning - soft-wash moss, lichen, and algae removal for all roof types",
     bullets: [
       "Moss, lichen & algae removal",
       "Safe soft-wash — no high-pressure tile damage",
@@ -37,7 +41,8 @@ const ALL_SERVICES = [
     tag: "Driveways & Patios",
     image: "/pressure-washing.webp",
     href: "/pressure-washing",
-    linkText: "Explore our pressure washing services for all surfaces",
+    linkText:
+      "Get pressure washing for driveways, patios, decking, and commercial surfaces",
     bullets: [
       "Driveways, patios & pathways",
       "Brickwork, render & block paving",
@@ -51,7 +56,8 @@ const ALL_SERVICES = [
     tag: "Residential & Commercial",
     image: "/window-cleaning.webp",
     href: "/window-cleaning",
-    linkText: "See our streak-free window cleaning packages",
+    linkText:
+      "Arrange streak-free window cleaning with pure water fed-pole system for all heights",
     bullets: [
       "Pure water fed-pole system — streak-free",
       "Frames, sills & tracks cleaned too",
@@ -65,7 +71,8 @@ const ALL_SERVICES = [
     tag: "Restore & Protect",
     image: "/driveway.webp",
     href: "/driveway-cleaning",
-    linkText: "Learn how we restore and protect your driveway",
+    linkText:
+      "Restore your driveway with professional cleaning, stain removal, and protective sealing",
     bullets: [
       "Block paving, tarmac, concrete & resin",
       "Oil & grease stain removal",
@@ -79,7 +86,8 @@ const ALL_SERVICES = [
     tag: "Outdoor Spaces",
     image: "/patio.webp",
     href: "/patio-cleaning",
-    linkText: "Find out about our patio cleaning and sealing service",
+    linkText:
+      "Clean your patio with weed removal, biocide treatment, and long-lasting sealing protection",
     bullets: [
       "Natural stone, porcelain & block paving",
       "Weed removal from joints & borders",
@@ -93,7 +101,8 @@ const ALL_SERVICES = [
     tag: "Exterior Care",
     image: "/render.webp",
     href: "/render-cleaning",
-    linkText: "Read about our gentle render cleaning approach",
+    linkText:
+      "Book gentle render cleaning using soft-wash for algae, moss, and pollution removal",
     bullets: [
       "Soft-wash — no high-pressure damage",
       "Algae, moss & pollution stain removal",
@@ -107,7 +116,8 @@ const ALL_SERVICES = [
     tag: "Masonry Specialist",
     image: "/brick.webp",
     href: "/brick-cleaning",
-    linkText: "Discover our specialist brick and masonry cleaning",
+    linkText:
+      "Schedule specialist brick cleaning with efflorescence removal and protective sealing",
     bullets: [
       "Soft-wash & chemical cleaning options",
       "Efflorescence & stain removal",
@@ -121,7 +131,8 @@ const ALL_SERVICES = [
     tag: "All Cladding Types",
     image: "/cladding.webp",
     href: "/cladding-cleaning",
-    linkText: "Explore our cladding cleaning for all material types",
+    linkText:
+      "Get cladding cleaning for uPVC, composite, metal, and rendered surfaces with protective coating",
     bullets: [
       "uPVC, composite, metal & rendered cladding",
       "Low-pressure soft-wash system",
@@ -135,7 +146,8 @@ const ALL_SERVICES = [
     tag: "Drainage Solutions",
     image: "/downpipe.webp",
     href: "/downpipe-cleaning",
-    linkText: "Learn about our downpipe cleaning and inspection service",
+    linkText:
+      "Book downpipe cleaning with high-pressure jetting, CCTV inspection, and emergency call-outs",
     bullets: [
       "High-pressure jetting for full clearance",
       "Leaf, moss & sediment removal",
@@ -149,7 +161,8 @@ const ALL_SERVICES = [
     tag: "Rapid Response",
     image: "/graffiti.webp",
     href: "/graffiti-cleaning",
-    linkText: "See our rapid graffiti removal and protection service",
+    linkText:
+      "Remove graffiti now with 24/7 emergency response and anti-graffiti protection coating",
     bullets: [
       "Spray paint, markers & stickers removed",
       "Safe for brick, render, metal & glass",
@@ -163,7 +176,8 @@ const ALL_SERVICES = [
     tag: "Home Specialist",
     image: "/residential.webp",
     href: "/residential-gutter",
-    linkText: "Find out about our residential gutter cleaning packages",
+    linkText:
+      "Book home gutter cleaning with debris removal, repairs, and optional gutter guard installation",
     bullets: [
       "Full debris removal — leaves, moss & silt",
       "Downpipe flushing & blockage clearing",
@@ -177,7 +191,8 @@ const ALL_SERVICES = [
     tag: "Commercial",
     image: "/commercial.webp",
     href: "/commercial-gutter",
-    linkText: "Learn about our commercial gutter maintenance contracts",
+    linkText:
+      "Get a commercial quote for gutter maintenance with detailed reporting and full insurance coverage",
     bullets: [
       "Offices, retail, industrial & apartments",
       "Full public liability insurance",
@@ -188,31 +203,17 @@ const ALL_SERVICES = [
   },
 ];
 
-// Fixed card dimensions
-const CARD_WIDTH = 340;
-const CARD_GAP = 22;
-const CARD_STRIDE = CARD_WIDTH + CARD_GAP;
-const IMAGE_HEIGHT = 200;
-const CARD_PADDING = 28;
-const BULLET_HEIGHT = 32; // Approximate height per bullet line
-const BULLET_GAP = 10; // Gap between bullets
-const TITLE_HEIGHT = 28; // Approximate title height
-const TITLE_MARGIN = 20; // mb-5
-const LINK_HEIGHT = 45; // Link + border top height
-const LIST_MARGIN = 24; // mb-6
 
-// Calculate exact card height to ensure consistency
-const CONTENT_HEIGHT = 
-  IMAGE_HEIGHT + 
-  (CARD_PADDING * 2) + 
-  TITLE_HEIGHT + 
-  TITLE_MARGIN + 
-  (BULLET_HEIGHT * 5) + // 5 bullets max
-  (BULLET_GAP * 4) + // 4 gaps between 5 bullets
-  LIST_MARGIN + 
-  LINK_HEIGHT;
+// which breakpoint media query currently matches.
+function getActivePerView(slider: KeenSlider): number {
+  if (typeof window === "undefined") return 3;
+  if (window.matchMedia("(min-width: 1536px)").matches) return 5;
+  if (window.matchMedia("(min-width: 1280px)").matches) return 4;
+  if (window.matchMedia("(min-width: 1024px)").matches) return 3;
+  if (window.matchMedia("(min-width: 768px)").matches) return 2;
+  return 1;
+}
 
-// Static components outside main component to prevent recreation
 const CheckIcon = () => (
   <span className="mt-[1px] flex-shrink-0 w-[17px] h-[17px] rounded-full bg-blue-50 flex items-center justify-center">
     <svg
@@ -231,310 +232,215 @@ const CheckIcon = () => (
   </span>
 );
 
-const ArrowIcon = () => (
-  <svg
-    className="w-[13px] h-[13px] flex-shrink-0"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth={2.5}
-    viewBox="0 0 24 24"
-    aria-hidden="true"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-    />
-  </svg>
-);
+const ServiceCard = memo(
+  ({
+    service,
+    index,
+  }: {
+    service: (typeof ALL_SERVICES)[0];
+    index: number;
+  }) => {
+    const { title, tag, image, href, bullets, linkText } = service;
 
-// Memoized ServiceCard to prevent unnecessary re-renders
-const ServiceCard = memo(({ 
-  service, 
-  index, 
-  onCardClick 
-}: { 
-  service: typeof ALL_SERVICES[0];
-  index: number;
-  onCardClick: (e: React.MouseEvent) => void;
-}) => {
-  const { title, tag, image, href, bullets, linkText } = service;
-  
-  return (
-    <div 
-      className="svc-card relative bg-white rounded-2xl overflow-hidden flex flex-col"
-      style={{
-        width: `${CARD_WIDTH}px`,
-        height: `${CONTENT_HEIGHT}px`,
-      }}
-    >
+    const getCTA = (title: string) => {
+      if (
+        title.includes("Gutter Cleaning") &&
+        !title.includes("Commercial") &&
+        !title.includes("Residential")
+      )
+        return "Book Gutter Cleaning";
+      if (title.includes("Roof Cleaning")) return "Roof Cleaning";
+      if (title.includes("Pressure Washing")) return "Get Pressure Washing";
+      if (title.includes("Window Cleaning")) return "Arrange Window Cleaning";
+      if (title.includes("Driveway Cleaning")) return "Restore Your Driveway";
+      if (title.includes("Patio Cleaning")) return "Clean Your Patio";
+      if (title.includes("Render Cleaning")) return "Book Render Cleaning";
+      if (title.includes("Brick Cleaning")) return "Schedule Brick Cleaning";
+      if (title.includes("Cladding Cleaning")) return "Get Cladding Cleaning";
+      if (title.includes("Downpipe Cleaning")) return "Book Downpipe Service";
+      if (title.includes("Graffiti Removal")) return "Remove Graffiti Now";
+      if (title.includes("Residential")) return "Book Home Gutter Clean";
+      if (title.includes("Commercial")) return "Get Commercial Quote";
+      return "Learn More";
+    };
 
-      {/* Image container - fixed height */}
-      <div 
-        className="relative overflow-hidden flex-shrink-0"
-        style={{ height: `${IMAGE_HEIGHT}px` }}
-      >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={image}
-          alt={`${title} service - professional exterior cleaning`}
-          className="svc-img w-full h-full object-cover"
-          loading={index < 3 ? "eager" : "lazy"}
-          decoding="async"
-          width={CARD_WIDTH}
-          height={IMAGE_HEIGHT}
-        />
-        <div className="svc-over absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#0d2257]/50" />
-        <span className="svc-chip absolute bottom-3 left-3.5 z-10 text-[10px] font-bold uppercase tracking-[.16em] bg-[#0d2257]/75 backdrop-blur text-white px-2.5 py-1 rounded-full">
-          {tag}
-        </span>
-      </div>
-
-      {/* Content - flex column with fixed heights */}
-      <div 
-        className="flex flex-col flex-1"
-        style={{ padding: `${CARD_PADDING}px` }}
-      >
-        {/* Title - fixed height with overflow handling */}
-        <h3 
-          className="font-heading text-[18px] font-extrabold text-[#0d2257] leading-snug tracking-[-0.3px]"
-          style={{ 
-            height: `${TITLE_HEIGHT}px`,
-            marginBottom: `${TITLE_MARGIN}px`,
-            overflow: 'hidden',
-            display: '-webkit-box',
-            WebkitLineClamp: 1,
-            WebkitBoxOrient: 'vertical',
-          }}
-          title={title}
-        >
-          {title}
-        </h3>
-        
-        {/* Bullet list - fixed height with grid for perfect alignment */}
-        <ul 
-          className="flex flex-col flex-1"
-          style={{ 
-            gap: `${BULLET_GAP}px`,
-            marginBottom: `${LIST_MARGIN}px`,
-            height: `${(BULLET_HEIGHT * 5) + (BULLET_GAP * 4)}px`,
-          }}
-        >
-          {bullets.map((bullet) => (
-            <li
-              key={bullet}
-              className="flex items-start gap-2.5 text-[13px] text-slate-500 leading-snug"
-              style={{ height: `${BULLET_HEIGHT}px` }}
-            >
-              <CheckIcon />
-              <span className="overflow-hidden" style={{
-                display: '-webkit-box',
-                WebkitLineClamp: 2,
-                WebkitBoxOrient: 'vertical',
-              }}>
-                {bullet}
-              </span>
-            </li>
-          ))}
-        </ul>
-
-        {/* Learn More link - fixed position at bottom */}
-        <div 
-          className="flex-shrink-0"
-          style={{ 
-            height: `${LINK_HEIGHT}px`,
-            paddingTop: '16px',
-            borderTop: '1px solid #f1f5f9',
-          }}
-        >
-          <Link
-            href={href}
-            onClick={onCardClick}
-            className="svc-learn inline-flex items-center gap-1.5 text-[13px] font-bold text-slate-400 hover:text-blue-600 focus-visible:outline-2 focus-visible:outline-blue-600 rounded-sm transition-colors duration-200"
-            aria-label={linkText}
+    return (
+      <div className="keen-slider__slide flex justify-center px-0">
+        {/*
+          Card uses CSS Grid with explicit rows so every card is identical:
+            Row 1 — image (fixed 200px)
+            Row 2 — title (fixed single line)
+            Row 3 — 5 bullet rows, each capped at one line via line-clamp-1
+            Row 4 — CTA button (fixed height)
+          No row can grow based on content, so all cards stay in lock-step.
+        */}
+        <div className="svc-card relative bg-white rounded-2xl overflow-hidden w-full svc-grid">
+          <span
+            className="svc-num absolute top-3 right-4 z-10"
+            aria-hidden="true"
           >
-            Learn More <ArrowIcon />
-          </Link>
+            {String(index + 1).padStart(2, "0")}
+          </span>
+
+          {/* Row 1 — image */}
+          <div className="relative overflow-hidden" style={{ height: 200 }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={image}
+              alt={`${title} service - professional exterior cleaning`}
+              className="svc-img w-full h-full object-cover"
+              loading={index < 3 ? "eager" : "lazy"}
+              decoding="async"
+            />
+            <div className="svc-over absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#0d2257]/50" />
+            <span className="svc-chip absolute bottom-3 left-3.5 z-10 text-[10px] font-bold uppercase tracking-[.16em] bg-[#0d2257]/75 backdrop-blur text-white px-2.5 py-1 rounded-full">
+              {tag}
+            </span>
+          </div>
+
+          {/* Row 2 — title */}
+          <div className="px-6 lg:px-7 pt-6 lg:pt-7">
+            <h3
+              className="font-heading text-[16px] lg:text-[18px] font-extrabold text-[#0d2257] leading-snug tracking-[-0.3px] line-clamp-1"
+              title={title}
+            >
+              {title}
+            </h3>
+          </div>
+
+          {/* Row 3 — bullets: always exactly 5 items, each one line */}
+          <ul
+            className="px-6 lg:px-7 grid gap-y-2.5 lg:gap-y-3"
+            aria-label={`${title} features`}
+          >
+            {bullets.slice(0, 5).map((bullet) => (
+              <li
+                key={bullet}
+                className="flex items-start gap-2 lg:gap-2.5 text-[12px] lg:text-[13px] text-slate-500 leading-snug"
+              >
+                <CheckIcon />
+                {/* line-clamp-1 locks every bullet to exactly one line */}
+                <span className="line-clamp-1 min-w-0">{bullet}</span>
+              </li>
+            ))}
+          </ul>
+
+          {/* Row 4 — CTA */}
+          <div className="px-6 lg:px-7 pb-6 lg:pb-7 pt-4">
+            <Link
+              href={href}
+              className="svc-cta inline-flex items-center justify-center gap-2 w-full px-4 lg:px-5 py-3 lg:py-3.5 text-[13px] lg:text-[14px] font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-all duration-200 hover:shadow-lg hover:shadow-blue-600/20 focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2 group"
+              aria-label={linkText}
+            >
+              {getCTA(title)}
+              
+            </Link>
+          </div>
         </div>
       </div>
-    </div>
-  );
-});
+    );
+  },
+);
 
-ServiceCard.displayName = 'ServiceCard';
+ServiceCard.displayName = "ServiceCard";
 
 export default function ServicesSection() {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [activeIdx, setActiveIdx] = useState(0);
-  const [canScroll, setCanScroll] = useState({ prev: false, next: true });
-  const [visibleCards, setVisibleCards] = useState(3);
+  const sliderRef = useRef<HTMLDivElement>(null);
+  const keenSliderRef = useRef<KeenSlider | null>(null);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [slidesPerView, setSlidesPerView] = useState(3);
+  const totalSlides = ALL_SERVICES.length;
 
-  // Refs for drag functionality and index tracking
-  const activeIdxRef = useRef(0);
-  const isDragging = useRef(false);
-  const dragStartX = useRef(0);
-  const dragStartScroll = useRef(0);
-  const hasDragged = useRef(false);
-  const rafId = useRef<number>(0);
-
-  // Calculate visible cards based on container width
-  const updateVisibleCards = useCallback(() => {
-    if (!scrollRef.current) return;
-    
-    const containerWidth = scrollRef.current.clientWidth;
-    const usableWidth = containerWidth - 56; // Account for padding
-    const cardsThatFit = Math.floor((usableWidth + CARD_GAP) / (CARD_WIDTH + CARD_GAP));
-    
-    setVisibleCards(Math.min(Math.max(1, cardsThatFit), ALL_SERVICES.length));
-  }, []);
-
-  // Throttled scroll handler using requestAnimationFrame
-  const updateState = useCallback(() => {
-    if (rafId.current) {
-      cancelAnimationFrame(rafId.current);
-    }
-    
-    rafId.current = requestAnimationFrame(() => {
-      const el = scrollRef.current;
-      if (!el) return;
-
-      const maxScrollLeft = el.scrollWidth - el.clientWidth;
-      const maxIdx = ALL_SERVICES.length - visibleCards;
-      
-      const idx = Math.min(
-        Math.round(el.scrollLeft / CARD_STRIDE),
-        maxIdx
-      );
-
-      if (activeIdxRef.current !== idx) {
-        activeIdxRef.current = idx;
-        setActiveIdx(idx);
-      }
-
-      const newCanPrev = el.scrollLeft > 8;
-      const newCanNext = el.scrollLeft < maxScrollLeft - 8;
-
-      setCanScroll(prev => {
-        if (prev.prev !== newCanPrev || prev.next !== newCanNext) {
-          return { prev: newCanPrev, next: newCanNext };
-        }
-        return prev;
-      });
-    });
-  }, [visibleCards]);
-
-  // Set up scroll listener and resize observer
   useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
+    if (!sliderRef.current) return;
 
-    updateVisibleCards();
-    updateState();
-
-    const resizeObserver = new ResizeObserver(() => {
-      updateVisibleCards();
+    const slider = new KeenSlider(sliderRef.current, {
+      loop: false,
+      mode: "snap",
+      // Base config — breakpoints override below (mobile-first order)
+      slides: {
+        perView: 1,
+        spacing: 0,
+      },
+      breakpoints: {
+        // Keen Slider evaluates ALL matching breakpoints and merges them in
+        // order of specificity. List from narrowest to widest so wider rules
+        // win when multiple match.
+        "(min-width: 640px)": {
+          slides: { perView: 2, spacing: 20 },
+        },
+        "(min-width: 1024px)": {
+          slides: { perView: 3, spacing: 24 },
+        },
+        "(min-width: 1280px)": {
+          slides: { perView: 4, spacing: 24 },
+        },
+        "(min-width: 1536px)": {
+          slides: { perView: 5, spacing: 24 },
+        },
+      },
+      slideChanged(s) {
+        setCurrentSlide(s.track.details.rel);
+      },
+      created(s) {
+        setSlidesPerView(getActivePerView(s));
+      },
+      updated(s) {
+        // On resize, perView may change. Reset slide index too so nav stays
+        // in a consistent state.
+        const spv = getActivePerView(s);
+        setSlidesPerView(spv);
+        setCurrentSlide(s.track.details.rel);
+      },
     });
 
-    resizeObserver.observe(el);
-    el.addEventListener("scroll", updateState, { passive: true });
-    
-    return () => {
-      resizeObserver.disconnect();
-      el.removeEventListener("scroll", updateState);
-      if (rafId.current) {
-        cancelAnimationFrame(rafId.current);
-      }
-    };
-  }, [updateState, updateVisibleCards]);
+    keenSliderRef.current = slider;
 
-  // Handle card click - prevent navigation during drag
-  const handleCardClick = useCallback((e: React.MouseEvent) => {
-    if (hasDragged.current) {
-      e.preventDefault();
-    }
+    return () => {
+      slider.destroy();
+    };
   }, []);
 
-  // Scroll to specific card index
-  const scrollTo = useCallback((idx: number) => {
-    const el = scrollRef.current;
-    if (!el) return;
-
-    const maxIdx = ALL_SERVICES.length - visibleCards;
-    const safeIdx = Math.max(0, Math.min(idx, maxIdx));
-    
-    el.scrollTo({
-      left: safeIdx * CARD_STRIDE,
-      behavior: "smooth",
-    });
-    
-    activeIdxRef.current = safeIdx;
-    setActiveIdx(safeIdx);
-  }, [visibleCards]);
-
-  // Navigation handlers
   const prev = useCallback(() => {
-    scrollTo(Math.max(0, activeIdxRef.current - 1));
-  }, [scrollTo]);
+    keenSliderRef.current?.prev();
+  }, []);
 
   const next = useCallback(() => {
-    const maxIdx = ALL_SERVICES.length - visibleCards;
-    scrollTo(Math.min(maxIdx, activeIdxRef.current + 1));
-  }, [scrollTo, visibleCards]);
-
-  // Keyboard navigation
-  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
-    if (e.key === 'ArrowLeft') {
-      e.preventDefault();
-      prev();
-    } else if (e.key === 'ArrowRight') {
-      e.preventDefault();
-      next();
-    }
-  }, [prev, next]);
-
-  // ── Drag-to-scroll handlers ────────────────────────────────────
-  const onMouseDown = useCallback((e: React.MouseEvent) => {
-    const el = scrollRef.current;
-    if (!el) return;
-    isDragging.current = true;
-    hasDragged.current = false;
-    dragStartX.current = e.pageX;
-    dragStartScroll.current = el.scrollLeft;
-    el.style.cursor = "grabbing";
-    el.style.scrollSnapType = "none";
+    keenSliderRef.current?.next();
   }, []);
 
-  const onMouseMove = useCallback((e: React.MouseEvent) => {
-    if (!isDragging.current) return;
-    const el = scrollRef.current;
-    if (!el) return;
-    const delta = dragStartX.current - e.pageX;
-    if (Math.abs(delta) > 4) hasDragged.current = true;
-    el.scrollLeft = dragStartScroll.current + delta;
-  }, []);
+  const scrollTo = useCallback(
+    (idx: number) => {
+      // Clamp so the last dot never tries to scroll past the final slide
+      const clamped = Math.min(idx, totalSlides - slidesPerView);
+      keenSliderRef.current?.moveToIdx(clamped);
+    },
+    [totalSlides, slidesPerView],
+  );
 
-  const onMouseUp = useCallback(() => {
-    const el = scrollRef.current;
-    if (!el || !isDragging.current) return;
-    isDragging.current = false;
-    el.style.cursor = "";
-    el.style.scrollSnapType = "";
-    
-    const maxIdx = ALL_SERVICES.length - visibleCards;
-    const idx = Math.min(
-      Math.round(el.scrollLeft / CARD_STRIDE),
-      maxIdx
-    );
-    
-    scrollTo(idx);
-  }, [scrollTo, visibleCards]);
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        prev();
+      } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        next();
+      }
+    },
+    [prev, next],
+  );
 
-  const onMouseLeave = useCallback(() => {
-    if (isDragging.current) onMouseUp();
-  }, [onMouseUp]);
+  const needsNavigation = totalSlides > slidesPerView;
+  const canPrev = currentSlide > 0;
+  // Last reachable slide index is totalSlides - slidesPerView
+  const canNext = currentSlide < totalSlides - slidesPerView;
 
-  // Calculate if we need scrolling at all
-  const needsScrolling = ALL_SERVICES.length > visibleCards;
+  const start = currentSlide + 1;
+  const end = Math.min(currentSlide + slidesPerView, totalSlides);
+
+  const dotCount = Math.ceil(totalSlides / slidesPerView);
+  const activeDot = Math.round(currentSlide / slidesPerView);
 
   return (
     <>
@@ -545,37 +451,38 @@ export default function ServicesSection() {
         .font-body     { font-family: 'Inter', sans-serif; }
         .font-heading  { font-family: 'Manrope', sans-serif; }
 
-        .svc-track {
+        /* Remove Keen Slider's default overflow:hidden so cards can show
+           box-shadow and hover lift without being clipped */
+        .services-slider.keen-slider {
           display: flex;
-          flex-direction: row;
-          overflow-x: auto;
-          scroll-snap-type: x mandatory;
-          -webkit-overflow-scrolling: touch;
-          scrollbar-width: none;
-          gap: ${CARD_GAP}px;
-          cursor: ${needsScrolling ? 'grab' : 'default'};
+          overflow: visible;
+          position: relative;
           user-select: none;
-          /* Dynamic padding for perfect centering */
-          padding-left: max(28px, calc((100% - ${visibleCards} * ${CARD_WIDTH}px - ${(visibleCards - 1)} * ${CARD_GAP}px) / 2));
-          padding-right: max(28px, calc((100% - ${visibleCards} * ${CARD_WIDTH}px - ${(visibleCards - 1)} * ${CARD_GAP}px) / 2));
-          padding-bottom: 24px;
-          /* Hardware acceleration */
-          transform: translateZ(0);
-          will-change: scroll-position;
-          /* Ensure all cards are same height */
-          align-items: stretch;
+          -webkit-user-select: none;
+          touch-action: pan-y;
+          -webkit-tap-highlight-color: transparent;
+          /* Clip only horizontally — allow vertical overflow for shadows */
+          clip-path: inset(0 -4px);
         }
-        
-        .svc-track:active { cursor: ${needsScrolling ? 'grabbing' : 'default'}; }
-        .svc-track::-webkit-scrollbar { display: none; }
+
+        /* Re-add the horizontal clip so cards don't bleed outside the track */
+        .services-slider-wrapper {
+          overflow: hidden;
+          padding: 20px 4px 28px;
+          margin: 0 -4px;
+        }
+
+        .keen-slider__slide {
+          min-height: 100%;
+          position: relative;
+          /* Must NOT be overflow:hidden — Keen sets this by default; override it */
+          overflow: visible !important;
+        }
 
         .svc-card {
-          scroll-snap-align: start;
           border: 1px solid #e4e9f2;
           box-shadow: 0 2px 8px rgba(13,34,87,.06), 0 8px 28px rgba(13,34,87,.08);
           transition: transform .25s ease, box-shadow .25s ease;
-          flex-shrink: 0;
-          /* Hardware acceleration */
           transform: translateZ(0);
           will-change: transform, box-shadow;
         }
@@ -614,6 +521,21 @@ export default function ServicesSection() {
           letter-spacing: 2px;
           pointer-events: none;
           user-select: none;
+        }
+
+        /*
+          Grid layout: image (200px) | title (auto) | bullets (1fr) | CTA (auto)
+          The 1fr bullet row absorbs slack so the CTA always sits at the bottom.
+          Every bullet is line-clamp-1 so the actual rendered height is uniform.
+        */
+        .svc-grid {
+          display: grid;
+          grid-template-rows: 200px auto 1fr auto;
+        }
+
+        .svc-grid > ul {
+          align-self: start;
+          padding-top: 16px;
         }
 
         .nav-btn {
@@ -655,139 +577,141 @@ export default function ServicesSection() {
           outline-offset: 2px;
         }
 
-        .svc-learn {
-          transition: color 0.2s, gap 0.2s;
-        }
-        
-        .svc-learn:hover {
-          color: #2563eb;
-          gap: 10px;
-        }
-
-        @media (max-width: 1200px) {
-          .svc-card {
-            width: 320px !important;
-            height: ${CONTENT_HEIGHT}px !important;
-          }
-        }
-
-        @media (max-width: 768px) {
-          .svc-card {
-            width: 300px !important;
-            height: ${CONTENT_HEIGHT}px !important;
-          }
-        }
-
-        @media (max-width: 480px) {
-          .svc-card {
-            width: 280px !important;
-            height: ${CONTENT_HEIGHT}px !important;
+        /* Mobile: give cards horizontal breathing room inside the slide */
+        @media (max-width: 639px) {
+          .keen-slider__slide {
+            padding: 0 16px;
           }
         }
       `}</style>
 
-      <section 
-        id="services" 
-        className="font-body bg-white py-24"
+      <section
+        id="services"
+        className="font-body bg-white py-16 lg:py-24"
         aria-labelledby="services-heading"
       >
-        <div className="max-w-7xl mx-auto">
-          {/* Header */}
-          <div className="px-7">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-8 lg:mb-10">
             <p className="flex items-center justify-center gap-2.5 text-blue-700 text-[11px] font-bold uppercase tracking-[.22em] mb-3.5">
               What We Do
             </p>
-            <h2 
+            <h2
               id="services-heading"
               className="font-heading text-[clamp(32px,4.5vw,48px)] font-extrabold text-[#0d2257] leading-tight tracking-tight text-center mb-3"
             >
               Our <span className="text-blue-600">Cleaning</span> Services
             </h2>
-            <p className="text-slate-500 text-[15px] text-center max-w-[500px] mx-auto leading-relaxed mb-10">
+            <p className="text-slate-500 text-[15px] text-center max-w-[500px] mx-auto leading-relaxed">
               From gutters to rooftops — every service designed to protect your
               property and keep it looking its best.
             </p>
+          </div>
 
-            {/* Navigation bar */}
-            <div 
-              className="flex items-center justify-end mb-6 px-0"
-              role="navigation"
-              aria-label="Service carousel navigation"
+          <div
+            className="flex items-center justify-between mb-4"
+            role="navigation"
+            aria-label="Service carousel navigation"
+          >
+            <p
+              className="text-slate-400 text-[13px] font-semibold"
+              aria-live="polite"
             >
-              
-              
-              {needsScrolling && (
-                <div className="flex items-center gap-2">
-                  <button
-                    className="nav-btn"
-                    onClick={prev}
-                    disabled={!canScroll.prev}
-                    aria-label="View previous service"
-                    title="Previous service"
+              <span className="text-[#0d2257] font-bold">
+                {String(start).padStart(2, "0")}–{String(end).padStart(2, "0")}
+              </span>{" "}
+              of{" "}
+              <span className="text-[#0d2257] font-bold">
+                {String(totalSlides).padStart(2, "0")}
+              </span>{" "}
+              Services
+            </p>
+
+            {needsNavigation && (
+              <div className="flex items-center gap-2">
+                <button
+                  className="nav-btn"
+                  onClick={prev}
+                  disabled={!canPrev}
+                  aria-label="View previous services"
+                  title="Previous services"
+                >
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2.5}
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
                   >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24" aria-hidden="true">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-                    </svg>
-                  </button>
-                  <button
-                    className="nav-btn"
-                    onClick={next}
-                    disabled={!canScroll.next}
-                    aria-label="View next service"
-                    title="Next service"
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M15 19l-7-7 7-7"
+                    />
+                  </svg>
+                </button>
+                <button
+                  className="nav-btn"
+                  onClick={next}
+                  disabled={!canNext}
+                  aria-label="View next services"
+                  title="Next services"
+                >
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2.5}
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
                   >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24" aria-hidden="true">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                    </svg>
-                  </button>
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Wrapper clips horizontal overflow while allowing vertical card shadow */}
+          <div className="services-slider-wrapper">
+            <div
+              ref={sliderRef}
+              className="services-slider keen-slider"
+              onKeyDown={needsNavigation ? handleKeyDown : undefined}
+              role="list"
+              aria-label="Available cleaning services carousel"
+              tabIndex={needsNavigation ? 0 : -1}
+            >
+              {ALL_SERVICES.map((service, i) => (
+                <div key={service.title} role="listitem">
+                  <ServiceCard service={service} index={i} />
                 </div>
-              )}
+              ))}
             </div>
           </div>
 
-          {/* Carousel track */}
-          <div
-            ref={scrollRef}
-            className="svc-track"
-            onMouseDown={needsScrolling ? onMouseDown : undefined}
-            onMouseMove={needsScrolling ? onMouseMove : undefined}
-            onMouseUp={needsScrolling ? onMouseUp : undefined}
-            onMouseLeave={needsScrolling ? onMouseLeave : undefined}
-            onKeyDown={needsScrolling ? handleKeyDown : undefined}
-            role="list"
-            aria-label="Available cleaning services"
-            tabIndex={needsScrolling ? 0 : -1}
-          >
-            {ALL_SERVICES.map((service, i) => (
-              <div key={service.title} role="listitem">
-                <ServiceCard 
-                  service={service} 
-                  index={i} 
-                  onCardClick={handleCardClick}
-                />
-              </div>
-            ))}
-          </div>
-
-          {/* Dot indicators */}
-          {needsScrolling && (
-            <div 
-              className="flex justify-center gap-1.5 mt-2 px-7"
+          {needsNavigation && (
+            <div
+              className="flex justify-center gap-1.5 mt-2"
               role="tablist"
-              aria-label="Service indicators"
+              aria-label="Service carousel position indicators"
             >
-              {Array.from({ length: ALL_SERVICES.length - visibleCards + 1 }, (_, i) => (
+              {Array.from({ length: dotCount }, (_, i) => (
                 <button
                   key={i}
-                  onClick={() => scrollTo(i)}
+                  onClick={() => scrollTo(i * slidesPerView)}
                   role="tab"
-                  aria-selected={activeIdx === i}
-                  aria-label={`Go to service group ${i + 1} of ${ALL_SERVICES.length - visibleCards + 1}`}
+                  aria-selected={activeDot === i}
+                  aria-label={`View services group ${i + 1} of ${dotCount}`}
                   className="dot-btn block rounded-full focus:outline-none"
                   style={{
-                    width: activeIdx === i ? "18px" : "6px",
+                    width: activeDot === i ? "18px" : "6px",
                     height: "6px",
-                    background: activeIdx === i ? "#3b82f6" : "#e2e8f0",
+                    background: activeDot === i ? "#3b82f6" : "#e2e8f0",
                   }}
                 />
               ))}
