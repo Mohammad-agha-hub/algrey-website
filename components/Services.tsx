@@ -2,7 +2,7 @@
 
 import { useRef, useEffect, useState, useCallback, memo } from "react";
 import Link from "next/link";
-import KeenSlider from "keen-slider";
+import KeenSlider, { KeenSliderInstance } from "keen-slider";
 import "keen-slider/keen-slider.min.css";
 
 const ALL_SERVICES = [
@@ -203,9 +203,9 @@ const ALL_SERVICES = [
   },
 ];
 
-
+// Helper: read the actual perView from the slider instance by checking
 // which breakpoint media query currently matches.
-function getActivePerView(slider: KeenSlider): number {
+function getActivePerView(slider: KeenSliderInstance): number {
   if (typeof window === "undefined") return 3;
   if (window.matchMedia("(min-width: 1536px)").matches) return 5;
   if (window.matchMedia("(min-width: 1280px)").matches) return 4;
@@ -240,7 +240,7 @@ const ServiceCard = memo(
     service: (typeof ALL_SERVICES)[0];
     index: number;
   }) => {
-    const { title, tag, image, href, bullets, linkText } = service;
+    const { title, tag, image, href, bullets } = service;
 
     const getCTA = (title: string) => {
       if (
@@ -249,7 +249,7 @@ const ServiceCard = memo(
         !title.includes("Residential")
       )
         return "Book Gutter Cleaning";
-      if (title.includes("Roof Cleaning")) return "Roof Cleaning";
+      if (title.includes("Roof Cleaning")) return "Schedule Roof Cleaning";
       if (title.includes("Pressure Washing")) return "Get Pressure Washing";
       if (title.includes("Window Cleaning")) return "Arrange Window Cleaning";
       if (title.includes("Driveway Cleaning")) return "Restore Your Driveway";
@@ -326,14 +326,26 @@ const ServiceCard = memo(
           </ul>
 
           {/* Row 4 — CTA */}
-          <div className="px-6 lg:px-7 pb-6 lg:pb-7 pt-8">
+          <div className="px-6 lg:px-7 pb-6 lg:pb-7">
             <Link
               href={href}
               className="svc-cta inline-flex items-center justify-center gap-2 w-full px-4 lg:px-5 py-3 lg:py-3.5 text-[13px] lg:text-[14px] font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-all duration-200 hover:shadow-lg hover:shadow-blue-600/20 focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2 group"
-              aria-label={linkText}
             >
               {getCTA(title)}
-              
+              <svg
+                className="w-3.5 h-3.5 lg:w-4 lg:h-4 transition-transform duration-200 group-hover:translate-x-0.5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2.5}
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                />
+              </svg>
             </Link>
           </div>
         </div>
@@ -346,7 +358,7 @@ ServiceCard.displayName = "ServiceCard";
 
 export default function ServicesSection() {
   const sliderRef = useRef<HTMLDivElement>(null);
-  const keenSliderRef = useRef<KeenSlider | null>(null);
+  const keenSliderRef = useRef<KeenSliderInstance | null>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [slidesPerView, setSlidesPerView] = useState(3);
   const totalSlides = ALL_SERVICES.length;
