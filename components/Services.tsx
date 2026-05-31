@@ -207,7 +207,7 @@ const ALL_SERVICES = [
 // which breakpoint media query currently matches.
 function getActivePerView(slider: KeenSliderInstance): number {
   if (typeof window === "undefined") return 3;
-  if (window.matchMedia("(min-width: 1536px)").matches) return 5;
+   if (window.matchMedia("(min-width: 1480px)").matches) return 4;
   if (window.matchMedia("(min-width: 1280px)").matches) return 4;
   if (window.matchMedia("(min-width: 1024px)").matches) return 3;
   if (window.matchMedia("(min-width: 768px)").matches) return 2;
@@ -326,10 +326,10 @@ const ServiceCard = memo(
           </ul>
 
           {/* Row 4 — CTA */}
-          <div className="px-6 lg:px-7 pb-6 lg:pb-7">
+          <div className="px-6 lg:px-7 pb-6 lg:pb-7 pt-8">
             <Link
               href={href}
-              className="svc-cta inline-flex items-center justify-center gap-2 w-full px-4 lg:px-5 py-3 lg:py-3.5 text-[13px] lg:text-[14px] font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-all duration-200 hover:shadow-lg hover:shadow-blue-600/20 focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2 group"
+              className="svc-cta inline-flex items-center justify-center gap-2 w-full px-4 lg:px-5 py-3 lg:py-3.5 text-[12px] lg:text-[12.5px] font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-all duration-200 hover:shadow-lg hover:shadow-blue-600/20 focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2 group"
             >
               {getCTA(title)}
               <svg
@@ -388,7 +388,7 @@ export default function ServicesSection() {
           slides: { perView: 4, spacing: 24 },
         },
         "(min-width: 1536px)": {
-          slides: { perView: 5, spacing: 24 },
+          slides: { perView: 4, spacing: 24 },
         },
       },
       slideChanged(s) {
@@ -482,6 +482,7 @@ export default function ServicesSection() {
           overflow: hidden;
           padding: 20px 4px 28px;
           margin: 0 -4px;
+          background:white;
         }
 
         .keen-slider__slide {
@@ -493,7 +494,7 @@ export default function ServicesSection() {
 
         .svc-card {
           border: 1px solid #e4e9f2;
-          box-shadow: 0 2px 8px rgba(13,34,87,.06), 0 8px 28px rgba(13,34,87,.08);
+          
           transition: transform .25s ease, box-shadow .25s ease;
           transform: translateZ(0);
           will-change: transform, box-shadow;
@@ -501,7 +502,7 @@ export default function ServicesSection() {
         
         .svc-card:hover {
           transform: translateY(-6px);
-          box-shadow: 0 4px 12px rgba(13,34,87,.08), 0 20px 48px rgba(13,34,87,.14);
+          
         }
         
         .svc-card:hover .svc-img  { transform: scale(1.06); }
@@ -620,23 +621,11 @@ export default function ServicesSection() {
           </div>
 
           <div
-            className="flex items-center justify-between mb-4"
+            className="flex items-center justify-end mb-4"
             role="navigation"
             aria-label="Service carousel navigation"
           >
-            <p
-              className="text-slate-400 text-[13px] font-semibold"
-              aria-live="polite"
-            >
-              <span className="text-[#0d2257] font-bold">
-                {String(start).padStart(2, "0")}–{String(end).padStart(2, "0")}
-              </span>{" "}
-              of{" "}
-              <span className="text-[#0d2257] font-bold">
-                {String(totalSlides).padStart(2, "0")}
-              </span>{" "}
-              Services
-            </p>
+            
 
             {needsNavigation && (
               <div className="flex items-center gap-2">
@@ -706,29 +695,7 @@ export default function ServicesSection() {
             </div>
           </div>
 
-          {needsNavigation && (
-            <div
-              className="flex justify-center gap-1.5 mt-2"
-              role="tablist"
-              aria-label="Service carousel position indicators"
-            >
-              {Array.from({ length: dotCount }, (_, i) => (
-                <button
-                  key={i}
-                  onClick={() => scrollTo(i * slidesPerView)}
-                  role="tab"
-                  aria-selected={activeDot === i}
-                  aria-label={`View services group ${i + 1} of ${dotCount}`}
-                  className="dot-btn block rounded-full focus:outline-none"
-                  style={{
-                    width: activeDot === i ? "18px" : "6px",
-                    height: "6px",
-                    background: activeDot === i ? "#3b82f6" : "#e2e8f0",
-                  }}
-                />
-              ))}
-            </div>
-          )}
+          
         </div>
       </section>
     </>
