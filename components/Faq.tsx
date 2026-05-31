@@ -5,32 +5,29 @@ import { useState } from "react";
 const FAQS = [
   {
     q: "How often should I have my gutters cleaned?",
-    a: "We recommend at least twice a year — once in late spring and once in autumn after the leaves have fallen. Properties with overhanging trees or flat roofs may need cleaning more frequently, up to three or four times a year.",
+    a: "We recommend having your gutters cleaned at least twice a year - typically in spring and autumn. However, if you have many trees near your property, you may need more frequent cleaning to prevent blockages and potential damage.",
   },
   {
     q: "What happens if I don't clean my gutters?",
-    a: "Blocked gutters overflow onto your fascia boards, walls and foundations — causing damp, rot, mould and potentially serious structural damage. The cost of fixing water damage far exceeds the cost of a regular clean.",
+    a: "Neglected gutters can lead to serious problems including water damage to your roof, walls, and foundation; pest infestations; ice dams in winter; and even structural damage to your property. Regular cleaning prevents these costly issues.",
   },
   {
     q: "Are your technicians insured and certified?",
-    a: "Yes. All our technicians carry £5M public liability insurance on every job and are fully trained in working at height safely. We're members of the British Cleaning Association and carry all required certifications.",
+    a: "Absolutely. All our technicians are fully insured, certified, and trained in safety procedures. We carry comprehensive liability insurance to protect both our team and your property during every cleaning service.",
   },
   {
     q: "How long does a typical gutter cleaning take?",
-    a: "Most standard residential properties take between 45 minutes and 2 hours depending on the size of the property and the level of blockage. We'll give you an accurate time estimate when we quote.",
+    a: "The duration depends on the size of your property and the condition of your gutters. For an average 3-bedroom house, gutter cleaning typically takes 1-2 hours. Larger properties or those with significant debris may take longer.",
   },
   {
     q: "Do you offer emergency gutter cleaning services?",
-    a: "Yes — we offer same-day and next-day emergency call-outs for urgent blockages or overflowing gutters causing active damage. Call us directly on 0800 123 456 and we'll do our best to get to you the same day.",
+    a: "Yes, we offer 24/7 emergency gutter cleaning services for situations where blocked gutters are causing immediate water damage or flooding. Our emergency team can typically respond within 2-4 hours depending on your location.",
   },
   {
     q: "Do you clean gutters on commercial properties?",
-    a: "Absolutely. We work with landlords, letting agents, housing associations and commercial property managers across London and Surrey. We can arrange regular scheduled maintenance contracts too.",
+    a: "Yes, we provide gutter cleaning services for commercial properties of all sizes, including office buildings, retail centers, and industrial facilities. We have specialized equipment to safely clean gutters at any height.",
   },
-  {
-    q: "What areas do you cover?",
-    a: "We cover London, Surrey and surrounding areas including Birmingham, Guildford, Croydon, Kingston, Sutton and more. If you're unsure whether we cover your area, just give us a call or drop us a message.",
-  },
+  
 ];
 
 export default function FAQSection() {

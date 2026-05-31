@@ -248,7 +248,7 @@ const INFO_CARDS = [
   },
   {
     title: "Opening Hours",
-    lines: ["Mon – Sat: 7:00am – 7:00pm", "Sun: 9:00am – 5:00pm"],
+    lines: ["Mon – Sat: 7:00am – 7:00pm", "Emergency: 24/7"],
     link: { label: "Book a Slot →", href: "/enquiry-now" },
     icon: (
       <svg
@@ -435,19 +435,19 @@ function QuoteCTASection() {
 const FAQS = [
   {
     q: "How often should I clean my gutters?",
-    a: "We recommend cleaning your gutters at least twice a year — once in spring and once in autumn. If you have overhanging trees, quarterly cleaning may be needed to prevent blockages and water damage.",
+    a: "We recommend cleaning your gutters at least twice a year - once in the spring and once in the autumn. However, if you have overhanging trees, you may need more frequent cleaning to prevent blockages.",
   },
   {
     q: "Do you offer emergency gutter cleaning services?",
-    a: "Yes, we offer emergency services for urgent situations such as blocked downpipes causing flooding or structural damage. Call our emergency line on 07931 175070 and we'll aim to be with you as quickly as possible.",
+    a: "Yes, we offer 24/7 emergency gutter cleaning services for situations where blocked gutters are causing immediate damage to your property. Contact us anytime for emergency assistance.",
   },
   {
     q: "Are you insured and certified?",
-    a: "Absolutely. We carry full public liability insurance and all our operatives are DBS checked. We are also a proud member of the British Cleaning Association, ensuring all work meets industry standards.",
+    a: "Yes, we are fully insured and our team members are certified professionals with extensive training in gutter cleaning and property maintenance. Your property is in safe hands with us.",
   },
   {
     q: "What areas do you serve?",
-    a: "We serve Birmingham and the surrounding Midlands area, including Solihull, Sutton Coldfield, Wolverhampton, Coventry, and more. Contact us with your postcode and we'll confirm coverage.",
+    a: "We primarily serve Birmingham and the surrounding areas. However, we do travel for larger commercial projects. Contact us to check if we cover your location.",
   },
 ];
 

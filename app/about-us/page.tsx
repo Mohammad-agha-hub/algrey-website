@@ -1,13 +1,48 @@
-"use client";
 
-import { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import CTAAndFooter from "@/components/Footer";
 import FAQSection from "@/components/Faq";
 import CTASection from "@/components/CTA";
-
+export const metadata = {
+  title: "About Us | Al Grey's Cleaning Services",
+  description:
+    "Learn about Al Grey's Cleaning Services — trusted gutter cleaning and property maintenance specialists in Birmingham and the Midlands since 2010. Meet our team and discover our values.",
+  keywords: [
+    "about Al Grey's Cleaning Services",
+    "gutter cleaning Birmingham",
+    "property maintenance Midlands",
+    "cleaning company Birmingham",
+    "Al Grey founder",
+  ],
+  openGraph: {
+    title: "About Us | Al Grey's Cleaning Services",
+    description:
+      "Trusted gutter cleaning and property maintenance across Birmingham and the Midlands since 2010. Discover our story, mission, and the team behind the work.",
+    url: "https://www.algreyscleaningservices.co.uk/about-us",
+    siteName: "Al Grey's Cleaning Services",
+    images: [
+      {
+        url: "/gutter-6.webp",
+        width: 1200,
+        height: 630,
+        alt: "Al Grey's Cleaning Services team",
+      },
+    ],
+    locale: "en_GB",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About Us | Al Grey's Cleaning Services",
+    description:
+      "Trusted gutter cleaning and property maintenance across Birmingham and the Midlands since 2010.",
+    images: ["/gutter-6.webp"],
+  },
+  alternates: {
+    canonical: "https://www.algreyscleaningservices.co.uk/about-us",
+  },
+};
 /* ═══════════════════════════════════════════════════════════════════
    STYLES
 ═══════════════════════════════════════════════════════════════════ */
@@ -342,7 +377,7 @@ function HeroSection() {
             Our Story
           </a>
           <a
-            href="/contact"
+            href="/contact-us"
             className="inline-flex items-center justify-center gap-2 border-2 border-white/60 hover:border-white text-white font-bold uppercase tracking-widest text-sm px-7 py-3.5 rounded-md transition-all duration-200 hover:bg-white/10"
           >
             <svg
@@ -701,7 +736,7 @@ const TEAM = [
     name: "Al Grey",
     role: "Founder & CEO",
     bio: "With over 15 years of experience in the cleaning industry, Al founded the company with a vision to provide high-quality services that customers can trust. His hands-on approach ensures that our standards never slip.",
-    img: "/al.webp",
+    img: "/founder.webp",
   },
   {
     name: "Sarah Johnson",

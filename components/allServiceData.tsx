@@ -265,23 +265,23 @@ export const gutterCleaningData: ServiceData = {
     items: [
       {
         q: "How often should I have my gutters cleaned?",
-        a: "We recommend at least twice a year — once in late spring and once in autumn after the leaves have fallen. Properties with overhanging trees may need cleaning up to four times a year.",
+        a: "Most properties benefit from gutter cleaning at least twice a year—typically in spring and autumn. However, if you have overhanging trees, you may need cleaning more frequently, up to 3-4 times per year. We can assess your specific situation and recommend an appropriate schedule.",
       },
       {
         q: "What happens if I don't clean my gutters?",
-        a: "Blocked gutters overflow onto your fascia boards, walls and foundations — causing damp, rot, mould and potentially serious structural damage. The cost of repairs far exceeds a regular clean.",
+        a: "Blocked gutters can lead to serious issues including water damage to walls and ceilings, damp penetration, foundation problems, roof damage, pest infestations, and landscape erosion. Regular cleaning prevents these costly problems and protects your property.",
       },
       {
         q: "Are your gutter guards worth installing?",
-        a: "For most properties with overhanging trees, yes. Guards significantly reduce debris build-up and can cut cleaning frequency in half. We'll advise whether they're right for your property.",
+        a: "Gutter guards can significantly reduce the frequency of cleaning needed and prevent blockages. They're particularly valuable for properties with many trees. While they don't eliminate the need for cleaning entirely, they can extend the time between professional cleanings and reduce maintenance costs.",
       },
       {
-        q: "Can blocked gutters cause roof damage?",
-        a: "Yes. Overflowing water can back up under roof tiles and lead to rot, damp and even ceiling leaks inside your property. Regular cleaning prevents this entirely.",
+        q: "Can you repair damaged gutters?",
+        a: "Yes, we can perform minor repairs including fixing leaks, re-sealing joints, replacing brackets, and realigning gutters. For more extensive damage, we can provide recommendations and quotes for repair or replacement.",
       },
       {
         q: "What safety measures do you take during gutter cleaning?",
-        a: "All our operatives are trained in working at height and carry £5M public liability insurance. We use industry-standard access equipment and complete a safety assessment before every job.",
+        a: "Safety is our top priority. Our team uses proper safety equipment including harnesses, stable ladders, and personal protective equipment. We also take care to protect your property during the cleaning process, using tarps to collect debris and protect landscaping.",
       },
     ],
   },
@@ -451,23 +451,27 @@ export const residentialGutterCleaningData: ServiceData = {
     items: [
       {
         q: "How often should I have my gutters cleaned?",
-        a: "We recommend at least twice a year — once in late spring and once in autumn after the leaves have fallen. Properties with overhanging trees may need cleaning up to four times a year.",
+        a: "Most properties benefit from gutter cleaning at least twice a year—typically in spring and autumn. However, if you have overhanging trees, you may need cleaning more frequently, up to 3-4 times per year. We can assess your specific situation and recommend an appropriate schedule.",
       },
       {
         q: "What happens if I don't clean my gutters?",
-        a: "Blocked gutters overflow onto your fascia boards, walls and foundations — causing damp, rot, mould and potentially serious structural damage. The cost of repairs far exceeds the cost of a regular clean.",
+        a: "Blocked gutters can lead to serious issues including water damage to walls and ceilings, damp penetration, foundation problems, roof damage, pest infestations, and landscape erosion. Regular cleaning prevents these costly problems and protects your property.",
       },
       {
-        q: "Are gutter guards worth installing?",
-        a: "For most properties with overhanging trees, yes. Guards significantly reduce debris build-up and can cut cleaning frequency in half. We'll advise whether they're the right solution for your property.",
+        q: "Are your gutter guards worth installing?",
+        a: "Gutter guards can significantly reduce the frequency of cleaning needed and prevent blockages. They're particularly valuable for properties with many trees. While they don't eliminate the need for cleaning entirely, they can extend the time between professional cleanings and reduce maintenance costs.",
+      },
+      {
+        q: "Do you offer guarantees on your gutter cleaning work?",
+        a: "Yes, we offer a complete satisfaction guarantee on all our gutter cleaning services. If you're not happy with the results, we'll return to address any concerns at no additional cost. We also guarantee that your gutters will function properly after our service.",
       },
       {
         q: "Can blocked gutters cause roof damage?",
-        a: "Yes. Overflowing water can back up under roof tiles and lead to rot, damp and even ceiling leaks inside your home. Regular cleaning prevents this entirely.",
+        a: "Yes, clogged gutters are a common cause of roof damage. When gutters overflow, water can seep under roofing materials, causing rot, mold, and deterioration. The weight of debris and standing water can also cause gutters to pull away from the fascia, damaging both the gutter system and roof edge.",
       },
       {
         q: "What safety measures do you take during gutter cleaning?",
-        a: "All our operatives are trained in working at height and carry £5M public liability insurance. We use industry-standard access equipment and complete a full safety assessment before every job.",
+        a: "Safety is our top priority. Our technicians are trained in working at heights and use appropriate safety equipment including harnesses, stabilizers, and secure ladders. We conduct thorough site assessments before starting work and follow all safety protocols to protect both our team and your property.",
       },
     ],
   },
@@ -609,7 +613,10 @@ export const pressureWashingData: ServiceData = {
         src: "/pressure-washing1.webp",
         alt: "Driveway pressure washing result",
       },
-      { src: "/pressure-washing2.webp", alt: "Patio cleaning before and after" },
+      {
+        src: "/pressure-washing2.webp",
+        alt: "Patio cleaning before and after",
+      },
       { src: "/pressure-washing3.webp", alt: "Building exterior cleaned" },
       { src: "/pressure-washing4.webp", alt: "Commercial car park cleaned" },
       {
@@ -626,23 +633,27 @@ export const pressureWashingData: ServiceData = {
     items: [
       {
         q: "How often should I have my property pressure washed?",
-        a: "Most driveways and patios benefit from a professional clean every 1–2 years. High-traffic areas, properties under trees, or those in damp climates may need annual attention.",
+        a: "Most properties benefit from professional pressure washing every 1-2 years. However, this can vary depending on factors like your local environment, weather conditions, surrounding vegetation, and the amount of foot or vehicle traffic. We can provide a specific recommendation after assessing your property.",
       },
       {
         q: "Is pressure washing safe for all surfaces?",
-        a: "Not all surfaces are suitable for high-pressure washing. We assess every surface before starting and adjust our pressure accordingly. Softer materials like render and wood require a gentler approach.",
+        a: "When performed by professionals using the correct techniques, pressure washing is safe for most surfaces. We adjust water pressure, nozzle types, and cleaning solutions based on the specific material we're cleaning. For delicate surfaces like wood or older brick, we use lower pressure and specialized approaches to avoid damage.",
       },
       {
         q: "Can pressure washing remove oil stains from my driveway?",
-        a: "Yes. We use specialist degreasers and hot-wash techniques to lift oil, fuel and grease stains that standard pressure washing alone cannot shift.",
+        a: "Yes, professional pressure washing can effectively remove most oil stains from driveways. We use specialized degreasing agents that break down oil before applying pressure. For stubborn or old stains, we may use hot water pressure washing or additional treatments to achieve the best results.",
+      },
+      {
+        q: "Do you use chemicals in your pressure washing?",
+        a: "We use professional-grade, environmentally friendly cleaning solutions when necessary to break down stubborn dirt, algae, or stains. These solutions are biodegradable and safe for plants and pets when applied correctly. We always take precautions to protect surrounding landscaping and can use additional protective measures if you have sensitive plants.",
       },
       {
         q: "How long does it take for surfaces to dry after pressure washing?",
-        a: "Most surfaces are dry within a few hours in warm conditions. Porous materials like natural stone and block paving may take longer. We'll advise on keeping the area clear while drying.",
+        a: "Drying times vary depending on weather conditions, surface material, and temperature. Typically, driveways and patios dry within 4-8 hours in good weather, while walls and vertical surfaces may dry faster. We can provide more specific estimates based on your particular situation and current weather conditions.",
       },
       {
         q: "Can pressure washing increase my property value?",
-        a: "A clean exterior makes an enormous difference to kerb appeal and buyer perception. Professional cleaning is one of the highest-ROI improvements you can make before selling a property.",
+        a: "Yes, regular pressure washing can help maintain and potentially increase your property value by preserving surfaces and enhancing curb appeal. A clean, well-maintained exterior creates a positive first impression and demonstrates that the property has been cared for, which is particularly important when selling or renting.",
       },
     ],
   },
@@ -808,23 +819,26 @@ export const windowCleaningData: ServiceData = {
     items: [
       {
         q: "How often should I have my windows professionally cleaned?",
-        a: "For most residential properties, every 4–8 weeks is ideal. Commercial premises with high footfall often benefit from fortnightly cleaning. We offer regular scheduled visits at discounted rates.",
+        a: "Most residential properties benefit from professional window cleaning every 3-6 months, while commercial properties typically require more frequent service. The ideal frequency depends on factors like your location, weather conditions, and personal preferences for cleanliness.",
       },
       {
         q: "Do you clean both inside and outside windows?",
-        a: "Yes. We offer interior and exterior cleans on request. Interior cleaning is carried out using traditional methods with pure water and lint-free cloths to avoid any drips or mess.",
+        a: "Yes, we offer comprehensive interior and exterior window cleaning services. We can clean both sides during the same visit, or you can schedule them separately based on your needs and budget.",
       },
       {
         q: "Are your cleaning solutions safe for children and pets?",
-        a: "Absolutely. Our primary cleaning method uses only pure deionised water with no chemicals. Any specialist treatments we apply are fully biodegradable and safe once dry.",
+        a: "Absolutely. We use environmentally friendly, non-toxic cleaning solutions that are safe for children, pets, and plants. Our purified water system requires minimal chemicals, making it one of the safest window cleaning methods available.",
       },
       {
         q: "Can you remove hard water stains from windows?",
-        a: "Yes. We use specialist mineral-removing treatments for stubborn limescale and hard water deposits. These are applied carefully to avoid any damage to seals or coatings.",
+        a: "Yes, we specialize in hard water stain removal. While severe etching may require multiple treatments or specialized restoration techniques, we can significantly improve or completely remove most hard water stains using our professional-grade solutions and methods.",
+      },
+      {q:"Do you work in all weather conditions?",
+        a:"We typically avoid cleaning windows during heavy rain, strong winds, or freezing temperatures as these conditions can affect the quality of our work and pose safety risks. We'll reschedule if weather conditions aren't suitable for optimal results."
       },
       {
         q: "How long does a typical window clean take?",
-        a: "A standard 3-bedroom house typically takes 45–90 minutes. Larger properties or those with many windows will take longer. We'll give you a clear time estimate when we quote.",
+        a: "The duration depends on the number and size of windows, their condition, and accessibility. A typical 3-bedroom house takes 2-3 hours for interior and exterior cleaning. We'll provide a time estimate during our initial assessment.",
       },
     ],
   },
@@ -976,7 +990,10 @@ export const drivewayCleaningData: ServiceData = {
         src: "/driveway-cleaning6.webp",
         alt: "Resin driveway professionally cleaned",
       },
-      { src: "/driveway-cleaning7.webp", alt: "Driveway sealed after cleaning" },
+      {
+        src: "/driveway-cleaning7.webp",
+        alt: "Driveway sealed after cleaning",
+      },
     ],
   },
   faq: {
@@ -986,23 +1003,27 @@ export const drivewayCleaningData: ServiceData = {
     items: [
       {
         q: "How often should I have my driveway cleaned?",
-        a: "Most driveways benefit from a professional clean every 1–2 years. Driveways with heavy moss, tree cover, or oil staining may need annual attention to prevent permanent damage.",
+        a: "Most driveways benefit from professional cleaning every 1-2 years. However, this can vary depending on factors like usage, surrounding trees, weather conditions, and whether you've had protective sealant applied. We can provide a specific recommendation after assessing your driveway.",
       },
       {
         q: "Is pressure washing safe for all driveway types?",
-        a: "We adjust our approach for each surface type. Block paving and concrete can handle high pressure, while resin-bound and printed concrete driveways require lower-pressure techniques to avoid damage.",
+        a: "Yes, when performed by professionals using the correct techniques and pressure settings. We adjust our equipment and methods based on your specific driveway material. For delicate surfaces like some block paving or older concrete, we may use softer washing techniques to avoid damage.",
       },
       {
         q: "Can you remove oil stains from my driveway?",
-        a: "Yes. We use specialist industrial degreasers and hot-water treatment to break down and lift oil, fuel and grease stains that pressure washing alone cannot remove. Results depend on how long the stain has been present.",
+        a: "In most cases, yes. We have specialized treatments for oil and grease stains that penetrate deep into the surface. While very old, set-in stains may not disappear completely, we can significantly lighten them and in many cases remove them entirely, especially from non-porous surfaces.",
       },
       {
         q: "Do you offer guarantees on your driveway cleaning work?",
-        a: "We offer a full satisfaction guarantee on all cleaning work. For sealed driveways, we also offer extended protection guarantees of up to 3 years against weed growth and staining.",
+        a: "Yes, we offer a satisfaction guarantee on all our driveway cleaning services. If you're not completely happy with the results, we'll return to address any concerns at no additional cost. Our protective sealants also come with a performance guarantee for the specified period.",
       },
       {
-        q: "How long does it take for a driveway to dry after cleaning?",
-        a: "Most driveways are dry and usable within 2–4 hours in good conditions. We'll advise you to keep vehicles off sealed surfaces for 24 hours to allow the protective coating to fully cure.",
+        q: "Are the chemicals you use safe for my plants and pets?",
+        a: "Yes, we use environmentally friendly, biodegradable cleaning solutions that are safe for plants, pets, and the surrounding environment when applied correctly. We take precautions to protect your landscaping during the cleaning process and rinse all surfaces thoroughly after treatment.",
+      },
+      {
+        q: "How long does driveway sealing last?",
+        a: "Our protective sealants typically last 2-3 years, depending on factors like weather conditions, driveway usage, and the specific product used. We can provide guidance on maintenance and resealing schedules to keep your driveway looking its best year after year.",
       },
     ],
   },
@@ -1164,23 +1185,26 @@ export const patioCleaningData: ServiceData = {
     items: [
       {
         q: "How often should I have my patio professionally cleaned?",
-        a: "We recommend a professional patio clean every 1–2 years for most properties. Patios in shaded areas or under trees may benefit from annual cleaning due to faster moss and algae regrowth.",
+        a: "Most patios benefit from professional cleaning once a year, ideally in spring to prepare for outdoor use during warmer months. However, this can vary depending on factors like tree cover, weather conditions, and usage. Patios in shaded areas or under trees may need more frequent cleaning due to increased moss and algae growth.",
       },
       {
         q: "Is pressure washing safe for all types of patio surface?",
-        a: "We use different pressure settings and techniques depending on your surface type. Softer materials like sandstone and natural limestone require lower pressure to avoid etching or damage.",
+        a: "Professional pressure washing is safe for most patio surfaces when performed by trained technicians. We adjust pressure settings and techniques based on your specific patio material. For delicate surfaces like natural stone or older paving, we use lower pressure and specialized approaches to prevent damage. We always assess the condition of your patio before beginning work.",
       },
       {
-        q: "Can moss growing between patio stones cause damage?",
-        a: "Yes. As moss and weeds grow into the joints, they gradually widen gaps and can cause individual slabs to become loose or uneven, creating a trip hazard and requiring costly repair.",
+        q: "Can weeds growing between patio stones cause damage?",
+        a: "Yes, weeds can cause significant damage to your patio over time. As roots grow, they can widen joints between stones, causing instability and creating trip hazards. Weeds also retain moisture against the patio surface, which can lead to moss growth and potential frost damage in winter. Regular weed removal helps maintain the structural integrity of your patio.",
       },
       {
         q: "Do you offer guarantees on your patio cleaning work?",
-        a: "We offer a satisfaction guarantee on all cleaning. Sealed patios benefit from additional protection against staining and moss regrowth, and we offer maintenance plans for year-round care.",
+        a: "Yes, we offer a satisfaction guarantee on all our patio cleaning services. If you're not completely happy with the results, we'll return to address any concerns at no additional cost. Additionally, our protective sealants come with performance guarantees, and we provide advice on maintaining your patio to extend the time between professional cleanings.",
+      },
+      {q:"Are the cleaning products you use safe for pets and plants?",
+        a:"Yes, we use environmentally friendly, biodegradable cleaning solutions that are safe for pets, plants, and the surrounding environment when applied correctly. We take precautions to protect your landscaping during the cleaning process and can use additional protective measures if you have particularly sensitive plants. We're happy to discuss the specific products we use for your peace of mind."
       },
       {
         q: "How long does it take for a patio to dry after cleaning?",
-        a: "Most patios are dry within 2–4 hours in warm, dry conditions. Sealed surfaces should be kept clear of furniture and foot traffic for 24 hours to allow the coating to fully cure.",
+        a: "Drying time depends on weather conditions, patio material, and whether sealant is applied. Typically, a patio will be dry enough to walk on within 4-6 hours after cleaning. If we apply a sealant, we recommend keeping off the surface for at least 24 hours to allow proper curing. We'll provide specific guidance based on your situation and the treatments used.",
       },
     ],
   },
@@ -1320,7 +1344,10 @@ export const renderCleaningData: ServiceData = {
     heading: "Our Render Cleaning Projects",
     subtext: "See the results our professional render cleaning delivers.",
     images: [
-      { src: "/render-cleaning1.webp", alt: "Render cleaning before and after" },
+      {
+        src: "/render-cleaning1.webp",
+        alt: "Render cleaning before and after",
+      },
       { src: "/render-cleaning2.webp", alt: "Algae removed from white render" },
       {
         src: "/render-cleaning3.webp",
@@ -1344,23 +1371,26 @@ export const renderCleaningData: ServiceData = {
     items: [
       {
         q: "How often should I have my render cleaned?",
-        a: "Most rendered properties benefit from a professional clean every 2–4 years. Properties in wetter climates or near trees may develop biological growth faster and require more frequent attention.",
+        a: "Most rendered properties benefit from professional cleaning every 2-3 years. However, this can vary depending on factors like your local climate, surrounding vegetation, render type, and exposure to pollution. Properties in damp, shaded areas or urban environments with higher pollution may require more frequent cleaning. We can provide a specific recommendation after assessing your property.",
       },
       {
         q: "Is render cleaning safe for my property?",
-        a: "Our soft-wash approach is specifically designed to be safe for render. Unlike high-pressure washing, we use low pressure and biodegradable biocides that clean effectively without risk of cracking or delaminating your render.",
+        a: "Yes, when performed by professionals using the correct methods. We use soft wash techniques that are specifically designed to be gentle on render while effectively removing contaminants. We avoid high-pressure washing which can damage render, force water behind the surface, or remove protective coatings. Our methods are safe for all types of render including traditional cement, modern acrylic, silicone, and monocouche renders.",
       },
       {
         q: "Can algae cause damage to my render?",
-        a: "Yes. Biological growth traps moisture against the render surface, which accelerates cracking, staining, and deterioration over time. Regular cleaning prevents this and extends the life of your render significantly.",
+        a: "Yes, algae can cause significant damage to your render over time. It retains moisture against the render surface, leading to degradation, cracking, and potential water penetration into the wall structure. In winter, moisture retained by algae can freeze and expand, causing further damage. Regular cleaning prevents these issues and extends your render's lifespan, potentially saving you from costly repairs.",
       },
       {
         q: "Do you offer guarantees on render cleaning?",
-        a: "We offer a full satisfaction guarantee on all cleaning. When a protective coating is applied, we can offer guarantees of up to 5 years against biological regrowth.",
+        a: "Yes, we offer a satisfaction guarantee on all our render cleaning services. If you're not completely happy with the results, we'll return to address any concerns at no additional cost. Additionally, our protective treatments come with a guarantee against regrowth for a specified period, typically 2-3 years depending on the product used and local conditions.",
+      },
+      {q:"Are the chemicals you use safe for my plats and pets?",
+        a:"Yes, we use environmentally friendly, biodegradable cleaning solutions that are safe for plants, pets, and the surrounding environment when applied correctly. We take comprehensive precautions to protect your landscaping during the cleaning process, including covering plants and sensitive areas. We can use additional protective measures if you have particularly sensitive plants or environmental concerns."
       },
       {
         q: "Can render cleaning improve my property's energy efficiency?",
-        a: "Yes — algae and moss growth retains moisture within the render, which can reduce its insulating properties. A professionally cleaned and sealed render performs better thermally and dries faster after rainfall.",
+        a: "Yes, clean render can contribute to better energy efficiency. Dirt and biological growth on render can retain moisture, which reduces the insulating properties of your walls. A clean, well-maintained render surface allows the wall to breathe properly and maintain better thermal performance. Additionally, after cleaning, we can apply protective coatings that enhance water repellency while maintaining breathability, further improving energy efficiency.",
       },
     ],
   },
@@ -1522,23 +1552,27 @@ export const brickCleaningData: ServiceData = {
     items: [
       {
         q: "How often should I have my brickwork cleaned?",
-        a: "Most brick properties benefit from professional cleaning every 3–5 years. Properties near busy roads, industrial areas, or with heavy moss growth may need more frequent attention.",
+        a: "Most brickwork benefits from professional cleaning every 3-5 years. However, this can vary depending on factors like your location, exposure to pollution, surrounding vegetation, and the brick's porosity. We can provide a specific recommendation after assessing your property.",
       },
       {
         q: "Is brick cleaning safe for my mortar and brick surfaces?",
-        a: "Yes — when done correctly. We test our approach on a small area first and use products and pressures that are appropriate for your specific brick type, including soft historic bricks that cannot tolerate high pressure.",
+        a: "Yes, when performed by professionals using the correct methods. We use soft wash techniques that are specifically designed to be gentle on brick and mortar. We avoid high-pressure washing which can erode mortar, damage brick surfaces, and force water into the wall structure.",
       },
       {
         q: "What is efflorescence and how do you fix it?",
-        a: "Efflorescence is the white powdery deposit that forms on brickwork as soluble salts migrate to the surface. We use specialist treatments to remove existing efflorescence and can apply water-repellent sealants to prevent recurrence.",
+        a: "Efflorescence is the white, powdery substance that appears on brick surfaces, caused by soluble salts migrating to the surface. We use specialized chemical treatments to remove existing efflorescence and can apply protective treatments to minimize recurrence. Proper cleaning and sealing are key to managing efflorescence.",
       },
       {
         q: "Can you remove graffiti from brick surfaces?",
-        a: "Yes. We use specialist graffiti removal products formulated for brickwork that lift paint without damaging the brick face or mortar joints, even on older or more delicate brickwork.",
+        a: "Yes, we specialize in graffiti removal from brick surfaces. We use specialized cleaning solutions and techniques that effectively remove paint and marker graffiti without damaging the brick. For frequently targeted areas, we can also apply anti-graffiti coatings that make future removal much easier.",
       },
       {
-        q: "Are the chemicals you use safe for my plants and pets?",
-        a: "All our cleaning products are fully biodegradable and safe once dry. We take precautions to protect plants and gardens during application and always rinse thoroughly after treatment.",
+        q: "Are the chemicals you use safe for my plats and pets?",
+        a: "Yes, we use environmentally friendly, biodegradable cleaning solutions that are safe for plants, pets, and the surrounding environment when applied correctly. We take comprehensive precautions to protect your landscaping during the cleaning process, including covering plants and sensitive areas. We can use additional protective measures if you have particularly sensitive plants or environmental concerns.",
+      },
+      {
+        q: "Do you work on historic or listed buildings?",
+        a: "Yes, we have extensive experience working with historic and listed buildings. We understand the special care required for older brickwork and use gentle, appropriate methods that preserve the historical integrity of the property. We can work with conservation officers and follow heritage guidelines when required.",
       },
     ],
   },
@@ -1704,23 +1738,27 @@ export const claddingCleaningData: ServiceData = {
     items: [
       {
         q: "How often should I have my cladding cleaned?",
-        a: "Most cladding systems benefit from professional cleaning every 2–3 years. Buildings in urban environments or those exposed to high moisture levels may require more frequent attention.",
+        a: "Most buildings benefit from professional cladding cleaning every 2-3 years. However, this can vary depending on factors like your location, surrounding environment, cladding material, and exposure to pollution or biological growth. We can provide a specific recommendation after assessing your property.",
       },
       {
         q: "Is cladding cleaning safe for all building materials?",
-        a: "We use cleaning methods and products specifically suited to each cladding type. UPVC, composite, metal and rendered cladding all require different pressures and chemicals to clean safely without causing damage.",
+        a: "Yes, when performed by professionals using the correct methods. We use techniques specifically designed to be gentle on cladding materials while effectively removing contaminants. We avoid high-pressure washing which can damage surfaces, force water behind cladding, or remove protective coatings.",
       },
       {
         q: "Can cladding cleaning cause damage to the surface?",
-        a: "Incorrect cleaning — particularly high-pressure washing — can damage coatings, push moisture behind panels, and void manufacturers' warranties. Our low-pressure soft-wash approach is specifically designed to avoid these risks.",
+        a: "Yes, algae and other biological growth can cause damage to cladding over time. They retain moisture against the surface, potentially leading to deterioration of materials, especially on porous surfaces like render. Regular cleaning prevents these issues and extends your cladding's lifespan.",
       },
       {
         q: "Do you offer guarantees on your cladding cleaning work?",
-        a: "Yes — we offer a full satisfaction guarantee. Where a protective coating is applied, we can offer additional guarantees against biological regrowth for up to 5 years.",
+        a: "Yes, we offer a satisfaction guarantee on all our cladding cleaning services. If you're not completely happy with the results, we'll return to address any concerns at no additional cost. Additionally, our protective treatments come with a guarantee against regrowth for a specified period.",
+      },
+      {
+        q: "Are the chemicals you use safe for my plats and pets?",
+        a: "Yes, we use environmentally friendly, biodegradable cleaning solutions that are safe for plants, pets, and the surrounding environment when applied correctly. We take comprehensive precautions to protect your landscaping during the cleaning process, including covering plants and sensitive areas. We can use additional protective measures if you have particularly sensitive plants or environmental concerns.",
       },
       {
         q: "Can cladding cleaning improve my property's value?",
-        a: "Absolutely. A clean, well-maintained building exterior makes a significant impression on visitors, tenants and buyers. Professional cladding cleaning is one of the most cost-effective ways to improve a building's kerb appeal.",
+        a: "Yes, clean, well-maintained cladding significantly enhances your property's curb appeal and can increase its value. Potential buyers or tenants are often put off by dirty or algae-covered exteriors, while a clean building suggests good overall maintenance and care.",
       },
     ],
   },
@@ -1884,23 +1922,27 @@ export const downpipeCleaningData: ServiceData = {
     items: [
       {
         q: "How often should I have my downpipes cleaned?",
-        a: "We recommend having downpipes checked and cleaned at least once a year, ideally in late autumn after leaf fall. Properties surrounded by trees may need twice-yearly cleaning.",
+        a: "We recommend professional downpipe cleaning at least once a year, preferably in autumn after leaves have fallen. Properties with many overhanging trees may require cleaning twice yearly. Regular maintenance prevents severe blockages and potential water damage.",
       },
       {
         q: "What are the signs my downpipes need cleaning?",
-        a: "Common signs include overflowing gutters during rainfall, visible water staining down walls, dampness or mould inside the property, water pooling at the base of walls, and gurgling sounds from pipes.",
+        a: "Common signs include water overflowing from gutters during rain, damp patches on walls near downpipes, unusual noises from pipes during rainfall, visible plant growth from downpipes, or water not discharging properly at ground level. If you notice any of these, it's time for professional cleaning.",
       },
       {
         q: "Can blocked downpipes cause serious damage?",
-        a: "Yes. Blocked downpipes cause water to overflow onto walls and foundations, leading to damp penetration, mould, rot, and potentially serious structural damage. Early treatment is far less expensive than remediation.",
+        a: "Yes, blocked downpipes can cause significant damage. Water overflow can lead to foundation issues, damp walls, interior water damage, rot in timber structures, and landscape erosion. In winter, trapped water can freeze and cause cracks in pipes. Regular cleaning prevents these costly problems.",
       },
       {
         q: "Do you offer emergency downpipe cleaning services?",
-        a: "Yes — we offer same-day emergency call-outs for urgent blockages. Contact us and we will do our best to attend on the same day to resolve the issue.",
+        a: "Yes, we offer emergency downpipe cleaning for situations where blockages are causing immediate water damage or flooding risk. We prioritize emergency calls and aim to respond within 24 hours to prevent further damage to your property.",
+      },
+      {
+        q: "Can you repair downpipes as well as clean them?",
+        a: "Absolutely. During our cleaning service, we inspect your downpipes for damage. We can repair or replace broken brackets, reseal leaking joints, realign misaligned sections, and replace damaged pipe segments. We'll provide a separate quote for any repairs needed.",
       },
       {
         q: "Are your cleaning methods safe for all types of downpipe?",
-        a: "Yes. We adjust our jetting pressure and technique for plastic UPVC, cast iron and older clay downpipes. We take particular care with older cast iron systems to avoid joint damage.",
+        a: "Yes, we adjust our cleaning methods based on your downpipe material. For PVC and modern materials, we use appropriate pressure levels. For older cast iron downpipes, we use gentler methods to avoid damage. Our technicians are trained to work with all downpipe types safely.",
       },
     ],
   },
@@ -2069,23 +2111,27 @@ export const graffitiRemovalData: ServiceData = {
     items: [
       {
         q: "How quickly can you remove graffiti after it appears?",
-        a: "We offer rapid response services and aim to attend within 24–48 hours of your call. Same-day emergency appointments are available for urgent commercial situations. Fresh graffiti is always easier to remove than aged paint.",
+        a: "We offer emergency graffiti removal services and can typically respond within 24-48 hours of your call. For commercial clients with service agreements, we guarantee response within 24 hours. Quick removal is important as it discourages repeat vandalism.",
       },
       {
         q: "Can you remove graffiti without damaging the underlying surface?",
-        a: "Yes — in most cases. We always test our approach on a small area first and use products specifically formulated for each surface type. Our goal is full removal with zero impact on the underlying material.",
+        a: "Yes, protecting the underlying surface is our priority. We use specialized cleaning solutions and techniques tailored to each surface type. We always test our methods on a small area first and use the gentlest effective approach to prevent damage to bricks, concrete, metal, or other materials.",
       },
       {
         q: "What types of surfaces can you clean graffiti from?",
-        a: "We remove graffiti from brick, stone, render, concrete, UPVC, metal, glass, timber and painted surfaces. Different materials require different removal techniques and products, which is why professional expertise matters.",
+        a: "We can remove graffiti from virtually all surfaces including brick, concrete, stone, metal, glass, wood, plastic, and vinyl siding. Each surface requires different techniques and cleaning solutions, which our experienced technicians are trained to select and apply correctly.",
       },
       {
         q: "Do you offer anti-graffiti protective coatings?",
-        a: "Yes. We apply permanent and sacrificial anti-graffiti coatings to surfaces at high risk of repeat vandalism. These significantly reduce future removal time and cost, and are particularly recommended for commercial properties.",
+        a: "Yes, we offer professional application of anti-graffiti coatings that create an invisible protective barrier. These coatings make future graffiti removal much easier and less costly. We offer both sacrificial coatings (removed with graffiti) and permanent coatings (multiple cleanings possible).",
+      },
+      {
+        q: "Are the chemicals you use safe for the environment?",
+        a: "We prioritize environmentally responsible practices and use biodegradable, eco-friendly cleaning solutions whenever possible. All our chemicals are approved for professional use and applied by trained technicians who follow strict safety and environmental protocols.",
       },
       {
         q: "Can you remove sticker graffiti from a glass or polished surface?",
-        a: "Yes. Sticker, vinyl and adhesive residue can be removed from glass and polished surfaces using specialist adhesive removers and careful application techniques that leave no scratches or residue.",
+        a: "Etched graffiti presents a different challenge as it physically alters the surface. While complete restoration may not always be possible, we have specialized techniques that can significantly reduce the appearance of etching on glass and polished surfaces. We'll assess the damage and provide an honest evaluation of what results you can expect.",
       },
     ],
   },
@@ -2256,23 +2302,26 @@ export const commercialGutterData: ServiceData = {
     items: [
       {
         q: "How often should commercial gutters be cleaned?",
-        a: "We recommend a minimum of twice yearly for most commercial properties — once in spring and once in autumn. High-risk properties such as those near trees or in areas of heavy rainfall should be inspected quarterly.",
+        a: "Most commercial properties require gutter cleaning 2-4 times per year, depending on factors like tree coverage, building height, and local weather conditions. We recommend quarterly maintenance for properties with heavy tree coverage and semi-annual cleaning for urban settings with minimal vegetation.",
       },
       {
         q: "Do you work outside business hours to avoid disruption?",
-        a: "Yes. We offer early morning, evening and weekend appointments to minimise disruption to your operations. For retail environments or occupied buildings, we will agree a schedule that works around your business.",
+        a: "Yes, we offer flexible scheduling including early morning, evening, and weekend services to minimize disruption to your business operations. We coordinate closely with facility managers to schedule work during the least disruptive times for your specific property.",
       },
       {
         q: "Can clogged commercial gutters cause structural damage?",
-        a: "Yes. Blocked gutters on commercial properties can cause significant water ingress, roof damage, foundation problems and external wall degradation. The cost of repairs far exceeds the cost of a regular maintenance programme.",
+        a: "Yes, neglected commercial gutters can lead to serious structural issues including foundation damage, roof deterioration, water intrusion, and mold growth. The weight of debris and standing water can also cause gutter systems to pull away from buildings, requiring expensive repairs.",
+      },
+      {q:"Can clogged commercial gutters cause structural damage?",
+        a:"Yes, neglected commercial gutters can lead to serious structural issues including foundation damage, roof deterioration, water intrusion, and mold growth. The weight of debris and standing water can also cause gutter systems to pull away from buildings, requiring expensive repairs."
       },
       {
-        q: "Can you provide maintenance contracts for commercial properties?",
-        a: "Yes — we offer annual and bi-annual maintenance contracts for commercial clients, providing scheduled visits, comprehensive reporting and priority call-out rates. Contact us to discuss a tailored package.",
+        q: "Do you provide maintenance contracts for commercial properties?",
+        a: "Yes, we offer customized maintenance contracts that include scheduled cleanings, priority service, discounted rates, and detailed reporting. Maintenance contracts help ensure consistent gutter performance and can be tailored to your property's specific needs and budget.",
       },
       {
         q: "What equipment do you use for commercial gutter cleaning?",
-        a: "We use a range of specialist equipment depending on building height and access, including gutter vacuum systems, high-pressure jetting, and safe access platforms. All operatives hold working-at-height certifications.",
+        a: "We use commercial-grade equipment including high-reach systems, industrial vacuum units, camera inspection tools, and specialized cleaning apparatus. Our equipment is maintained to the highest standards and chosen specifically for commercial applications and building types..",
       },
     ],
   },
@@ -2433,27 +2482,27 @@ export const roofCleaningData: ServiceData = {
     items: [
       {
         q: "How often should I have my roof cleaned?",
-        a: "Most roofs benefit from a professional clean every 2–4 years. Properties in wetter climates, those near trees, or with north-facing slopes tend to accumulate moss and algae faster and may require more frequent attention.",
+        a: "Most roofs benefit from professional cleaning every 2-3 years. However, this can vary depending on factors like your local climate, surrounding trees, roof orientation, and the amount of shade your roof receives. We can provide a specific recommendation after assessing your property.",
       },
       {
         q: "Is roof cleaning safe for my roofing materials?",
-        a: "Our soft-wash approach is specifically designed to be safe for all standard roofing materials including concrete tiles, clay tiles, slate and felt. Unlike high-pressure washing, we use low pressure and biodegradable treatments that clean thoroughly without cracking or dislodging tiles.",
+        a: "Yes, when performed by professionals using the correct methods. We use soft wash techniques that are specifically designed to be gentle on roofing materials while effectively removing biological growth. We avoid high-pressure washing which can damage tiles, remove protective granules, or force water underneath roofing materials.",
       },
       {
         q: "Can moss on my roof cause damage?",
-        a: "Yes. Moss retains moisture against the roof surface, which accelerates the deterioration of tile coatings and mortar. As moss roots penetrate joints and ridge pointing, it can cause water ingress, damp, and costly structural damage if left untreated.",
+        a: "Yes, moss can cause significant damage to your roof. It retains moisture against roofing materials, leading to rot and degradation. Moss can also lift tiles or slates, creating entry points for water. In winter, moss can contribute to ice dam formation. Regular cleaning prevents these issues and extends your roof's lifespan.",
       },
       {
         q: "Do you offer guarantees on your roof cleaning work?",
-        a: "We offer a full satisfaction guarantee on all cleaning. When a protective biocidal treatment is applied, we can offer guarantees of up to 5 years against biological regrowth.",
+        a: "Yes, we offer a satisfaction guarantee on all our roof cleaning services. If you're not completely happy with the results, we'll return to address any concerns at no additional cost. Additionally, our protective treatments come with a guarantee against regrowth for a specified period.",
       },
       {
         q: "Are the chemicals you use safe for my plants and pets?",
-        a: "Yes. All our cleaning products are fully biodegradable and safe for plants, pets, and people once dry. We take precautions to protect gardens and surrounding areas during application and always rinse thoroughly after treatment.",
+        a: "Yes, we use environmentally friendly, biodegradable cleaning solutions that are safe for plants, pets, and the surrounding environment when applied correctly. We take precautions to protect your landscaping during the cleaning process and can use additional protective measures if you have particularly sensitive plants.",
       },
       {
         q: "Can roof cleaning improve my home's energy efficiency?",
-        a: "Yes. Moss and algae growth retains moisture and adds insulating mass to your roof covering, which can affect thermal performance. A clean, dry roof surface performs better and can contribute to improved energy efficiency over time.",
+        a: "Yes, a clean roof can contribute to better energy efficiency. Dark stains from algae can absorb more heat from the sun, potentially raising attic temperatures in summer. A clean, reflective roof surface helps maintain more consistent temperatures, reducing cooling costs in warmer months.",
       },
     ],
   },
