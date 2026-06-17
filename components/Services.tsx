@@ -1,703 +1,578 @@
 "use client";
 
-import { useRef, useEffect, useState, useCallback, memo } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import KeenSlider, { KeenSliderInstance } from "keen-slider";
-import "keen-slider/keen-slider.min.css";
 
 const ALL_SERVICES = [
   {
+    num: "01",
     title: "Gutter Cleaning",
-    tag: "Most Popular",
+    desc: "Remove debris and unblock downpipes to prevent overflow and water damage.",
+    tags: [
+      "Debris removal",
+      "Downpipe flushing",
+      "Minor repairs",
+      "Before & after photos",
+    ],
     image: "/gutter-cleaning.webp",
     href: "/gutter-cleaning",
-    linkText:
-      "Book professional gutter cleaning - debris removal, downpipe flushing, and minor repairs",
-    bullets: [
-      "Full debris removal — leaves, moss & silt",
-      "Downpipe flushing & blockage clearing",
-      "Visual inspection with before & after photos",
-      "1, 2, 3 & 4 storey properties covered",
-      "Minor repairs & re-sealing on the spot",
-    ],
   },
   {
+    num: "02",
     title: "Roof Cleaning",
-    tag: "Specialist Service",
+    desc: "Safe moss and algae removal that restores appearance and extends roof life.",
+    tags: [
+      "Moss & lichen removal",
+      "Soft-wash method",
+      "Biocide treatment",
+      "All roof types",
+    ],
     image: "/roof-cleaning.webp",
     href: "/roof-cleaning",
-    linkText:
-      "Schedule safe roof cleaning - soft-wash moss, lichen, and algae removal for all roof types",
-    bullets: [
-      "Moss, lichen & algae removal",
-      "Safe soft-wash — no high-pressure tile damage",
-      "Tile, slate & flat roof compatible",
-      "Biocide treatment to slow regrowth",
-      "Extends roof lifespan & improves kerb appeal",
-    ],
   },
   {
-    title: "Pressure Washing",
-    tag: "Driveways & Patios",
-    image: "/pressure-washing.webp",
-    href: "/pressure-washing",
-    linkText:
-      "Get pressure washing for driveways, patios, decking, and commercial surfaces",
-    bullets: [
-      "Driveways, patios & pathways",
-      "Brickwork, render & block paving",
-      "Oil stains, graffiti & deep-set grime",
-      "Decking, fencing & garden structures",
-      "Commercial yards & industrial surfaces",
-    ],
-  },
-  {
-    title: "Window Cleaning",
-    tag: "Residential & Commercial",
-    image: "/window-cleaning.webp",
-    href: "/window-cleaning",
-    linkText:
-      "Arrange streak-free window cleaning with pure water fed-pole system for all heights",
-    bullets: [
-      "Pure water fed-pole system — streak-free",
-      "Frames, sills & tracks cleaned too",
-      "High-rise & hard-to-reach windows",
-      "Conservatory roofs & skylights",
-      "Regular maintenance contracts available",
-    ],
-  },
-  {
+    num: "03",
     title: "Driveway Cleaning",
-    tag: "Restore & Protect",
+    desc: "Restore block paving, concrete and tarmac with professional pressure washing.",
+    tags: [
+      "Block paving",
+      "Oil stain removal",
+      "Weed & moss treatment",
+      "Protective sealing",
+    ],
     image: "/driveway.webp",
     href: "/driveway-cleaning",
-    linkText:
-      "Restore your driveway with professional cleaning, stain removal, and protective sealing",
-    bullets: [
-      "Block paving, tarmac, concrete & resin",
-      "Oil & grease stain removal",
-      "Weed & moss treatment",
-      "Sealing & protective coating available",
-      "Restores colour & surface texture",
-    ],
   },
   {
+    num: "04",
+    title: "Pressure Washing",
+    desc: "High-powered cleaning for driveways, patios and heavily soiled surfaces.",
+    tags: [
+      "Driveways & patios",
+      "Brickwork & render",
+      "Oil & grease stains",
+      "Commercial yards",
+    ],
+    image: "/pressure-washing.webp",
+    href: "/pressure-washing",
+  },
+  {
+    num: "05",
     title: "Patio Cleaning",
-    tag: "Outdoor Spaces",
+    desc: "Remove moss, algae and dirt from all patio surfaces safely.",
+    tags: [
+      "Natural stone & porcelain",
+      "Weed removal",
+      "Biocidal treatment",
+      "Sealing available",
+    ],
     image: "/patio.webp",
     href: "/patio-cleaning",
-    linkText:
-      "Clean your patio with weed removal, biocide treatment, and long-lasting sealing protection",
-    bullets: [
-      "Natural stone, porcelain & block paving",
-      "Weed removal from joints & borders",
-      "Biocidal treatment to prevent regrowth",
-      "Sealing option for long-lasting protection",
-      "Safe for children & pets after drying",
-    ],
   },
   {
+    num: "06",
+    title: "Window Cleaning",
+    desc: "Pure-water window cleaning for spotless, streak-free results every visit.",
+    tags: [
+      "Pure water system",
+      "Frames & sills",
+      "High-rise windows",
+      "Conservatory roofs",
+    ],
+    image: "/window-cleaning.webp",
+    href: "/window-cleaning",
+  },
+  {
+    num: "07",
     title: "Render Cleaning",
-    tag: "Exterior Care",
+    desc: "Soft-wash cleaning that removes stains without damaging delicate render.",
+    tags: [
+      "Soft-wash method",
+      "Algae & moss removal",
+      "Acrylic, silicone & monocouche",
+      "Protective coating",
+    ],
     image: "/render.webp",
     href: "/render-cleaning",
-    linkText:
-      "Book gentle render cleaning using soft-wash for algae, moss, and pollution removal",
-    bullets: [
-      "Soft-wash — no high-pressure damage",
-      "Algae, moss & pollution stain removal",
-      "All render types: acrylic, silicone & monocouche",
-      "Biocidal treatment included",
-      "Protective coating to slow regrowth",
-    ],
   },
   {
+    num: "08",
     title: "Brick Cleaning",
-    tag: "Masonry Specialist",
+    desc: "Specialist brick cleaning that restores appearance while protecting masonry.",
+    tags: [
+      "Chemical cleaning",
+      "Efflorescence removal",
+      "Historic buildings",
+      "Mortar-safe techniques",
+    ],
     image: "/brick.webp",
     href: "/brick-cleaning",
-    linkText:
-      "Schedule specialist brick cleaning with efflorescence removal and protective sealing",
-    bullets: [
-      "Soft-wash & chemical cleaning options",
-      "Efflorescence & stain removal",
-      "Historic & listed building experience",
-      "Mortar-safe techniques throughout",
-      "Protective sealing after cleaning",
-    ],
   },
   {
+    num: "09",
     title: "Cladding Cleaning",
-    tag: "All Cladding Types",
+    desc: "Professional cleaning for uPVC, composite and commercial cladding systems.",
+    tags: [
+      "uPVC & composite",
+      "Metal & render",
+      "Soft-wash system",
+      "Protective coating",
+    ],
     image: "/cladding.webp",
     href: "/cladding-cleaning",
-    linkText:
-      "Get cladding cleaning for uPVC, composite, metal, and rendered surfaces with protective coating",
-    bullets: [
-      "uPVC, composite, metal & rendered cladding",
-      "Low-pressure soft-wash system",
-      "Algae, pollution & UV stain removal",
-      "Protective coating applied after clean",
-      "Commercial & residential properties",
-    ],
   },
   {
+    num: "10",
     title: "Downpipe Cleaning",
-    tag: "Drainage Solutions",
+    desc: "Clear blocked downpipes and restore proper drainage around your property.",
+    tags: [
+      "High-pressure jetting",
+      "CCTV inspection",
+      "Emergency call-outs",
+      "Repair service",
+    ],
     image: "/downpipe.webp",
     href: "/downpipe-cleaning",
-    linkText:
-      "Book downpipe cleaning with high-pressure jetting, CCTV inspection, and emergency call-outs",
-    bullets: [
-      "High-pressure jetting for full clearance",
-      "Leaf, moss & sediment removal",
-      "CCTV inspection available",
-      "Emergency call-outs accepted",
-      "Repair & maintenance service",
-    ],
   },
   {
+    num: "11",
     title: "Graffiti Removal",
-    tag: "Rapid Response",
+    desc: "Fast graffiti removal from brick, render, metal and painted surfaces.",
+    tags: [
+      "Spray paint & markers",
+      "All surfaces",
+      "Anti-graffiti coating",
+      "24hr emergency response",
+    ],
     image: "/graffiti.webp",
     href: "/graffiti-cleaning",
-    linkText:
-      "Remove graffiti now with 24/7 emergency response and anti-graffiti protection coating",
-    bullets: [
-      "Spray paint, markers & stickers removed",
-      "Safe for brick, render, metal & glass",
-      "Anti-graffiti coating applied after",
-      "Emergency 24-hour response available",
-      "Commercial & residential properties",
-    ],
   },
   {
-    title: "Residential Gutter Cleaning",
-    tag: "Home Specialist",
-    image: "/residential.webp",
-    href: "/residential-gutter",
-    linkText:
-      "Book home gutter cleaning with debris removal, repairs, and optional gutter guard installation",
-    bullets: [
-      "Full debris removal — leaves, moss & silt",
-      "Downpipe flushing & blockage clearing",
-      "Gutter repairs & resealing on the spot",
-      "Gutter guard installation available",
-      "Before & after photos with every visit",
-    ],
-  },
-  {
+    num: "12",
     title: "Commercial Gutter Cleaning",
-    tag: "Commercial",
+    desc: "Safe gutter maintenance for offices, warehouses and retail premises.",
+    tags: [
+      "Offices & retail",
+      "Industrial units",
+      "Condition reports",
+      "Maintenance contracts",
+    ],
     image: "/commercial.webp",
     href: "/commercial-gutter",
-    linkText:
-      "Get a commercial quote for gutter maintenance with detailed reporting and full insurance coverage",
-    bullets: [
-      "Offices, retail, industrial & apartments",
-      "Full public liability insurance",
-      "Minimal business disruption",
-      "Detailed condition reports provided",
-      "Maintenance contracts available",
+  },
+  {
+    num: "13",
+    title: "Residential Gutter Cleaning",
+    desc: "Keep household gutters flowing freely and protect against costly repairs.",
+    tags: [
+      "Debris removal",
+      "Gutter repairs",
+      "Gutter guard install",
+      "Before & after photos",
     ],
+    image: "/residential.webp",
+    href: "/residential-gutter",
   },
 ];
 
-// Helper: read the actual perView from the slider instance by checking
-// which breakpoint media query currently matches.
-function getActivePerView(slider: KeenSliderInstance): number {
-  if (typeof window === "undefined") return 3;
-   if (window.matchMedia("(min-width: 1480px)").matches) return 4;
-  if (window.matchMedia("(min-width: 1280px)").matches) return 4;
-  if (window.matchMedia("(min-width: 1024px)").matches) return 3;
-  if (window.matchMedia("(min-width: 768px)").matches) return 2;
-  return 1;
-}
-
-const CheckIcon = () => (
-  <span className="mt-[1px] flex-shrink-0 w-[17px] h-[17px] rounded-full bg-blue-50 flex items-center justify-center">
-    <svg
-      width="11"
-      height="11"
-      viewBox="0 0 14 14"
-      fill="none"
-      stroke="#2563eb"
-      strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <polyline points="2,7 5.5,10.5 12,3" />
-    </svg>
-  </span>
-);
-
-const ServiceCard = memo(
-  ({
-    service,
-    index,
-  }: {
-    service: (typeof ALL_SERVICES)[0];
-    index: number;
-  }) => {
-    const { title, tag, image, href, bullets } = service;
-
-    const getCTA = (title: string) => {
-      if (
-        title.includes("Gutter Cleaning") &&
-        !title.includes("Commercial") &&
-        !title.includes("Residential")
-      )
-        return "Book Gutter Cleaning";
-      if (title.includes("Roof Cleaning")) return "Schedule Roof Cleaning";
-      if (title.includes("Pressure Washing")) return "Get Pressure Washing";
-      if (title.includes("Window Cleaning")) return "Arrange Window Cleaning";
-      if (title.includes("Driveway Cleaning")) return "Restore Your Driveway";
-      if (title.includes("Patio Cleaning")) return "Clean Your Patio";
-      if (title.includes("Render Cleaning")) return "Book Render Cleaning";
-      if (title.includes("Brick Cleaning")) return "Schedule Brick Cleaning";
-      if (title.includes("Cladding Cleaning")) return "Get Cladding Cleaning";
-      if (title.includes("Downpipe Cleaning")) return "Book Downpipe Service";
-      if (title.includes("Graffiti Removal")) return "Remove Graffiti Now";
-      if (title.includes("Residential")) return "Book Home Gutter Clean";
-      if (title.includes("Commercial")) return "Get Commercial Quote";
-      return "Learn More";
-    };
-
-    return (
-      <div className="keen-slider__slide flex justify-center px-0">
-        {/*
-          Card uses CSS Grid with explicit rows so every card is identical:
-            Row 1 — image (fixed 200px)
-            Row 2 — title (fixed single line)
-            Row 3 — 5 bullet rows, each capped at one line via line-clamp-1
-            Row 4 — CTA button (fixed height)
-          No row can grow based on content, so all cards stay in lock-step.
-        */}
-        <div className="svc-card relative bg-white rounded-2xl overflow-hidden w-full svc-grid">
-          <span
-            className="svc-num absolute top-3 right-4 z-10"
-            aria-hidden="true"
-          >
-            {String(index + 1).padStart(2, "0")}
-          </span>
-
-          {/* Row 1 — image */}
-          <div className="relative overflow-hidden" style={{ height: 200 }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={image}
-              alt={`${title} service - professional exterior cleaning`}
-              className="svc-img w-full h-full object-cover"
-              loading={index < 3 ? "eager" : "lazy"}
-              decoding="async"
-            />
-            <div className="svc-over absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#0d2257]/50" />
-            <span className="svc-chip absolute bottom-3 left-3.5 z-10 text-[10px] font-bold uppercase tracking-[.16em] bg-[#0d2257]/75 backdrop-blur text-white px-2.5 py-1 rounded-full">
-              {tag}
-            </span>
-          </div>
-
-          {/* Row 2 — title */}
-          <div className="px-6 lg:px-7 pt-6 lg:pt-7">
-            <h3
-              className="font-heading text-[16px] lg:text-[18px] font-extrabold text-[#0d2257] leading-snug tracking-[-0.3px] line-clamp-1"
-              title={title}
-            >
-              {title}
-            </h3>
-          </div>
-
-          {/* Row 3 — bullets: always exactly 5 items, each one line */}
-          <ul
-            className="px-6 lg:px-7 grid gap-y-2.5 lg:gap-y-3"
-            aria-label={`${title} features`}
-          >
-            {bullets.slice(0, 5).map((bullet) => (
-              <li
-                key={bullet}
-                className="flex items-start gap-2 lg:gap-2.5 text-[12px] lg:text-[13px] text-slate-500 leading-snug"
-              >
-                <CheckIcon />
-                {/* line-clamp-1 locks every bullet to exactly one line */}
-                <span className="line-clamp-1 min-w-0">{bullet}</span>
-              </li>
-            ))}
-          </ul>
-
-          {/* Row 4 — CTA */}
-          <div className="px-6 lg:px-7 pb-6 lg:pb-7 pt-8">
-            <Link
-              href={href}
-              className="svc-cta inline-flex items-center justify-center gap-2 w-full px-4 lg:px-5 py-3 lg:py-3.5 text-[12px] lg:text-[12.5px] font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-all duration-200 hover:shadow-lg hover:shadow-blue-600/20 focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2 group"
-            >
-              {getCTA(title)}
-              <svg
-                className="w-3.5 h-3.5 lg:w-4 lg:h-4 transition-transform duration-200 group-hover:translate-x-0.5"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2.5}
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                />
-              </svg>
-            </Link>
-          </div>
-        </div>
-      </div>
-    );
-  },
-);
-
-ServiceCard.displayName = "ServiceCard";
-
 export default function ServicesSection() {
-  const sliderRef = useRef<HTMLDivElement>(null);
-  const keenSliderRef = useRef<KeenSliderInstance | null>(null);
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [slidesPerView, setSlidesPerView] = useState(3);
-  const totalSlides = ALL_SERVICES.length;
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const toggle = (i: number) => setOpenIndex(openIndex === i ? null : i);
 
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // Same scroll-reveal convention as About/Stats/WhyClean: IntersectionObserver
+  // adds .sv-visible to each [data-reveal] node as it enters the viewport.
   useEffect(() => {
-    if (!sliderRef.current) return;
+    const section = sectionRef.current;
+    if (!section) return;
 
-    const slider = new KeenSlider(sliderRef.current, {
-      loop: false,
-      mode: "snap",
-      // Base config — breakpoints override below (mobile-first order)
-      slides: {
-        perView: 1,
-        spacing: 0,
-      },
-      breakpoints: {
-        // Keen Slider evaluates ALL matching breakpoints and merges them in
-        // order of specificity. List from narrowest to widest so wider rules
-        // win when multiple match.
-        "(min-width: 640px)": {
-          slides: { perView: 2, spacing: 20 },
-        },
-        "(min-width: 1024px)": {
-          slides: { perView: 3, spacing: 24 },
-        },
-        "(min-width: 1280px)": {
-          slides: { perView: 4, spacing: 24 },
-        },
-        "(min-width: 1536px)": {
-          slides: { perView: 4, spacing: 24 },
-        },
-      },
-      slideChanged(s) {
-        setCurrentSlide(s.track.details.rel);
-      },
-      created(s) {
-        setSlidesPerView(getActivePerView(s));
-      },
-      updated(s) {
-        // On resize, perView may change. Reset slide index too so nav stays
-        // in a consistent state.
-        const spv = getActivePerView(s);
-        setSlidesPerView(spv);
-        setCurrentSlide(s.track.details.rel);
-      },
-    });
+    const els = section.querySelectorAll<HTMLElement>("[data-reveal]");
 
-    keenSliderRef.current = slider;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const el = entry.target as HTMLElement;
+            const delay = el.dataset.delay ?? "0";
+            el.style.transitionDelay = `${delay}ms`;
+            el.classList.add("sv-visible");
+            observer.unobserve(el);
+          }
+        });
+      },
+      { threshold: 0.1 },
+    );
 
-    return () => {
-      slider.destroy();
-    };
+    els.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
   }, []);
-
-  const prev = useCallback(() => {
-    keenSliderRef.current?.prev();
-  }, []);
-
-  const next = useCallback(() => {
-    keenSliderRef.current?.next();
-  }, []);
-
-  const scrollTo = useCallback(
-    (idx: number) => {
-      // Clamp so the last dot never tries to scroll past the final slide
-      const clamped = Math.min(idx, totalSlides - slidesPerView);
-      keenSliderRef.current?.moveToIdx(clamped);
-    },
-    [totalSlides, slidesPerView],
-  );
-
-  const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent) => {
-      if (e.key === "ArrowLeft") {
-        e.preventDefault();
-        prev();
-      } else if (e.key === "ArrowRight") {
-        e.preventDefault();
-        next();
-      }
-    },
-    [prev, next],
-  );
-
-  const needsNavigation = totalSlides > slidesPerView;
-  const canPrev = currentSlide > 0;
-  // Last reachable slide index is totalSlides - slidesPerView
-  const canNext = currentSlide < totalSlides - slidesPerView;
-
-  const start = currentSlide + 1;
-  const end = Math.min(currentSlide + slidesPerView, totalSlides);
-
-  const dotCount = Math.ceil(totalSlides / slidesPerView);
-  const activeDot = Math.round(currentSlide / slidesPerView);
 
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&family=Manrope:wght@400;600;700;800&display=swap');
-        
-        .font-display  { font-family: 'Bebas Neue', sans-serif; }
-        .font-body     { font-family: 'Inter', sans-serif; }
-        .font-heading  { font-family: 'Manrope', sans-serif; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
 
-        /* Remove Keen Slider's default overflow:hidden so cards can show
-           box-shadow and hover lift without being clipped */
-        .services-slider.keen-slider {
-          display: flex;
-          overflow: visible;
-          position: relative;
-          user-select: none;
-          -webkit-user-select: none;
-          touch-action: pan-y;
-          -webkit-tap-highlight-color: transparent;
-          /* Clip only horizontally — allow vertical overflow for shadows */
-          clip-path: inset(0 -4px);
+        .sv-root { font-family: 'Inter', sans-serif; }
+        .sv-display { font-family: 'Inter Tight', sans-serif; }
+
+        [data-reveal] {
+          opacity: 0;
+          transform: translateY(20px);
+          transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+                      transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
         }
-
-        /* Re-add the horizontal clip so cards don't bleed outside the track */
-        .services-slider-wrapper {
-          overflow: hidden;
-          padding: 20px 4px 28px;
-          margin: 0 -4px;
-          background:white;
+        [data-reveal].sv-visible {
+          opacity: 1;
+          transform: translateY(0);
         }
-
-        .keen-slider__slide {
-          min-height: 100%;
-          position: relative;
-          /* Must NOT be overflow:hidden — Keen sets this by default; override it */
-          overflow: visible !important;
+        /* Service rows get a more pronounced bottom-to-top fade than the
+           header text — these are tall elements, so a 20px shift barely
+           registers. Higher specificity overrides the base rule above. */
+        .sv-row[data-reveal] {
+          transform: translateY(40px);
+          transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+                      transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .sv-row[data-reveal].sv-visible {
+          transform: translateY(0);
+        }
+        @media (prefers-reduced-motion: reduce) {
+          [data-reveal] { opacity: 1; transform: none; transition: none; }
         }
 
-        .svc-card {
-          border: 1px solid #e4e9f2;
-          
-          transition: transform .25s ease, box-shadow .25s ease;
-          transform: translateZ(0);
-          will-change: transform, box-shadow;
-        }
-        
-        .svc-card:hover {
-          transform: translateY(-6px);
-          
-        }
-        
-        .svc-card:hover .svc-img  { transform: scale(1.06); }
-        .svc-card:hover .svc-over { opacity: 1; }
-        .svc-card:hover .svc-chip { opacity: 1; }
-
-        .svc-img { 
-          transition: transform .45s ease; 
-          transform: translateZ(0);
-          will-change: transform;
-        }
-        
-        .svc-over  { 
-          opacity: 0; 
-          transition: opacity .3s ease; 
-        }
-        
-        .svc-chip { 
-          opacity: 0; 
-          transition: opacity .3s ease; 
-        }
-
-        .svc-num {
-          font-family: 'Bebas Neue', sans-serif;
-          font-size: 72px;
-          line-height: 1;
-          color: #0d2257;
-          opacity: 0.07;
-          letter-spacing: 2px;
-          pointer-events: none;
-          user-select: none;
-        }
-
-        /*
-          Grid layout: image (200px) | title (auto) | bullets (1fr) | CTA (auto)
-          The 1fr bullet row absorbs slack so the CTA always sits at the bottom.
-          Every bullet is line-clamp-1 so the actual rendered height is uniform.
-        */
-        .svc-grid {
+        /* ── Row: 3-column grid ── */
+        .sv-row {
           display: grid;
-          grid-template-rows: 200px auto 1fr auto;
+          grid-template-columns: 200px 1fr 72px;
+          /* align-items NOT set here — each cell manages its own alignment */
+          border-top: 1px solid rgba(255,255,255,0.10);
+          cursor: pointer;
+          transition: background 0.18s;
+          background: transparent;
+        }
+        .sv-row:last-child {
+          border-bottom: 1px solid rgba(255,255,255,0.10);
+        }
+        
+        @media (max-width: 768px) {
+          .sv-row { grid-template-columns: 64px 1fr 44px; }
         }
 
-        .svc-grid > ul {
+        /* ── Number — always top-aligned ── */
+        .sv-num {
+          font-family: 'Inter Tight', sans-serif;
+          font-size: 30px;
+          font-weight: 400;
+          color: #3b82f6;
+          padding: 32px 0;
+          user-select: none;
+          line-height: 1;
           align-self: start;
-          padding-top: 16px;
+          transition: color 0.2s;
+        }
+        .sv-row:hover .sv-num {
+          color: #60a5fa;
         }
 
-        .nav-btn {
-          width: 44px;
-          height: 44px;
+        /* ── Center column ── */
+        .sv-center {
+          padding: 28px 32px 28px 0;
+          align-self: start;
+        }
+
+        /* ── Title ── */
+        .sv-title {
+          font-family: 'Inter Tight', sans-serif;
+          font-size: clamp(26px, 3vw, 38px);
+          font-weight: 500;
+          color: #ffffff;
+          line-height: 1.1;
+          letter-spacing: -0.5px;
+          margin: 0;
+          transition: color 0.2s;
+        }
+        .sv-row:hover .sv-title {
+          color: #e0e7ff;
+        }
+
+        /* ── Plus column wrapper — handles centering vs top alignment ── */
+        .sv-plus-col {
+          /* When collapsed: fill full row height and center the icon vertically */
+          align-self: stretch;
+          display: flex;
+          align-items: center;   /* vertically center when collapsed */
+          justify-content: flex-end;
+          padding: 28px 0;
+          transition: align-items 0.1s;
+        }
+        /* When open: pin icon to top */
+        .sv-plus-col.is-open {
+          align-items: flex-start;
+        }
+
+        /* ── The icon itself ── */
+        .sv-plus {
+          user-select: none;
+          color: #3b82f6;
+          font-size: 50px;
+          line-height: 1;
+          display: inline-block;
+          transition: color 0.2s, transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+          flex-shrink: 0;
+        }
+        .sv-row:hover .sv-plus {
+          color: #60a5fa;
+        }
+        .sv-plus-col.is-open .sv-plus {
+          transform: rotate(180deg);
+        }
+
+        /* ── Expand panel ── */
+        .sv-panel {
+          display: grid;
+          grid-template-rows: 0fr;
+          transition: grid-template-rows 0.32s ease;
+        }
+        .sv-panel.open {
+          grid-template-rows: 1fr;
+        }
+        .sv-panel-inner {
+          overflow: hidden;
+        }
+
+        /* ── Tag pill — white background ── */
+        .sv-tag {
+          display: inline-flex;
+          align-items: center;
+          background: #ffffff;
+          border-radius: 999px;
+          padding: 8px 20px;
+          font-size: 13.5px;
+          font-weight: 500;
+          color: #0d1b3e;
+          white-space: nowrap;
+          transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+                      box-shadow 0.2s ease;
+        }
+        .sv-tag:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 18px rgba(0,0,0,0.22);
+        }
+
+        /* ── Expandable image ── */
+        .sv-img-wrap {
+          border-radius: 16px;
+          overflow: hidden;
+          max-width: 480px;
+          height: 270px;
+        }
+        .sv-img-wrap img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+          transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .sv-img-wrap:hover img {
+          transform: scale(1.05);
+        }
+
+        /* ── Book Service button — exact match to About section's btn-quote ── */
+        .sv-book-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 0;
+          padding: 7px 7px 7px 26px;
+          border-radius: 100px;
+          background: #2563eb;
+          color: #ffffff;
+          font-family: 'Inter', sans-serif;
+          font-size: 12px;
+          font-weight: 700;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          text-decoration: none;
+          transition: background 0.22s ease, padding-right 0.2s ease;
+          flex-shrink: 0;
+          white-space: nowrap;
+        }
+          .sv-plus {
+  display: inline-flex;
+  transform: rotate(0deg);
+  transition: transform 0.35s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.sv-plus-col.is-open .sv-plus {
+  transform: rotate(45deg);
+}
+        .sv-book-btn:hover {
+          background: #1d4ed8;
+          padding-right: 13px;
+        }
+        .sv-book-btn:focus-visible {
+          outline: 2px solid #2563eb;
+          outline-offset: 3px;
+        }
+        .sv-book-btn .arr {
+          width: 36px;
+          height: 36px;
           border-radius: 50%;
-          border: 2px solid #e4e9f2;
-          background: white;
+          background: #ffffff;
+          color: #2563eb;
           display: flex;
           align-items: center;
           justify-content: center;
-          cursor: pointer;
-          transition: all .2s ease;
+          margin-left: 16px;
           flex-shrink: 0;
+          transition: background 0.22s, color 0.22s;
         }
-        
-        .nav-btn:hover:not(:disabled) {
-          border-color: #2563eb;
-          background: #2563eb;
-          color: white;
-        }
-        
-        .nav-btn:disabled {
-          opacity: 0.3;
-          cursor: default;
-        }
-
-        .nav-btn:focus-visible {
-          outline: 2px solid #2563eb;
-          outline-offset: 2px;
-        }
-
-        .dot-btn {
-          transition: width 0.2s ease, background-color 0.2s ease;
-        }
-
-        .dot-btn:focus-visible {
-          outline: 2px solid #2563eb;
-          outline-offset: 2px;
-        }
-
-        /* Mobile: give cards horizontal breathing room inside the slide */
-        @media (max-width: 639px) {
-          .keen-slider__slide {
-            padding: 0 16px;
-          }
+        .sv-book-btn:hover .arr {
+          background: #dbeafe;
         }
       `}</style>
 
-      <section
-        id="services"
-        className="font-body bg-white py-16 lg:py-24"
-        aria-labelledby="services-heading"
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-8 lg:mb-10">
-            <p className="flex items-center justify-center gap-2.5 text-blue-700 text-[11px] font-bold uppercase tracking-[.22em] mb-3.5">
-              What We Do
-            </p>
-            <h2
-              id="services-heading"
-              className="font-heading text-[clamp(32px,4.5vw,48px)] font-extrabold text-[#0d2257] leading-tight tracking-tight text-center mb-3"
-            >
-              Our <span className="text-blue-600">Cleaning</span> Services
-            </h2>
-            <p className="text-slate-500 text-[15px] text-center max-w-[500px] mx-auto leading-relaxed">
-              From gutters to rooftops — every service designed to protect your
-              property and keep it looking its best.
-            </p>
-          </div>
-
-          <div
-            className="flex items-center justify-end mb-4"
-            role="navigation"
-            aria-label="Service carousel navigation"
-          >
-            
-
-            {needsNavigation && (
-              <div className="flex items-center gap-2">
-                <button
-                  className="nav-btn"
-                  onClick={prev}
-                  disabled={!canPrev}
-                  aria-label="View previous services"
-                  title="Previous services"
+      <div className="flex flex-col items-center">
+        <section
+          id="services"
+          ref={sectionRef}
+          style={{ borderRadius: "20px" }}
+          className="sv-root w-[97%]  bg-[#0d1b3e] py-20 lg:py-28 px-5 sm:px-8 lg:px-14"
+        >
+          <div className="max-w-7xl mx-auto">
+            {/* ── Header ── */}
+            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-16 lg:mb-20">
+              <div className="flex flex-col gap-5 lg:max-w-[52%]">
+                <p
+                  className="flex items-center gap-2 text-[#3b82f6] font-semibold text-[12px] uppercase tracking-[0.22em]"
+                  data-reveal
+                  data-delay="0"
                 >
-                  <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={2.5}
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M15 19l-7-7 7-7"
-                    />
-                  </svg>
-                </button>
-                <button
-                  className="nav-btn"
-                  onClick={next}
-                  disabled={!canNext}
-                  aria-label="View next services"
-                  title="Next services"
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#3b82f6] inline-block" />
+                  Our Services
+                </p>
+                <h2
+                  className="sv-display text-[42px] sm:text-[46px] lg:text-[50px] font-medium text-white leading-[1.05] tracking-[-1px]"
+                  data-reveal
+                  data-delay="80"
                 >
-                  <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={2.5}
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </button>
+                  Professional Exterior
+                  <br />
+                  <span className="text-[#3b82f6]">Cleaning Services.</span>
+                </h2>
               </div>
-            )}
-          </div>
+              <p
+                className="text-[#64748b] text-[16px] leading-relaxed lg:max-w-[380px]"
+                data-reveal
+                data-delay="160"
+              >
+                Professional roof, gutter, driveway and exterior cleaning
+                services for residential and commercial properties across
+                Birmingham.
+              </p>
+            </div>
 
-          {/* Wrapper clips horizontal overflow while allowing vertical card shadow */}
-          <div className="services-slider-wrapper">
-            <div
-              ref={sliderRef}
-              className="services-slider keen-slider"
-              onKeyDown={needsNavigation ? handleKeyDown : undefined}
-              role="list"
-              aria-label="Available cleaning services carousel"
-              tabIndex={needsNavigation ? 0 : -1}
-            >
-              {ALL_SERVICES.map((service, i) => (
-                <div key={service.title} role="listitem">
-                  <ServiceCard service={service} index={i} />
-                </div>
-              ))}
+            {/* ── Accordion ── */}
+            <div>
+              {ALL_SERVICES.map((svc, i) => {
+                const isOpen = openIndex === i;
+                return (
+                  <div
+                    key={svc.num}
+                    className="sv-row"
+                    onClick={() => toggle(i)}
+                    data-reveal
+                  >
+                    {/* Left: number */}
+                    <div className="sv-num">{svc.num}</div>
+
+                    {/* Center: always title + desc, expandable extras */}
+                    <div className="sv-center">
+                      <h3 className="sv-title">{svc.title}</h3>
+                      <p className="text-[rgba(255,255,255,0.55)] text-[15px] leading-relaxed py-3 max-w-[600px]">
+                        {svc.desc}
+                      </p>
+
+                      {/* Expandable: tags, image, CTA — stop clicks bubbling so content area doesn't close */}
+                      <div className={`sv-panel ${isOpen ? "open" : ""}`}>
+                        <div className="sv-panel-inner">
+                          <div
+                            className="flex flex-col gap-5 pt-1 pb-8"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            {/* Tags */}
+                            <div className="flex flex-wrap gap-2.5">
+                              {svc.tags.map((tag) => (
+                                <span key={tag} className="sv-tag">
+                                  {tag}
+                                </span>
+                              ))}
+                            </div>
+
+                            {/* Image */}
+                            <div className="sv-img-wrap">
+                              <img
+                                src={svc.image}
+                                alt={svc.title}
+                                loading="lazy"
+                              />
+                            </div>
+
+                            {/* Book Service CTA */}
+                            <div className="flex justify-end">
+                              <Link
+                                href={svc.href}
+                                className="sv-book-btn"
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                Book Service
+                                <span className="arr">
+                                  <svg
+                                    width="14"
+                                    height="14"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2.5"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                                    />
+                                  </svg>
+                                </span>
+                              </Link>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Right: plus icon — centered when closed, top-aligned + rotated into an × when open */}
+                    <div className={`sv-plus-col ${isOpen ? "is-open" : ""}`}>
+                      <span className="sv-plus" aria-hidden="true">
+                        <svg
+                          width="38"
+                          height="38"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2.5"
+                          strokeLinecap="round"
+                        >
+                          <line x1="12" y1="5" x2="12" y2="19" />
+                          <line x1="5" y1="12" x2="19" y2="12" />
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
-
-          
-        </div>
-      </section>
+        </section>
+      </div>
     </>
   );
 }

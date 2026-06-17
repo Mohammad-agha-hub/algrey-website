@@ -1,194 +1,318 @@
 "use client";
 
-const REASONS = [
+import { useEffect, useRef } from "react";
+
+const SIGNALS = [
   {
-    icon: (
-      <svg
-        className="w-8 h-8"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={1.5}
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
-        />
-      </svg>
-    ),
-    title: "Water Damage & Flooding",
-    desc: "Blocked gutters overflow onto walls and foundations, causing damp, cracks and structural repairs that run into thousands.",
+    icon: "ti-shield-check",
+    title: "Fully Insured",
+    desc: "Complete peace of mind with full public liability insurance.",
+    filled: true,
   },
   {
-    icon: (
-      <svg
-        className="w-8 h-8"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={1.5}
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75"
-        />
-      </svg>
-    ),
-    title: "Fascia & Soffit Rot",
-    desc: "Standing water saturates wooden fascia boards, leading to rot and full board replacement — a costly and entirely avoidable fix.",
+    icon: "ti-tool",
+    title: "Professional Equipment",
+    desc: "Specialist cleaning systems for safe and effective results.",
+    filled: false,
   },
   {
-    icon: (
-      <svg
-        className="w-8 h-8"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={1.5}
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z"
-        />
-      </svg>
-    ),
-    title: "Damp & Indoor Mould",
-    desc: "Overflowing gutters drive water into walls and ceilings, creating persistent damp patches and mould that harms your family's health.",
+    icon: "ti-users",
+    title: "Experienced Team",
+    desc: "Skilled exterior cleaning professionals you can rely on.",
+    filled: false,
   },
   {
-    icon: (
-      <svg
-        className="w-8 h-8"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={1.5}
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23-.693L5 14.5m14.8.8l1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0112 21a48.309 48.309 0 01-8.135-.687c-1.718-.293-2.3-2.379-1.067-3.61L5 14.5"
-        />
-      </svg>
-    ),
-    title: "Pest Nesting",
-    desc: "Debris-filled gutters attract birds, insects and rodents — causing further blockages, hygiene problems and ongoing property damage.",
-  },
-  {
-    icon: (
-      <svg
-        className="w-8 h-8"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={1.5}
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
-        />
-      </svg>
-    ),
-    title: "Foundation Erosion",
-    desc: "Uncontrolled water runoff saturates the ground around your property, slowly undermining foundations and causing subsidence over time.",
-  },
-  {
-    icon: (
-      <svg
-        className="w-8 h-8"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={1.5}
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-        />
-      </svg>
-    ),
-    title: "Costly Emergency Repairs",
-    desc: "Small blockages left untreated become burst joints and collapsed gutters — a £90 clean today prevents a four-figure bill tomorrow.",
+    icon: "ti-receipt",
+    title: "Affordable Pricing",
+    desc: "Transparent quotes with no hidden costs or surprises.",
+    filled: true,
   },
 ];
 
 export default function WhyCleanSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const els = section.querySelectorAll<HTMLElement>("[data-reveal]");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const el = entry.target as HTMLElement;
+            const delay = el.dataset.delay ?? "0";
+            el.style.transitionDelay = `${delay}ms`;
+            el.classList.add("wc-visible");
+            observer.unobserve(el);
+          }
+        });
+      },
+      { threshold: 0.15 },
+    );
+
+    els.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@400;600;700;800&display=swap');
-        .wc-body    { font-family: 'Inter', sans-serif; }
-        .wc-heading { font-family: 'Manrope', sans-serif; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@700;800&family=Inter:wght@400;500;600;700&display=swap');
+        @import url('https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.30.0/dist/tabler-icons.min.css');
 
-        .wc-card {
-          background: #0d2257;
-          border-radius: 16px;
-          padding: 36px 28px 32px;
+        .wc-root    { font-family: 'Inter', sans-serif; }
+        .wc-display { font-family: 'Inter Tight', sans-serif; }
+
+        [data-reveal] {
+          opacity: 0;
+          transform: translateY(22px);
+          transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+                      transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        [data-reveal].wc-visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        @media (prefers-reduced-motion: reduce) {
+          [data-reveal] { opacity: 1; transform: none; transition: none; }
+        }
+
+        .wc-card-filled {
+          background: #0d1b3e;
+          border-radius: 18px;
+          padding: 28px 24px;
           display: flex;
           flex-direction: column;
-          gap: 20px;
-          cursor: default;
-          transition: background 0.3s ease;
+          gap: 14px;
+          transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+                      box-shadow 0.3s ease;
         }
-        .wc-card:hover { background: #FFF265; }
-
-        .wc-card .wc-icon  { color: #ffffff; transition: color 0.3s ease; }
-        .wc-card:hover .wc-icon  { color: #0d2257; }
-
-        .wc-card .wc-title {
-          font-family: 'Manrope', sans-serif;
-          font-size: 18px;
-          font-weight: 800;
+        .wc-card-filled:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 14px 36px rgba(13,27,62,0.28);
+        }
+        .wc-card-filled .wc-icon-wrap {
+          width: 48px; height: 48px; border-radius: 12px;
+          background: rgba(96,165,250,0.12);
+          display: flex; align-items: center; justify-content: center;
+          color: #60a5fa;
+          font-size: 22px;
+          flex-shrink: 0;
+          transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), background 0.3s;
+        }
+        .wc-card-filled:hover .wc-icon-wrap {
+          transform: scale(1.1) rotate(-4deg);
+          background: rgba(96,165,250,0.2);
+        }
+        .wc-card-filled .wc-title {
           color: #ffffff;
-          line-height: 1.2;
-          letter-spacing: -0.2px;
-          transition: color 0.3s ease;
+          font-family: 'Inter Tight', sans-serif;
+          font-size: 17px;
+          font-weight: 700;
+          line-height: 1.25;
         }
-        .wc-card:hover .wc-title { color: #0d2257; }
+        .wc-card-filled .wc-desc { color: #94a3b8; font-size: 13.5px; line-height: 1.75; }
 
-        .wc-card .wc-desc {
-          font-size: 13.5px;
-          line-height: 1.7;
-          color: #94a8cc;
-          transition: color 0.3s ease;
+        .wc-card-outline {
+          background: #ffffff;
+          border: 1.5px solid #e2e8f0;
+          border-radius: 18px;
+          padding: 28px 24px;
+          display: flex;
+          flex-direction: column;
+          gap: 14px;
+          transition: border-color 0.2s, box-shadow 0.2s, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
         }
-        .wc-card:hover .wc-desc { color: #081a3d; }
+        .wc-card-outline:hover {
+          border-color: #bfdbfe;
+          box-shadow: 0 4px 24px rgba(37,99,235,0.07);
+          transform: translateY(-4px);
+        }
+        .wc-card-outline .wc-icon-wrap {
+          width: 48px; height: 48px; border-radius: 12px;
+          background: #eff6ff;
+          display: flex; align-items: center; justify-content: center;
+          color: #2563eb;
+          font-size: 22px;
+          flex-shrink: 0;
+          transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), background 0.3s;
+        }
+        .wc-card-outline:hover .wc-icon-wrap {
+          transform: scale(1.1) rotate(-4deg);
+          background: #dbeafe;
+        }
+        .wc-card-outline .wc-title {
+          color: #0d1b3e;
+          font-family: 'Inter Tight', sans-serif;
+          font-size: 17px;
+          font-weight: 700;
+          line-height: 1.25;
+        }
+        .wc-card-outline .wc-desc { color: #64748b; font-size: 13.5px; line-height: 1.75; }
+
+        /* ── CTA button — matches About section's btn-quote exactly ── */
+        .wc-btn-quote {
+          display: inline-flex;
+          align-items: center;
+          gap: 0;
+          padding: 7px 7px 7px 26px;
+          border-radius: 100px;
+          background: #2563eb;
+          color: #ffffff;
+          font-family: 'Inter', sans-serif;
+          font-size: 12px;
+          font-weight: 700;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          text-decoration: none;
+          transition: background 0.22s ease, padding-right 0.2s ease;
+          flex-shrink: 0;
+          white-space: nowrap;
+        }
+        .wc-btn-quote:hover {
+          background: #1d4ed8;
+          padding-right: 13px;
+        }
+        .wc-btn-quote:focus-visible {
+          outline: 2px solid #2563eb;
+          outline-offset: 3px;
+        }
+        .wc-btn-quote .wc-arrow-circle {
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          background: #ffffff;
+          color: #2563eb;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-left: 16px;
+          flex-shrink: 0;
+          transition: background 0.22s, color 0.22s;
+        }
+        .wc-btn-quote:hover .wc-arrow-circle {
+          background: #dbeafe;
+        }
+
+        /* ── Secondary link — matches About section's btn-services exactly ── */
+        .wc-btn-services {
+          display: inline-flex;
+          align-items: center;
+          gap: 5px;
+          color: #0d1b3e;
+          font-family: 'Inter', sans-serif;
+          font-size: 15px;
+          font-weight: 600;
+          text-decoration: none;
+          transition: color 0.2s;
+        }
+        .wc-btn-services:hover { color: #2563eb; }
+        .wc-btn-services:hover .wc-svc-arrow { transform: translateX(3px); }
+        .wc-svc-arrow { display: flex; transition: transform 0.2s ease; }
       `}</style>
 
-      <section className="wc-body bg-[#f8f9ff] py-24 px-5 sm:px-8 lg:px-16">
+      <section
+        ref={sectionRef}
+        className="wc-root bg-[#f8fafc] py-20 lg:py-28 px-5 sm:px-8 lg:px-16"
+      >
         <div className="max-w-7xl mx-auto">
-          {/* ── Header ── */}
-          <div className="text-center mb-14">
-            <p className="inline-flex items-center gap-2 text-blue-600 font-semibold text-xs uppercase tracking-[0.22em] mb-4">
-              Don't Wait Until It's Too Late
-            </p>
-            <h2 className="wc-heading text-[clamp(32px,4.5vw,50px)] font-extrabold text-[#0d2257] leading-tight tracking-tight mb-5">
-              What Happens When You <br />
-              <span className="text-blue-600">Neglect</span> Your Gutters
-            </h2>
-            <p className="text-gray-500 text-[15px] leading-relaxed max-w-2xl mx-auto">
-              Blocked or damaged gutters don't just look bad — they silently
-              cause serious, expensive damage to your home. Here's what
-              unchecked gutters lead to.
-            </p>
-          </div>
+          <div className="flex flex-col lg:flex-row items-start gap-14 lg:gap-20">
+            {/* LEFT */}
+            <div className="w-full lg:w-[38%] shrink-0 lg:pt-4 flex flex-col gap-7">
+              <p
+                className="flex items-center gap-2 text-[#2563eb] font-semibold text-[13px] uppercase tracking-[0.2em]"
+                data-reveal
+                data-delay="0"
+              >
+                <span className="w-2 h-2 rounded-full bg-[#2563eb] inline-block" />
+                Why Choose Us
+              </p>
 
-          {/* ── Grid ── */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {REASONS.map((r) => (
-              <div key={r.title} className="wc-card">
-                <div className="wc-icon">{r.icon}</div>
-                <div>
-                  <h3 className="wc-title mb-2">{r.title}</h3>
-                  <p className="wc-desc">{r.desc}</p>
-                </div>
+              <h2
+                className="wc-display text-[40px] sm:text-[50px] font-medium text-[#0d1b3e] leading-[1.1] tracking-[-0.5px]"
+                data-reveal
+                data-delay="80"
+              >
+                Exterior Cleaning <br></br>Done Right.
+              </h2>
+
+              <p
+                className="text-[#64748b] text-[16px] leading-relaxed"
+                data-reveal
+                data-delay="160"
+              >
+                Professional exterior cleaning services delivered safely,
+                reliably, and to the highest standard every time.
+              </p>
+
+              <div
+                className="flex flex-wrap items-center gap-5 pt-1"
+                data-reveal
+                data-delay="240"
+              >
+                <a href="/enquiry-now" className="wc-btn-quote">
+                  Get Quote
+                  <span className="wc-arrow-circle">
+                    <svg
+                      width="14"
+                      height="14"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                      />
+                    </svg>
+                  </span>
+                </a>
+                <a href="/services" className="wc-btn-services">
+                  View Services
+                  <span className="wc-svc-arrow">
+                    <svg
+                      width="16"
+                      height="16"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M8.25 4.5l7.5 7.5-7.5 7.5"
+                      />
+                    </svg>
+                  </span>
+                </a>
               </div>
-            ))}
+            </div>
+
+            {/* RIGHT: 2×2 grid */}
+            <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {SIGNALS.map((s, i) => (
+                <div
+                  key={s.title}
+                  className={s.filled ? "wc-card-filled" : "wc-card-outline"}
+                  data-reveal
+                  data-delay={i * 90}
+                >
+                  <div className="wc-icon-wrap">
+                    <i className={`ti ${s.icon}`} aria-hidden="true" />
+                  </div>
+                  <div>
+                    <h3 className="wc-title mb-2">{s.title}</h3>
+                    <p className="wc-desc">{s.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>

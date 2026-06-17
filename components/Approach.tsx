@@ -1,221 +1,347 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 
 const STEPS = [
   {
-    title: "Assessment & Quote",
-    desc: "A no-obligation visit, transparent pricing, and expert advice from the very first call.",
-    icon: (
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={1.8}
-        className="w-7 h-7"
-      >
-        <rect x="3" y="3" width="18" height="18" rx="2" />
-        <path d="M8 12h8M8 8h8M8 16h5" strokeLinecap="round" />
-      </svg>
-    ),
+    title: "Free Assessment",
+    desc: "We assess your property, discuss your requirements, and provide a clear, no-obligation quote.",
+    icon: "ti-clipboard-list",
     bullets: [
-      "Visit your property at a time that suits you",
-      "Transparent, no-obligation quote provided",
-      "Full assessment with no hidden costs",
-      "Same-day booking available in most areas",
-      "Friendly, expert advice from the first call",
+      "Free site visit or photo assessment",
+      "Clear and transparent pricing",
+      "No-obligation quotation",
+      "Advice tailored to your property",
+      "Convenient scheduling available",
     ],
   },
   {
     title: "Professional Cleaning",
-    desc: "Specialist equipment, thorough clearing, and minimal disruption from start to finish.",
-    icon: (
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={1.8}
-        className="w-7 h-7"
-      >
-        <circle cx="12" cy="12" r="9" />
-        <path
-          d="M2.5 12c3-5 7-7.5 9.5-7.5S18.5 7 21.5 12"
-          strokeLinecap="round"
-        />
-        <path
-          d="M2.5 12c3 5 7 7.5 9.5 7.5S18.5 17 21.5 12"
-          strokeLinecap="round"
-        />
-        <line x1="12" y1="3" x2="12" y2="21" />
-      </svg>
-    ),
+    desc: "Our team arrives fully equipped and completes the work using the safest and most effective cleaning methods.",
+    icon: "ti-wash",
     bullets: [
-      "Specialist equipment tailored to your property",
-      "Thorough gutter and downpipe clearing",
-      "Debris safely removed and disposed of",
-      "Downpipes flushed and blockage-free",
-      "Minimal disruption to your day",
+      "Specialist exterior cleaning equipment",
+      "Safe cleaning methods for every surface",
+      "Attention to detail throughout",
+      "Minimal disruption to your property",
+      "All waste and debris removed",
     ],
   },
   {
-    title: "Inspection & Completion",
-    desc: "Post-clean photos, maintenance advice, and a satisfaction guarantee on every job.",
-    icon: (
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={1.8}
-        className="w-7 h-7"
-      >
-        <path d="M9 11l3 3L22 4" strokeLinecap="round" strokeLinejoin="round" />
-        <path
-          d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"
-          strokeLinecap="round"
-        />
-      </svg>
-    ),
+    title: "Final Inspection",
+    desc: "We check the completed work, ensure everything meets our standards, and leave your property looking its best.",
+    icon: "ti-circle-check",
     bullets: [
-      "Full post-clean inspection carried out",
-      "Before & after photos shared with you",
-      "After-service maintenance advice given",
-      "Minor repairs flagged or fixed on the spot",
-      "Satisfaction guaranteed on every job",
+      "Quality inspection carried out",
+      "Before & after photos available",
+      "Work area left clean and tidy",
+      "Maintenance recommendations provided",
+      "Customer satisfaction guaranteed",
     ],
   },
 ];
 
-const ArrowIcon = () => (
-  <svg
-    className="w-[15px] h-[15px]"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth={2.5}
-    viewBox="0 0 24 24"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-    />
-  </svg>
-);
-
 export default function ApproachSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // Same scroll-reveal convention as About/Stats/WhyClean/Services/Gallery:
+  // IntersectionObserver adds .ap2-visible to each [data-reveal] node as it
+  // enters the viewport. Replaces the previous framer-motion implementation
+  // so this section uses the same engine (and no extra dependency) as the rest.
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const els = section.querySelectorAll<HTMLElement>("[data-reveal]");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const el = entry.target as HTMLElement;
+            const delay = el.dataset.delay ?? "0";
+            el.style.transitionDelay = `${delay}ms`;
+            el.classList.add("ap2-visible");
+            observer.unobserve(el);
+          }
+        });
+      },
+      { threshold: 0.2 },
+    );
+
+    els.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800;900&family=Manrope:wght@400;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap');
+        @import url('https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.30.0/dist/tabler-icons.min.css');
 
-        .ap-section { font-family: 'Inter', sans-serif; }
-        .ap-heading  { font-family: 'Manrope', sans-serif; }
-
-        .ap-card {
-          position: relative;
-          border-radius: 20px;
-          border:1px solid #1a2f6e;
-          overflow: hidden;
-          height: 470px;
-          box-shadow: 0 4px 24px rgba(0,0,0,.25);
-          transition: transform .28s ease, box-shadow .28s ease;
-        }
-        .ap-card:hover {
-          transform: translateY(-8px);
-          box-shadow: 0 20px 48px rgba(0,0,0,.4);
+        .ap2-section {
+          font-family: 'Inter', sans-serif;
+          background: #f8f9fc;
+          padding: clamp(56px, 9vw, 96px) 0;
         }
 
-        .ap-face {
-          position: absolute;
-          inset: 0;
-          padding: 32px;
+        .ap2-container {
+          max-width: 80rem;
+          margin: 0 auto;
+          padding: 0 clamp(20px, 5vw, 40px);
+        }
+
+        /* ── Scroll reveal ── */
+        [data-reveal] {
+          opacity: 0;
+          transform: translateY(22px);
+          transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+                      transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        [data-reveal].ap2-visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        /* Cards travel further, matching the previous y:46 framer-motion offset */
+        .ap2-card[data-reveal] {
+          transform: translateY(46px);
+          transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+                      transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .ap2-card[data-reveal].ap2-visible {
+          transform: translateY(0);
+        }
+        @media (prefers-reduced-motion: reduce) {
+          [data-reveal] { opacity: 1; transform: none; transition: none; }
+        }
+
+        /* ── Header ── */
+        .ap2-header-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 40px;
+          margin-bottom: clamp(40px, 7vw, 64px);
+        }
+
+        .ap2-header-left { flex: 1; min-width: 0; }
+
+        .ap2-header-right {
           display: flex;
           flex-direction: column;
-          transition: opacity .38s ease;
+          align-items: flex-start;
+          gap: 24px;
+          max-width: 340px;
+          margin-top: 3rem;
         }
 
-        .ap-face-default {
-          background: #0d2257;
-          justify-content: space-between;
-          opacity: 1;
+        .ap2-eyebrow {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          font-family: 'Inter', sans-serif;
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.2em;
+          text-transform: uppercase;
+          color: #2563eb;
+          margin-bottom: 18px;
         }
-        .ap-card:hover .ap-face-default { opacity: 0; pointer-events: none; }
-
-        .ap-face-hover {
-          background: #FFF265;
-          justify-content: flex-start;
-          padding-top: 52px;
-          opacity: 0;
-          pointer-events: none;
-        }
-        .ap-card:hover .ap-face-hover {
-          opacity: 1;
-          pointer-events: auto;
-        }
-
-        .ap-icon {
-          width: 64px;
-          height: 64px;
-          border-radius: 14px;
+        .ap2-eyebrow::before {
+          content: '';
+          display: block;
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
           background: #2563eb;
+          flex-shrink: 0;
+        }
+
+        .ap2-heading {
+          font-family: 'Inter Tight', sans-serif;
+          font-size: clamp(32px, 5vw, 50px);
+          font-weight: 500;
+          color: #081a3d;
+          line-height: 1.1;
+          letter-spacing: clamp(-0.5px, -0.1vw, -1.5px);
+          margin: 0;
+        }
+
+        .ap2-heading .word-dark { color: #081a3d; }
+        .ap2-heading .word-blue { color: #2563eb; }
+
+        .ap2-heading .word-underline {
+          color: #081a3d;
+          display: inline-block;
+          position: relative;
+          white-space: nowrap;
+        }
+        .ap2-heading .word-underline::after {
+          content: '';
+          position: absolute;
+          left: 0;
+          bottom: -4px;
+          width: 100%;
+          height: 3px;
+          border-radius: 2px;
+          background: #2563eb;
+        }
+
+        .ap2-sub {
+          font-size: 15px;
+          font-weight: 400;
+          color: #6b7a99;
+          line-height: 1.65;
+          max-width: 380px;
+          margin: 0;
+        }
+
+        /* CTA pill */
+        .ap2-cta {
+          display: inline-flex;
+          align-items: center;
+          gap: 0;
+          padding: 7px 7px 7px 26px;
+          border-radius: 100px;
+          background: #2563eb;
+          color: #ffffff;
+          font-family: 'Inter', sans-serif;
+          font-size: 12px;
+          font-weight: 700;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          text-decoration: none;
+          transition: background 0.22s ease, gap 0.2s ease,
+                      transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+          flex-shrink: 0;
+        }
+        .ap2-cta:hover {
+          background: #2563eb;
+          gap: 6px;
+          transform: scale(1.03);
+        }
+        .ap2-cta:active {
+          transform: scale(0.96);
+        }
+        .ap2-cta-circle {
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          background: #ffffff;
+          color: #081a3d;
           display: flex;
           align-items: center;
           justify-content: center;
+          margin-left: 16px;
           flex-shrink: 0;
-          color: #ffffff;
+          transition: background 0.22s, color 0.22s;
+        }
+        .ap2-cta:hover .ap2-cta-circle { background: #dbeafe; }
+
+        /* ── Cards grid — staggered offset ── */
+        .ap2-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 20px;
+          align-items: start;
         }
 
-        .ap-num {
-          font-family: 'Manrope', sans-serif;
-          font-size: 64px;
+        .ap2-card {
+          background: #ffffff;
+          border-radius: 20px;
+          border: 1px solid #e4e9f4;
+          padding: 36px 32px 40px;
+          box-shadow: 0 2px 12px rgba(8,26,61,0.06);
+          transition: box-shadow 0.26s ease, border-color 0.26s ease,
+                      transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+          position: relative;
+          overflow: hidden;
+          will-change: transform;
+        }
+        .ap2-card:hover {
+          box-shadow: 0 16px 40px rgba(8,26,61,0.13);
+          border-color: #bfdbfe;
+          transform: translateY(-8px);
+        }
+
+        /* stagger: card 2 down, card 3 down more */
+        .ap2-card:nth-child(2) { margin-top: 48px; }
+        .ap2-card:nth-child(3) { margin-top: 96px; }
+
+        .ap2-card-icon {
+          width: 54px;
+          height: 54px;
+          border-radius: 14px;
+          background: #eff4ff;
+          color: #2563eb;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-bottom: 28px;
+          font-size: 24px;
+          transition: background 0.22s ease, color 0.22s ease,
+                      transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .ap2-card:hover .ap2-card-icon {
+          background: #dbeafe;
+          color: #1d4ed8;
+          transform: rotate(-8deg) scale(1.08);
+        }
+
+        .ap2-card-num {
+          position: absolute;
+          top: 28px;
+          right: 28px;
+          font-family: 'Inter Tight', sans-serif;
+          font-size: 52px;
           font-weight: 800;
-          color: #ffffff;
-          opacity: 0.14;
+          color: #081a3d;
+          opacity: 0.06;
           line-height: 1;
           letter-spacing: -2px;
           pointer-events: none;
           user-select: none;
         }
 
-        .ap-title-default {
-          font-family: 'Manrope', sans-serif;
-          font-size: 26px;
-          font-weight: 800;
-          color: #ffffff;
-          line-height: 1.2;
-          letter-spacing: -0.3px;
-          margin-bottom: 10px;
-        }
-
-        .ap-desc-default {
-          font-size: 13.5px;
-          font-weight: 500;
-          color: #94a8cc;
-          line-height: 1.6;
-        }
-
-        .ap-title-hover {
-          font-family: 'Manrope', sans-serif;
+        .ap2-card-title {
+          font-family: 'Inter Tight', sans-serif;
           font-size: 22px;
-          font-weight: 800;
+          font-weight: 700;
           color: #081a3d;
           line-height: 1.2;
-          letter-spacing: -0.3px;
-          margin-bottom: 22px;
+          letter-spacing: -0.4px;
+          margin-bottom: 12px;
         }
 
-        .ap-bullet {
+        .ap2-card-desc {
+          font-size: 14px;
+          font-weight: 400;
+          color: #6b7a99;
+          line-height: 1.65;
+          margin-bottom: 28px;
+        }
+
+        .ap2-divider {
+          height: 1px;
+          background: #e4e9f4;
+          margin-bottom: 24px;
+        }
+
+        .ap2-bullet {
           display: flex;
           align-items: flex-start;
-          gap: 12px;
-          margin-bottom: 14px;
+          gap: 11px;
+          margin-bottom: 11px;
         }
-        .ap-bullet:last-child { margin-bottom: 0; }
+        .ap2-bullet:last-child { margin-bottom: 0; }
 
-        .ap-check {
-          width: 22px;
-          height: 22px;
+        .ap2-check {
+          width: 20px;
+          height: 20px;
           border-radius: 50%;
-          background: #081a3d;
+          background: #eff4ff;
+          border: 1px solid #bfd0f7;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -223,210 +349,131 @@ export default function ApproachSection() {
           margin-top: 1px;
         }
 
-        .ap-bullet-text {
-          font-size: 14px;
-          font-weight: 600;
-          color: #081a3d;
-          line-height: 1.4;
+        .ap2-bullet-text {
+          font-size: 13.5px;
+          font-weight: 500;
+          color: #374151;
+          line-height: 1.5;
         }
 
-        .ap-face-mobile { display: none; }
-
+        /* ── Responsive: tablet & below ── */
         @media (max-width: 1023px) {
-          .ap-card {
-            height: auto;
-            background: #0d2257;
-            border-radius: 16px;
-            transition: background .3s ease, box-shadow .28s ease, transform .28s ease;
-          }
-          .ap-card:hover {
-            background: #FFF265;
-            transform: translateY(-4px);
-          }
-
-          .ap-face-default,
-          .ap-face-hover { display: none; }
-
-          .ap-face-mobile {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            padding: 32px 28px;
-          }
-
-          .ap-card .mob-icon { color: #ffffff; transition: color .3s ease; }
-          .ap-card:hover .mob-icon { color: #081a3d; }
-
-          .ap-card .mob-title {
-            font-family: 'Manrope', sans-serif;
-            font-size: 20px;
-            font-weight: 800;
-            color: #ffffff;
-            line-height: 1.2;
-            letter-spacing: -0.3px;
-            margin-bottom: 10px;
-            transition: color .3s ease;
-          }
-          .ap-card:hover .mob-title { color: #081a3d; }
-
-          .ap-card .mob-bullet-text {
-            font-size: 13.5px;
-            font-weight: 600;
-            color: #94a8cc;
-            line-height: 1.5;
-            transition: color .3s ease;
-          }
-          .ap-card:hover .mob-bullet-text { color: #081a3d; }
-
-          .ap-card .mob-check {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: #081a3d;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            margin-top: 2px;
-            color: #2563eb;
-            transition: background .3s ease, color .3s ease;
-          }
-          .ap-card:hover .mob-check { background: #081a3d; color: #FFF265; }
+          .ap2-grid { grid-template-columns: 1fr; gap: 16px; }
+          .ap2-card:nth-child(2),
+          .ap2-card:nth-child(3) { margin-top: 0; }
+          .ap2-header-row { flex-direction: column; align-items: flex-start; gap: 28px; }
+          .ap2-header-right { max-width: 100%; margin-top: 0; }
+          .ap2-cta { align-self: flex-start; }
         }
 
-        .ap-btn {
-          display: inline-flex;
-          align-items: center;
-          gap: 0;
-          padding: 6px 6px 6px 28px;
-          border-radius: 100px;
-          background: #2563eb;
-          color: #ffffff;
-          font-family: 'Inter', sans-serif;
-          font-size: 12px;
-          font-weight: 700;
-          letter-spacing: .13em;
-          text-transform: uppercase;
-          text-decoration: none;
-          transition: background .22s, gap .2s;
+        /* ── Responsive: tablet 2-up ── */
+        @media (min-width: 640px) and (max-width: 1023px) {
+          .ap2-grid { grid-template-columns: repeat(2, 1fr); }
+          .ap2-card:nth-child(3) { grid-column: 1 / -1; }
         }
-        .ap-btn:hover { background: #1d4ed8; gap: 6px; }
 
-        .ap-btn-circle {
-          width: 38px;
-          height: 38px;
-          border-radius: 50%;
-          background: #ffffff;
-          color: #081a3d;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-shrink: 0;
-          margin-left: 18px;
-          transition: background .22s, color .22s;
+        /* ── Responsive: phones ── */
+        @media (max-width: 639px) {
+          .ap2-sub { max-width: 100%; }
+          .ap2-card { padding: 28px 22px 30px; }
+          .ap2-card-num { font-size: 40px; top: 20px; right: 20px; }
+          .ap2-cta { padding: 6px 6px 6px 20px; font-size: 11px; }
         }
-        .ap-btn:hover .ap-btn-circle { background: #FFF265; }
+
+        /* ── Responsive: small phones ── */
+        @media (max-width: 420px) {
+          .ap2-card { padding: 24px 18px 26px; border-radius: 16px; }
+          .ap2-card-icon { width: 46px; height: 46px; font-size: 20px; margin-bottom: 22px; }
+          .ap2-card-title { font-size: 19px; }
+          .ap2-card-desc { font-size: 13.5px; }
+          .ap2-bullet-text { font-size: 13px; }
+          .ap2-eyebrow { font-size: 10px; }
+        }
       `}</style>
 
-      <section
-        id="approach"
-        className="ap-section py-24"
-        style={{ background: "#081a3d" }}
-      >
-        <div className="max-w-7xl mx-auto px-7">
-          {/* ── Header ── */}
-          <div className="text-center max-w-xl mx-auto mb-16">
-            <p className="inline-flex items-center justify-center gap-2 text-[#FFF265] font-semibold text-xs uppercase tracking-[0.22em] mb-4">
-              Our Approach
-            </p>
-            <h2 className="ap-heading text-[clamp(32px,4.5vw,48px)] font-extrabold text-white leading-tight tracking-tight mb-5">
-              Professional <span className="text-blue-600">Results</span>, Every
-              Single Visit
-            </h2>
-            <p className="text-[#94a8cc] text-[15px] leading-relaxed">
-              We offer end-to-end support by partnering with you to understand
-              your goals, design tailored execution plans, and deliver lasting
-              impact — every step of the way.
-            </p>
+      <section id="approach" ref={sectionRef} className="ap2-section">
+        <div className="ap2-container">
+          {/* ── Header row ── */}
+          <div className="ap2-header-row">
+            <div className="ap2-header-left" data-reveal data-delay="0">
+              <p className="ap2-eyebrow">Our Process</p>
+              <h2 className="ap2-heading">
+                How We Get
+                <br />
+                <span>Outstanding</span>{" "}
+                <span className="word-blue">Results.</span>
+              </h2>
+            </div>
+
+            <div className="ap2-header-right" data-reveal data-delay="150">
+              <p className="ap2-sub">
+                A simple, professional process designed to deliver reliable
+                exterior cleaning results for every property.
+              </p>
+              <Link href="#contact" className="ap2-cta">
+                Get in Touch
+                <span className="ap2-cta-circle">
+                  <svg
+                    width="15"
+                    height="15"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2.5}
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                    />
+                  </svg>
+                </span>
+              </Link>
+            </div>
           </div>
 
           {/* ── Cards ── */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-14">
+          <div className="ap2-grid">
             {STEPS.map((step, i) => (
-              <div key={step.title} className="ap-card">
-                {/* DESKTOP default face */}
-                <div className="ap-face ap-face-default">
-                  <div className="flex items-center justify-between">
-                    <div className="ap-icon">{step.icon}</div>
-                    <span className="ap-num">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                  </div>
-                  <div>
-                    <p className="ap-title-default">{step.title}</p>
-                    <p className="ap-desc-default">{step.desc}</p>
-                  </div>
+              <div
+                key={step.title}
+                className="ap2-card"
+                data-reveal
+                data-delay={i * 140}
+              >
+                <span className="ap2-card-num">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+
+                <div className="ap2-card-icon">
+                  <i className={`ti ${step.icon}`} aria-hidden="true" />
                 </div>
 
-                {/* DESKTOP hover face */}
-                <div className="ap-face ap-face-hover">
-                  <p className="ap-title-hover">{step.title}</p>
-                  <div>
-                    {step.bullets.map((b) => (
-                      <div key={b} className="ap-bullet">
-                        <span className="ap-check">
-                          <svg
-                            width="13"
-                            height="13"
-                            viewBox="0 0 14 14"
-                            fill="none"
-                            stroke="#FFF265"
-                            strokeWidth={2}
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          >
-                            <polyline points="2,7 5.5,10.5 12,3" />
-                          </svg>
-                        </span>
-                        <span className="ap-bullet-text">{b}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                <p className="ap2-card-title">{step.title}</p>
+                <p className="ap2-card-desc">{step.desc}</p>
 
-                {/* MOBILE face */}
-                <div className="ap-face-mobile">
-                  <div className="mob-icon">{step.icon}</div>
-                  <div>
-                    <p className="mob-title">{step.title}</p>
-                    {step.bullets.map((b) => (
-                      <div
-                        key={b}
-                        style={{
-                          display: "flex",
-                          alignItems: "flex-start",
-                          gap: "10px",
-                          marginBottom: "10px",
-                        }}
-                      >
-                        <span className="mob-check">
-                          <svg
-                            width="11"
-                            height="11"
-                            viewBox="0 0 14 14"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth={2}
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          >
-                            <polyline points="2,7 5.5,10.5 12,3" />
-                          </svg>
-                        </span>
-                        <span className="mob-bullet-text">{b}</span>
-                      </div>
-                    ))}
-                  </div>
+                <div className="ap2-divider" />
+
+                <div>
+                  {step.bullets.map((b) => (
+                    <div key={b} className="ap2-bullet">
+                      <span className="ap2-check">
+                        <svg
+                          width="11"
+                          height="11"
+                          viewBox="0 0 14 14"
+                          fill="none"
+                          stroke="#2563eb"
+                          strokeWidth={2.2}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <polyline points="2,7 5.5,10.5 12,3" />
+                        </svg>
+                      </span>
+                      <span className="ap2-bullet-text">{b}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
             ))}
