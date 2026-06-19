@@ -184,7 +184,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center select-none shrink-0">
             <Image
-              src="/logo.png"
+              src="/logo.webp"
               width={160}
               height={48}
               alt="logo"

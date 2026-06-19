@@ -300,18 +300,18 @@ function CardThumb({ accent }: { accent: string }) {
 /* ─────────────────────────────────────────────────── HEADER */
 function HeaderSection() {
   return (
-    <section className="bl-body bg-white pt-36 pb-16 lg:pt-44 lg:pb-20 px-5 sm:px-8 lg:px-16">
+    <section className="bl-body bg-white pt-16 pb-16 lg:pt-24 lg:pb-20 px-5 sm:px-8 lg:px-16">
       <div className="max-w-7xl mx-auto">
         <div className="bl-section-head">
-          <div className="flex flex-col  gap-5 ">
-            <p className="bl-anim-1 bl-eyebrow">
+          <div className="flex flex-col items-center  gap-5 ">
+            <p className="bl-anim-1 bl-eyebrow text-center">
               <span className="dot" />
               Tips, Guides &amp; News
             </p>
-            <h1 className="bl-anim-2 bl-display text-[36px] sm:text-[46px] lg:text-[52px] font-medium text-[#0d1b3e] leading-[1.05] tracking-[-1px]">
+            <h1 className="bl-anim-2 bl-display text-center text-[36px] sm:text-[46px] lg:text-[52px] font-medium text-[#0d1b3e] leading-[1.05] tracking-[-1px]">
               The Al Grey&apos;s <span className="text-[#2563eb]">Blog</span>
             </h1>
-            <p className="bl-anim-3 text-[#64748b] text-[16px] leading-relaxed lg:max-w-[360px]">
+            <p className="bl-anim-3 text-center text-[#64748b] text-[16px] leading-relaxed lg:max-w-[400px]">
               Practical advice on gutter care, window cleaning, pressure
               washing, and keeping your property in top condition all year
               round.

@@ -10,15 +10,15 @@ import {
 import Navbar from "./Navbar";
 
 const COLLAGE = [
-  { src: "/lp-1.jpg", alt: "Cleaner wiping surface" },
-  { src: "/lp-2.jpg", alt: "Professional cleaning tools" },
-  { src: "/lp-3.jpg", alt: "Cleaning spray and cloth" },
-  { src: "/lp-4.jpg", alt: "Cleaning team at work" },
-  { src: "/lp-5.jpg", alt: "Scrubbing floor" },
-  { src: "/lp-6.jpg", alt: "Polishing windows" },
-  { src: "/lp-7.jpg", alt: "Home cleaning" },
-  { src: "/lp-8.jpg", alt: "Carpet cleaning" },
-  { src: "/lp-9.jpg", alt: "Carpet cleaning" },
+  { src: "/lp-1.webp", alt: "Cleaner wiping surface" },
+  { src: "/lp-2.webp", alt: "Professional cleaning tools" },
+  { src: "/lp-3.webp", alt: "Cleaning spray and cloth" },
+  { src: "/lp-4.webp", alt: "Cleaning team at work" },
+  { src: "/lp-5.webp", alt: "Scrubbing floor" },
+  { src: "/lp-6.webp", alt: "Polishing windows" },
+  { src: "/lp-7.webp", alt: "Home cleaning" },
+  { src: "/lp-8.webp", alt: "Carpet cleaning" },
+  { src: "/lp-9.webp", alt: "Carpet cleaning" },
 ];
 
 const TRACK = [...COLLAGE, ...COLLAGE];

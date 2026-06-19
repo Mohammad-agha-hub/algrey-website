@@ -5,43 +5,43 @@ import { useState, useRef, useCallback, useEffect } from "react";
 const PAIRS = [
   {
     label: "Gutter Cleaning",
-    before: "/before-1.jpg",
-    after: "/after-1.jpg",
+    before: "/before-1.webp",
+    after: "/after-1.webp",
   },
   {
     label: "Roof Cleaning",
-    before: "/before-2.jpg",
-    after: "/after-2.jpg",
+    before: "/before-2.webp",
+    after: "/after-2.webp",
   },
   {
     label: "Driveway Cleaning",
-    before: "/before-3.jpg",
-    after: "/after-3.jpg",
+    before: "/before-3.webp",
+    after: "/after-3.webp",
   },
   {
     label: "Render Cleaning",
-    before: "/before-4.jpg",
-    after: "/after-4.jpg",
+    before: "/before-4.webp",
+    after: "/after-4.webp",
   },
   {
     label: "Pressure Washing",
-    before: "/before-5.jpg",
-    after: "/after-5.jpg",
+    before: "/before-5.webp",
+    after: "/after-5.webp",
   },
   {
     label: "Pressure Washing",
-    before: "/before-6.jpg",
-    after: "/after-6.jpg",
+    before: "/before-6.webp",
+    after: "/after-6.webp",
   },
   {
     label: "Pressure Washing",
-    before: "/before-7.jpg",
-    after: "/after-7.jpg",
+    before: "/before-7.webp",
+    after: "/after-7.webp",
   },
   {
     label: "Pressure Washing",
-    before: "/before-0.jpg",
-    after: "/after-0.jpg",
+    before: "/before-0.webp",
+    after: "/after-0.webp",
   },
 ];
 

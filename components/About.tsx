@@ -202,7 +202,7 @@ export default function AboutSection() {
               data-delay="0"
             >
               <div className="ab-img-wrap">
-                <img src="/lp-9.jpg" alt="Professional cleaning team at work" />
+                <img src="/lp-9.webp" alt="Professional cleaning team at work" />
                 <div className="ab-stat-card">
                   <span className="ab-display text-[32px] font-bold text-[#2563eb] leading-none">
                     100+
