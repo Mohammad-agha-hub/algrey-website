@@ -7,6 +7,7 @@ import React from "react";
 // ─────────────────────────────────────────────────────────────────
 export interface CTAData {
   badge: string;
+  heading:string;
   headingLines: [string, string, string];
   body: string;
   pills: [string, string, string];
@@ -126,6 +127,7 @@ const PI = ({ d, d2 }: { d: string; d2?: string }) => (
 export const gutterCleaningData: ServiceData = {
   cta: {
     badge: "Same-Day Response",
+    heading: "Stop Ignoring Your Gutters. Book Today.",
     headingLines: ["Stop Ignoring", "Your Gutters.", "Book Today."],
     body: "Blocked gutters cause damp, cracked walls and costly repairs. Takes 60 seconds to book — we handle the rest.",
     pills: ["No call-out fee", "Free quote in minutes", "Fully insured"],
@@ -293,6 +295,7 @@ export const gutterCleaningData: ServiceData = {
 export const residentialGutterCleaningData: ServiceData = {
   cta: {
     badge: "Same-Day Response",
+    heading: "Protect Your Home. Start With Your Gutters.",
     headingLines: ["Protect Your Home.", "Start With Your", "Gutters."],
     body: "Water damage from blocked gutters is costly and avoidable. Book in 60 seconds — we'll handle everything else.",
     pills: ["No call-out fee", "Free quote in minutes", "Fully insured"],
@@ -483,6 +486,7 @@ export const residentialGutterCleaningData: ServiceData = {
 export const pressureWashingData: ServiceData = {
   cta: {
     badge: "Instant Results",
+    heading: "Dirty Surfaces? We'll Make Them Look New.",
     headingLines: ["Dirty Surfaces?", "We'll Make Them", "Look New."],
     body: "Embedded dirt, moss and oil stains don't stand a chance. Professional pressure washing — booked in 60 seconds.",
     pills: ["No call-out fee", "Free quote in minutes", "Fully insured"],
@@ -665,6 +669,7 @@ export const pressureWashingData: ServiceData = {
 export const windowCleaningData: ServiceData = {
   cta: {
     badge: "Crystal-Clear Results",
+    heading: "Streak-Free Windows. Every Pane, Every Time.",
     headingLines: ["Streak-Free Windows.", "Every Pane,", "Every Time."],
     body: "Dirty windows reduce light and damage glass long-term. Professional cleaning — booked in just 60 seconds.",
     pills: ["No call-out fee", "Free quote in minutes", "Fully insured"],
@@ -833,8 +838,9 @@ export const windowCleaningData: ServiceData = {
         q: "Can you remove hard water stains from windows?",
         a: "Yes, we specialize in hard water stain removal. While severe etching may require multiple treatments or specialized restoration techniques, we can significantly improve or completely remove most hard water stains using our professional-grade solutions and methods.",
       },
-      {q:"Do you work in all weather conditions?",
-        a:"We typically avoid cleaning windows during heavy rain, strong winds, or freezing temperatures as these conditions can affect the quality of our work and pose safety risks. We'll reschedule if weather conditions aren't suitable for optimal results."
+      {
+        q: "Do you work in all weather conditions?",
+        a: "We typically avoid cleaning windows during heavy rain, strong winds, or freezing temperatures as these conditions can affect the quality of our work and pose safety risks. We'll reschedule if weather conditions aren't suitable for optimal results.",
       },
       {
         q: "How long does a typical window clean take?",
@@ -850,6 +856,7 @@ export const windowCleaningData: ServiceData = {
 export const drivewayCleaningData: ServiceData = {
   cta: {
     badge: "Same-Day Response",
+    heading: "First Impressions Start With Your Driveway.",
     headingLines: ["First Impressions", "Start With Your", "Driveway."],
     body: "Oil stains, moss and embedded grime restored in a single visit. Takes 60 seconds to book — we do the rest.",
     pills: ["No call-out fee", "Free quote in minutes", "Fully insured"],
@@ -1035,6 +1042,7 @@ export const drivewayCleaningData: ServiceData = {
 export const patioCleaningData: ServiceData = {
   cta: {
     badge: "Same-Day Response",
+    heading: "Reclaim Your Outdoor Space. Book Today.",
     headingLines: ["Reclaim Your", "Outdoor Space.", "Book Today."],
     body: "Moss, algae and grime can ruin a patio fast. One professional clean is all it takes — book in 60 seconds.",
     pills: ["No call-out fee", "Free quote in minutes", "Fully insured"],
@@ -1199,8 +1207,9 @@ export const patioCleaningData: ServiceData = {
         q: "Do you offer guarantees on your patio cleaning work?",
         a: "Yes, we offer a satisfaction guarantee on all our patio cleaning services. If you're not completely happy with the results, we'll return to address any concerns at no additional cost. Additionally, our protective sealants come with performance guarantees, and we provide advice on maintaining your patio to extend the time between professional cleanings.",
       },
-      {q:"Are the cleaning products you use safe for pets and plants?",
-        a:"Yes, we use environmentally friendly, biodegradable cleaning solutions that are safe for pets, plants, and the surrounding environment when applied correctly. We take precautions to protect your landscaping during the cleaning process and can use additional protective measures if you have particularly sensitive plants. We're happy to discuss the specific products we use for your peace of mind."
+      {
+        q: "Are the cleaning products you use safe for pets and plants?",
+        a: "Yes, we use environmentally friendly, biodegradable cleaning solutions that are safe for pets, plants, and the surrounding environment when applied correctly. We take precautions to protect your landscaping during the cleaning process and can use additional protective measures if you have particularly sensitive plants. We're happy to discuss the specific products we use for your peace of mind.",
       },
       {
         q: "How long does it take for a patio to dry after cleaning?",
@@ -1216,6 +1225,7 @@ export const patioCleaningData: ServiceData = {
 export const renderCleaningData: ServiceData = {
   cta: {
     badge: "Specialist Render Care",
+    heading: "Bring Your Render Back To Life.",
     headingLines: ["Bring Your", "Render Back", "To Life."],
     body: "Algae and moss silently damage render over time. Our soft-wash system restores it safely — book in 60 seconds.",
     pills: ["No call-out fee", "Free quote in minutes", "Fully insured"],
@@ -1385,8 +1395,9 @@ export const renderCleaningData: ServiceData = {
         q: "Do you offer guarantees on render cleaning?",
         a: "Yes, we offer a satisfaction guarantee on all our render cleaning services. If you're not completely happy with the results, we'll return to address any concerns at no additional cost. Additionally, our protective treatments come with a guarantee against regrowth for a specified period, typically 2-3 years depending on the product used and local conditions.",
       },
-      {q:"Are the chemicals you use safe for my plats and pets?",
-        a:"Yes, we use environmentally friendly, biodegradable cleaning solutions that are safe for plants, pets, and the surrounding environment when applied correctly. We take comprehensive precautions to protect your landscaping during the cleaning process, including covering plants and sensitive areas. We can use additional protective measures if you have particularly sensitive plants or environmental concerns."
+      {
+        q: "Are the chemicals you use safe for my plats and pets?",
+        a: "Yes, we use environmentally friendly, biodegradable cleaning solutions that are safe for plants, pets, and the surrounding environment when applied correctly. We take comprehensive precautions to protect your landscaping during the cleaning process, including covering plants and sensitive areas. We can use additional protective measures if you have particularly sensitive plants or environmental concerns.",
       },
       {
         q: "Can render cleaning improve my property's energy efficiency?",
@@ -1402,6 +1413,7 @@ export const renderCleaningData: ServiceData = {
 export const brickCleaningData: ServiceData = {
   cta: {
     badge: "Expert Brick Care",
+    heading: "Restore Your Brickwork's Natural Look.",
     headingLines: ["Restore Your", "Brickwork's", "Natural Look."],
     body: "Staining, efflorescence and biological growth age your brickwork fast. Professional cleaning — 60 seconds to book.",
     pills: ["No call-out fee", "Free quote in minutes", "Fully insured"],
@@ -1584,6 +1596,7 @@ export const brickCleaningData: ServiceData = {
 export const claddingCleaningData: ServiceData = {
   cta: {
     badge: "Cladding Specialists",
+    heading: "Your Cladding Deserves Better Than This.",
     headingLines: ["Your Cladding", "Deserves Better", "Than This."],
     body: "Algae and pollution degrade cladding faster than you think. Our specialist soft-wash system restores it — book in 60 seconds.",
     pills: ["No call-out fee", "Free quote in minutes", "Fully insured"],
@@ -1770,6 +1783,7 @@ export const claddingCleaningData: ServiceData = {
 export const downpipeCleaningData: ServiceData = {
   cta: {
     badge: "Emergency Call-Outs",
+    heading: "Blocked Downpipes? Don't Wait For Water Damage.",
     headingLines: ["Blocked Downpipes?", "Don't Wait For", "Water Damage."],
     body: "A blocked downpipe can cause serious damage to walls and foundations. 60 seconds to book — we'll clear it fast.",
     pills: ["No call-out fee", "Free quote in minutes", "Fully insured"],
@@ -1954,6 +1968,7 @@ export const downpipeCleaningData: ServiceData = {
 export const graffitiRemovalData: ServiceData = {
   cta: {
     badge: "Rapid Response",
+    heading: "Graffiti Today? Gone By Tomorrow.",
     headingLines: ["Graffiti Today?", "Gone By", "Tomorrow."],
     body: "Fast, professional removal before it attracts more vandalism. Takes 60 seconds to book — we respond within 24 hours.",
     pills: ["No call-out fee", "Free quote in minutes", "Fully insured"],
@@ -2143,6 +2158,7 @@ export const graffitiRemovalData: ServiceData = {
 export const commercialGutterData: ServiceData = {
   cta: {
     badge: "Commercial Specialists",
+    heading: "Protect Your Commercial Property.",
     headingLines: ["Protect Your", "Commercial", "Property."],
     body: "Blocked gutters on commercial buildings cause serious damage and liability. 60 seconds to book — minimal disruption guaranteed.",
     pills: ["No hidden costs", "Free site survey", "Fully insured"],
@@ -2312,8 +2328,9 @@ export const commercialGutterData: ServiceData = {
         q: "Can clogged commercial gutters cause structural damage?",
         a: "Yes, neglected commercial gutters can lead to serious structural issues including foundation damage, roof deterioration, water intrusion, and mold growth. The weight of debris and standing water can also cause gutter systems to pull away from buildings, requiring expensive repairs.",
       },
-      {q:"Can clogged commercial gutters cause structural damage?",
-        a:"Yes, neglected commercial gutters can lead to serious structural issues including foundation damage, roof deterioration, water intrusion, and mold growth. The weight of debris and standing water can also cause gutter systems to pull away from buildings, requiring expensive repairs."
+      {
+        q: "Can clogged commercial gutters cause structural damage?",
+        a: "Yes, neglected commercial gutters can lead to serious structural issues including foundation damage, roof deterioration, water intrusion, and mold growth. The weight of debris and standing water can also cause gutter systems to pull away from buildings, requiring expensive repairs.",
       },
       {
         q: "Do you provide maintenance contracts for commercial properties?",
@@ -2333,6 +2350,7 @@ export const commercialGutterData: ServiceData = {
 export const roofCleaningData: ServiceData = {
   cta: {
     badge: "Roof Care Specialists",
+    heading: "Moss Destroying Your Roof? Act Today.",
     headingLines: ["Moss Destroying", "Your Roof?", "Act Today."],
     body: "Moss and algae shorten your roof's lifespan and cause costly damage. Safe soft-wash cleaning — booked in 60 seconds.",
     pills: ["No call-out fee", "Free quote in minutes", "Fully insured"],

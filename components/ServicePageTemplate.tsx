@@ -83,7 +83,7 @@ interface FaqData {
 
 interface CTAData {
   badge: string;
-  heading: string; // ← required by CTA.tsx
+  heading: string; 
   headingLines: [string, string, string];
   body: string;
   pills: [string, string, string];
