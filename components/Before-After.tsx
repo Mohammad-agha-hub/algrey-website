@@ -5,28 +5,43 @@ import { useState, useRef, useCallback, useEffect } from "react";
 const PAIRS = [
   {
     label: "Gutter Cleaning",
-    before: "/graffiti.webp",
-    after: "/grafitti-removal1.webp",
+    before: "/before-1.jpg",
+    after: "/after-1.jpg",
   },
   {
     label: "Roof Cleaning",
-    before: "/before-roof.webp",
-    after: "/after-roof.webp",
+    before: "/before-2.jpg",
+    after: "/after-2.jpg",
   },
   {
     label: "Driveway Cleaning",
-    before: "/before-driveway.webp",
-    after: "/after-driveway.webp",
+    before: "/before-3.jpg",
+    after: "/after-3.jpg",
   },
   {
     label: "Render Cleaning",
-    before: "/before-render.webp",
-    after: "/after-render.webp",
+    before: "/before-4.jpg",
+    after: "/after-4.jpg",
   },
   {
     label: "Pressure Washing",
-    before: "/before-pressure.webp",
-    after: "/after-pressure.webp",
+    before: "/before-5.jpg",
+    after: "/after-5.jpg",
+  },
+  {
+    label: "Pressure Washing",
+    before: "/before-6.jpg",
+    after: "/after-6.jpg",
+  },
+  {
+    label: "Pressure Washing",
+    before: "/before-7.jpg",
+    after: "/after-7.jpg",
+  },
+  {
+    label: "Pressure Washing",
+    before: "/before-0.jpg",
+    after: "/after-0.jpg",
   },
 ];
 
@@ -156,6 +171,7 @@ export default function BeforeAfterSection() {
           cursor: ew-resize;
           user-select: none;
           -webkit-user-select: none;
+          touch-action: none;
         }
 
         @media (max-width: 640px) {
@@ -171,11 +187,13 @@ export default function BeforeAfterSection() {
           object-fit: cover;
         }
 
-        /* Before image — clipped to left portion */
+        /* Before image — wrapper always stays full container size;
+           clip-path reveals only the left sliderPos% of it. This
+           keeps the image's own scale constant, so it never re-zooms
+           as the wrapper's visible width changes. */
         .ba-before-wrap {
           position: absolute;
           inset: 0;
-          overflow: hidden;
         }
         .ba-before {
           position: absolute;
@@ -212,30 +230,6 @@ export default function BeforeAfterSection() {
           box-shadow: 0 4px 16px rgba(0,0,0,0.25);
           pointer-events: none;
           gap: 3px;
-        }
-
-        /* Label badges */
-        .ba-badge {
-          position: absolute;
-          top: 16px;
-          font-family: 'Inter', sans-serif;
-          font-size: 12px;
-          font-weight: 700;
-          letter-spacing: 0.1em;
-          text-transform: uppercase;
-          padding: 5px 12px;
-          border-radius: 999px;
-          pointer-events: none;
-        }
-        .ba-badge-before {
-          left: 16px;
-          background: rgba(0,0,0,0.55);
-          color: #fff;
-        }
-        .ba-badge-after {
-          right: 16px;
-          background: rgba(37,99,235,0.85);
-          color: #fff;
         }
 
         /* Nav buttons */
@@ -315,15 +309,12 @@ export default function BeforeAfterSection() {
             </p>
           </div>
 
-          {/* ── Pair label + counter ── */}
+          {/* ── Counter ── */}
           <div
-            className="flex items-center justify-between mb-5"
+            className="flex items-center justify-end mb-5"
             data-reveal
             data-delay="220"
           >
-            <span className="ba-display text-[#0d1b3e] font-bold text-[17px]">
-              {pair.label}
-            </span>
             <span className="text-[#94a3b8] text-[14px] font-medium">
               {pairIndex + 1} / {total}
             </span>
@@ -342,17 +333,21 @@ export default function BeforeAfterSection() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={pair.after}
-              alt="After cleaning"
+              alt={`${pair.label} after`}
               className="ba-after"
               draggable={false}
             />
 
-            {/* Before — clipped on the left */}
-            <div className="ba-before-wrap" style={{ width: `${sliderPos}%` }}>
+            {/* Before — full-size image, clipped via clip-path so it
+                never has to rescale as sliderPos changes */}
+            <div
+              className="ba-before-wrap"
+              style={{ clipPath: `inset(0 ${100 - sliderPos}% 0 0)` }}
+            >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={pair.before}
-                alt="Before cleaning"
+                alt={`${pair.label} before`}
                 className="ba-before"
                 draggable={false}
               />
@@ -408,10 +403,6 @@ export default function BeforeAfterSection() {
                 />
               </svg>
             </div>
-
-            {/* Badges */}
-            <span className="ba-badge ba-badge-before">Before</span>
-            <span className="ba-badge ba-badge-after">After</span>
           </div>
 
           {/* ── Navigation ── */}

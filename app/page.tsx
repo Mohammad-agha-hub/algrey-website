@@ -4,7 +4,6 @@ import BeforeAfter from '@/components/Before-After'
 import CTASection from '@/components/CTA'
 import FAQSection from '@/components/Faq'
 import CTAAndFooter from '@/components/Footer'
-
 import GallerySection from '@/components/Gallary'
 import Landing from '@/components/Landing'
 import ServicesSection from '@/components/Services'
@@ -16,7 +15,6 @@ import React from 'react'
 const page = () => {
   return (
     <div>
-
       <Landing />
       <Stats/>
       <AboutSection />

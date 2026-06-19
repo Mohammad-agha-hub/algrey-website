@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 const ITEMS = [
   {
@@ -113,7 +114,7 @@ export default function GallerySection() {
           transition: opacity 0.3s ease, transform 0.3s ease;
           pointer-events: none;
         }
-        .gallery-card:hover .gallery-label { opacity: 1; transform: translateY(0); }
+        .gallery-card:hover .gallery-label { opacity: 1; transform: translateY(0); pointer-events: auto; }
         .gallery-label-text {
           color: #ffffff;
           font-family: 'Inter', sans-serif;
@@ -159,7 +160,7 @@ export default function GallerySection() {
 
       <section
         ref={sectionRef}
-        className="gal-root bg-[#f8fafc] py-20 lg:py-28 px-5 sm:px-8 lg:px-14"
+        className="gal-root bg-[#f8fafc] pt-8 px-5 sm:px-8 lg:px-14"
       >
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-12 lg:mb-16">
@@ -210,7 +211,7 @@ export default function GallerySection() {
                   sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 33vw"
                 />
 
-                <div className="gallery-label">
+                <Link href={"/enquiry-now"} className="gallery-label">
                   <span className="gallery-label-text">Get Your Quote</span>
                   <span className="gallery-label-icon">
                     <svg
@@ -228,7 +229,7 @@ export default function GallerySection() {
                       />
                     </svg>
                   </span>
-                </div>
+                </Link>
               </div>
             ))}
           </div>

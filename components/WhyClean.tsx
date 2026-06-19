@@ -216,7 +216,7 @@ export default function WhyCleanSection() {
 
       <section
         ref={sectionRef}
-        className="wc-root bg-[#f8fafc] py-20 lg:py-28 px-5 sm:px-8 lg:px-16"
+        className="wc-root bg-[#F8FAFC] pt-4 lg:pt-12 px-5 sm:px-8 lg:px-16"
       >
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row items-start gap-14 lg:gap-20">
@@ -272,7 +272,7 @@ export default function WhyCleanSection() {
                     </svg>
                   </span>
                 </a>
-                <a href="/services" className="wc-btn-services">
+                <a href="#services" className="wc-btn-services">
                   View Services
                   <span className="wc-svc-arrow">
                     <svg

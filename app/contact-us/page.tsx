@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
@@ -8,91 +8,140 @@ import CTAAndFooter from "@/components/Footer";
 import CTASection from "@/components/CTA";
 
 /* ═══════════════════════════════════════════════════════════════════
-   STYLES
+   DESIGN TOKENS — matched to the about page:
+   - Fonts: Inter Tight (display/headings) + Inter (body)
+   - Navy:  #0d1b3e   Blue accent: #2563eb
+   - Body text: slate-500 (#64748b)   Muted/secondary: slate-400 (#94a3b8)
+   - Light section bg: #f8fafc (slate-50)   Card border: #e2e8f0 (slate-200)
 ═══════════════════════════════════════════════════════════════════ */
 function ContactStyles() {
   return (
     <style>{`
-      @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Manrope:wght@400;600;700;800;900&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
 
-      .ct-display { font-family: 'Bebas Neue', sans-serif; }
-      .ct-heading  { font-family: 'Manrope', sans-serif; }
-      .ct-body     { font-family: 'Inter', sans-serif; }
+      .ct-display { font-family: 'Inter Tight', sans-serif; }
+      .ct-body    { font-family: 'Inter', sans-serif; }
 
       @keyframes ct-fadeUp {
         from { opacity: 0; transform: translateY(28px); }
         to   { opacity: 1; transform: translateY(0); }
       }
-      @keyframes ct-fadeIn {
-        from { opacity: 0; }
-        to   { opacity: 1; }
-      }
+      @keyframes ct-fadeIn { from { opacity: 0; } to { opacity: 1; } }
       .ct-anim-2 { animation: ct-fadeUp .65s .10s ease both; }
       .ct-anim-3 { animation: ct-fadeUp .65s .22s ease both; }
       .ct-anim-4 { animation: ct-fadeUp .65s .34s ease both; }
-
-      /* Info Cards */
-      .ct-info-card {
-        background: #0d2257;
-        border-radius: 16px;
-        padding: 36px 28px 32px;
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        cursor: default;
-        transition: background 0.3s ease;
+      @media (prefers-reduced-motion: reduce) {
+        .ct-anim-2, .ct-anim-3, .ct-anim-4 { animation: none; opacity: 1; transform: none; }
       }
-      .ct-info-card:hover { background: #FFF265; }
-      .ct-info-card .ct-ic-icon  { color: #ffffff; transition: color 0.3s ease; }
-      .ct-info-card:hover .ct-ic-icon { color: #0d2257; }
-      .ct-info-card .ct-ic-title { color: #ffffff; transition: color 0.3s ease; }
-      .ct-info-card:hover .ct-ic-title { color: #0d2257; }
-      .ct-info-card .ct-ic-text  { color: #94a8cc; font-size: 13.5px; line-height: 1.7; transition: color 0.3s ease; }
-      .ct-info-card:hover .ct-ic-text { color: #081a3d; }
-      .ct-info-card .ct-ic-link  { color: #2563eb; font-size: 13px; font-weight: 700; text-decoration: none; transition: color 0.3s ease; }
-      .ct-info-card:hover .ct-ic-link { color: #081a3d; text-decoration: underline; }
 
-      /* FAQ */
-      .ct-faq-item {
-        border: 1px solid #e8edf5;
-        border-radius: 14px;
-        overflow: hidden;
-        transition: border-color .2s, box-shadow .2s;
-      }
-      .ct-faq-item.open { border-color: #2563eb; box-shadow: 0 4px 24px rgba(37,99,235,.1); }
-      .ct-faq-trigger {
-        width: 100%;
-        display: flex;
+      /* ── Eyebrow (shared dot-bullet style) ── */
+      .ct-eyebrow {
+        display: inline-flex;
         align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-        padding: 20px 24px;
-        background: transparent;
+        gap: 8px;
+        font-family: 'Inter', sans-serif;
+        font-weight: 600;
+        font-size: 12px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+      }
+      .ct-eyebrow .dot {
+        width: 6px; height: 6px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+
+      /* ── CTA pill button ── */
+      .ct-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 0;
+        padding: 7px 7px 7px 26px;
+        border-radius: 100px;
+        background: #2563eb;
+        color: #ffffff;
+        font-family: 'Inter', sans-serif;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        text-decoration: none;
         border: none;
         cursor: pointer;
-        text-align: left;
-        transition: background .2s;
-      }
-      .ct-faq-trigger:hover { background: #f8f9ff; }
-      .ct-faq-item.open .ct-faq-trigger { background: #f8f9ff; }
-      .ct-faq-icon {
-        width: 28px; height: 28px;
-        border-radius: 50%;
-        border: 1.5px solid #cbd5e1;
-        display: flex; align-items: center; justify-content: center;
+        transition: background 0.22s ease, gap 0.2s ease,
+                    transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
         flex-shrink: 0;
-        color: #94a3b8;
-        transition: background .2s, border-color .2s, color .2s, transform .25s;
       }
-      .ct-faq-item.open .ct-faq-icon {
-        background: #2563eb; border-color: #2563eb; color: #ffffff; transform: rotate(45deg);
+      .ct-cta:hover { background: #1d4ed8; gap: 6px; transform: scale(1.03); }
+      .ct-cta:active { transform: scale(0.96); }
+      .ct-cta-circle {
+        width: 36px; height: 36px;
+        border-radius: 50%;
+        background: #ffffff;
+        color: #0d1b3e;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 16px;
+        flex-shrink: 0;
+        transition: background 0.22s, color 0.22s;
       }
-      .ct-faq-body-text {
-        max-height: 0; overflow: hidden;
-        transition: max-height .35s ease, padding .3s ease;
-        padding: 0 24px;
+      .ct-cta:hover .ct-cta-circle { background: #dbeafe; }
+
+      .ct-cta-outline {
+        background: transparent;
+        border: 1.5px solid rgba(255,255,255,0.55);
+        color: #ffffff;
       }
-      .ct-faq-item.open .ct-faq-body-text { max-height: 300px; padding: 0 24px 20px; }
+      .ct-cta-outline:hover { border-color: #fff; background: rgba(255,255,255,0.08); }
+      .ct-cta-outline .ct-cta-circle { background: rgba(255,255,255,0.15); color: #fff; }
+      .ct-cta-outline:hover .ct-cta-circle { background: rgba(255,255,255,0.25); }
+
+      /* ── Info cards (white, matches about page's .abt-card-light family) ── */
+      .ct-info-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 18px;
+        padding: 32px 28px;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        cursor: default;
+        transition: border-color .25s ease, box-shadow .25s ease, transform .25s ease;
+      }
+      .ct-info-card:hover {
+        border-color: #2563eb;
+        box-shadow: 0 16px 40px rgba(13,27,62,.1);
+        transform: translateY(-4px);
+      }
+      .ct-info-icon-badge {
+        width: 52px; height: 52px;
+        border-radius: 14px;
+        background: #eff4ff;
+        color: #2563eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .ct-ic-text { color: #64748b; font-size: 13.5px; line-height: 1.7; }
+      .ct-ic-link { color: #2563eb; font-size: 13px; font-weight: 700; text-decoration: none; transition: color 0.2s ease; }
+      .ct-ic-link:hover { color: #1d4ed8; }
+
+      /* ── Reusable left-aligned section header ── */
+      .ct-section-head {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        gap: 32px;
+        margin-bottom: 30px;
+      }
+      @media (min-width: 1024px) {
+        .ct-section-head {
+          flex-direction: row;
+          justify-content: space-between;
+        }
+      }
     `}</style>
   );
 }
@@ -113,62 +162,63 @@ function HeroSection() {
           className="object-cover object-center"
           sizes="100vw"
         />
-        <div className="hidden lg:block absolute inset-0 bg-gradient-to-r from-[#081a3d]/95 via-[#0d2257]/80 to-transparent" />
-        <div className="lg:hidden absolute inset-0 bg-gradient-to-b from-[#081a3d]/90 via-[#0d2257]/85 to-[#061530]/95" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#061530]/90 via-transparent to-transparent" />
+        <div className="hidden lg:block absolute inset-0 bg-gradient-to-r from-[#0d1b3e]/95 via-[#0d1b3e]/80 to-transparent" />
+        <div className="lg:hidden absolute inset-0 bg-gradient-to-b from-[#0d1b3e]/90 via-[#0d1b3e]/85 to-[#0d1b3e]/95" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0d1b3e]/90 via-transparent to-transparent" />
       </div>
 
       <div className="flex-1 max-w-7xl mx-auto w-full px-5 sm:px-8 lg:px-12 pt-36 pb-16 flex flex-col justify-end">
-        <p className="ct-anim-2 inline-flex items-center gap-2 text-[#FFF265] font-semibold text-sm uppercase tracking-[0.2em] mb-4">
-          We'd Love to Hear From You
+        <p className="ct-anim-2 ct-eyebrow text-[#7da6f5] mb-4">
+          <span className="dot" style={{ background: "#7da6f5" }} />
+          We&apos;d Love to Hear From You
         </p>
-        <h1 className="ct-anim-3 ct-display tracking-[4px] text-5xl sm:text-6xl xl:text-7xl leading-[0.95] font-bold uppercase mb-5 text-white">
+        <h1 className="ct-anim-3 ct-display text-[44px] sm:text-[56px] lg:text-[64px] leading-[1.05] font-medium tracking-[-1.5px] mb-5 text-white">
           Get In Touch
           <br />
-          <span className="text-blue-600">With Us</span>
+          <span className="text-[#5b8def]">With Us</span>
         </h1>
-        <p className="ct-anim-4 text-gray-300 text-base leading-relaxed max-w-md mb-8">
-          Ready to protect your property? Contact Al Grey's Cleaning Services
-          today for a free consultation and no-obligation quote.
+        <p className="ct-anim-4 text-[#cbd5e1] text-base leading-relaxed max-w-md mb-8">
+          Ready to protect your property? Contact Al Grey&apos;s Cleaning
+          Services today for a free consultation and no-obligation quote.
         </p>
         <div className="ct-anim-4 flex flex-col sm:flex-row gap-3">
-          <a
-            href="tel:01215172372"
-            className="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white font-bold uppercase tracking-widest text-sm px-7 py-3.5 rounded-md transition-all duration-200 shadow-lg shadow-blue-900/40"
-          >
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2.5}
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106a1.125 1.125 0 00-1.31.52l-.97 1.293a15.727 15.727 0 01-6.684-6.684l1.293-.97a1.125 1.125 0 00.52-1.31L9.572 3.1a1.125 1.125 0 00-1.091-.852H7.25A2.25 2.25 0 005 4.5v.75a2.25 2.25 0 002.25 2.25z"
-              />
-            </svg>
+          <a href="tel:01215172372" className="ct-cta">
             Call Us Now
+            <span className="ct-cta-circle">
+              <svg
+                width="15"
+                height="15"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2.5}
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106a1.125 1.125 0 00-1.31.52l-.97 1.293a15.727 15.727 0 01-6.684-6.684l1.293-.97a1.125 1.125 0 00.52-1.31L9.572 3.1a1.125 1.125 0 00-1.091-.852H7.25A2.25 2.25 0 005 4.5v.75a2.25 2.25 0 002.25 2.25z"
+                />
+              </svg>
+            </span>
           </a>
-          <Link
-            href="/enquiry-now"
-            className="inline-flex items-center justify-center gap-2 border-2 border-white/60 hover:border-white text-white font-bold uppercase tracking-widest text-sm px-7 py-3.5 rounded-md transition-all duration-200 hover:bg-white/10"
-          >
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2.5}
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-              />
-            </svg>
+          <Link href="/enquiry-now" className="ct-cta ct-cta-outline">
             Get a Free Quote
+            <span className="ct-cta-circle">
+              <svg
+                width="15"
+                height="15"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2.5}
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                />
+              </svg>
+            </span>
           </Link>
         </div>
       </div>
@@ -177,7 +227,7 @@ function HeroSection() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   INFO CARDS
+   INFO CARDS — white cards
 ═══════════════════════════════════════════════════════════════════ */
 const INFO_CARDS = [
   {
@@ -186,7 +236,7 @@ const INFO_CARDS = [
     link: { label: "Get Directions →", href: "https://maps.google.com" },
     icon: (
       <svg
-        className="w-9 h-9"
+        className="w-6 h-6"
         fill="none"
         stroke="currentColor"
         strokeWidth={1.8}
@@ -206,7 +256,7 @@ const INFO_CARDS = [
     link: { label: "Call Now →", href: "tel:01215172372" },
     icon: (
       <svg
-        className="w-9 h-9"
+        className="w-6 h-6"
         fill="none"
         stroke="currentColor"
         strokeWidth={1.8}
@@ -232,7 +282,7 @@ const INFO_CARDS = [
     },
     icon: (
       <svg
-        className="w-9 h-9"
+        className="w-6 h-6"
         fill="none"
         stroke="currentColor"
         strokeWidth={1.8}
@@ -252,7 +302,7 @@ const INFO_CARDS = [
     link: { label: "Book a Slot →", href: "/enquiry-now" },
     icon: (
       <svg
-        className="w-9 h-9"
+        className="w-6 h-6"
         fill="none"
         stroke="currentColor"
         strokeWidth={1.8}
@@ -270,22 +320,29 @@ const INFO_CARDS = [
 
 function InfoCardsSection() {
   return (
-    <section className="ct-body bg-white py-20 px-5 sm:px-8 lg:px-16">
+    <section className="ct-body bg-white py-20 lg:py-28 px-5 sm:px-8 lg:px-16">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-12">
-          <p className="inline-flex items-center gap-2 text-blue-600 font-semibold text-xs uppercase tracking-[0.22em] mb-4">
-            Find Us
+        <div className="ct-section-head">
+          <div className="flex flex-col gap-5 lg:max-w-[52%]">
+            <p className="ct-eyebrow text-[#2563eb]">
+              <span className="dot" style={{ background: "#2563eb" }} />
+              Find Us
+            </p>
+            <h2 className="ct-display text-[36px] sm:text-[44px] lg:text-[48px] font-medium text-[#0d1b3e] leading-[1.05] tracking-[-1px]">
+              How to Reach Us
+            </h2>
+          </div>
+          <p className="text-[#64748b] text-[16px] leading-relaxed lg:max-w-[360px]">
+            Whichever way suits you best — call, email, or drop by — we&apos;re
+            ready to help.
           </p>
-          <h2 className="ct-heading text-[clamp(28px,3.5vw,44px)] font-extrabold text-[#0d2257] leading-tight tracking-tight">
-            How to Reach Us
-          </h2>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {INFO_CARDS.map((card) => (
             <div key={card.title} className="ct-info-card">
-              <div className="ct-ic-icon">{card.icon}</div>
+              <div className="ct-info-icon-badge">{card.icon}</div>
               <div>
-                <h3 className="ct-heading ct-ic-title text-[20px] font-extrabold leading-snug tracking-[-0.3px] mb-3">
+                <h3 className="ct-display text-[#0d1b3e] text-[19px] font-semibold leading-snug tracking-[-0.2px] mb-3">
                   {card.title}
                 </h3>
                 {card.lines.map((line) => (
@@ -302,127 +359,6 @@ function InfoCardsSection() {
               </div>
             </div>
           ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════════════════
-   QUOTE CTA BANNER
-═══════════════════════════════════════════════════════════════════ */
-function QuoteCTASection() {
-  return (
-    <section
-      className="ct-body py-20 px-5 sm:px-8 lg:px-16"
-      style={{ background: "#f8f9ff" }}
-    >
-      <div className="max-w-7xl mx-auto">
-        <div className="bg-[#0d2257] rounded-2xl overflow-hidden">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
-            {/* Left: text */}
-            <div className="p-10 lg:p-14 flex flex-col justify-center">
-              <p className="inline-flex items-center gap-2 text-[#FFF265] font-semibold text-xs uppercase tracking-[0.22em] mb-4">
-                Ready to get started?
-              </p>
-              <h2 className="ct-heading text-[clamp(28px,3.5vw,42px)] font-extrabold text-white leading-tight tracking-tight mb-4">
-                Need a Price? <br />
-                Get a Free Quote
-              </h2>
-              <p className="text-[#94a8cc] text-[14px] leading-relaxed mb-8 max-w-md">
-                Fill in our quick enquiry form and we'll come back to you within
-                2 hours with a clear, no-obligation quote — no hidden fees, no
-                surprises.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-3">
-                <Link
-                  href="/enquiry-now"
-                  className="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-bold uppercase tracking-widest text-sm px-7 py-3.5 rounded-lg transition-all duration-200 shadow-lg"
-                >
-                  Get Your Free Quote
-                  <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={2.5}
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                    />
-                  </svg>
-                </Link>
-                <a
-                  href="tel:01215172372"
-                  className="inline-flex items-center justify-center gap-2 border-2 border-white/30 hover:border-white/70 text-white font-bold uppercase tracking-widest text-sm px-7 py-3.5 rounded-lg transition-all duration-200"
-                >
-                  <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={2.5}
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106a1.125 1.125 0 00-1.31.52l-.97 1.293a15.727 15.727 0 01-6.684-6.684l1.293-.97a1.125 1.125 0 00.52-1.31L9.572 3.1a1.125 1.125 0 00-1.091-.852H7.25A2.25 2.25 0 005 4.5v.75a2.25 2.25 0 002.25 2.25z"
-                    />
-                  </svg>
-                  Or Call Us
-                </a>
-              </div>
-            </div>
-
-            {/* Right: trust points */}
-            <div className="p-10 lg:p-14 border-t lg:border-t-0 lg:border-l border-white/10 flex flex-col justify-center gap-5">
-              {[
-                {
-                  label: "Response within 2 hours",
-                  sub: "We get back to every enquiry fast",
-                },
-                {
-                  label: "Transparent, fixed pricing",
-                  sub: "No hidden fees or surprise charges",
-                },
-                {
-                  label: "Fully insured & certified",
-                  sub: "Complete peace of mind guaranteed",
-                },
-                {
-                  label: "15+ years' experience",
-                  sub: "Trusted by thousands of homeowners",
-                },
-              ].map((item) => (
-                <div key={item.label} className="flex items-start gap-4">
-                  <span className="mt-0.5 w-5 h-5 rounded-full bg-blue-600 flex items-center justify-center shrink-0">
-                    <svg
-                      width="10"
-                      height="10"
-                      viewBox="0 0 14 14"
-                      fill="none"
-                      stroke="#fff"
-                      strokeWidth={2.5}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <polyline points="2,7 5.5,10.5 12,3" />
-                    </svg>
-                  </span>
-                  <div>
-                    <p className="ct-heading text-white text-[14px] font-bold">
-                      {item.label}
-                    </p>
-                    <p className="text-[#94a8cc] text-[12.5px] mt-0.5">
-                      {item.sub}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
       </div>
     </section>
@@ -452,63 +388,310 @@ const FAQS = [
 ];
 
 function FAQSection() {
-  const [openIdx, setOpenIdx] = useState<number | null>(null);
+  const [openIdx, setOpenIdx] = useState<number | null>(0);
+
+  // Revealed state for accordion items lives in React state (not a DOM
+  // classList mutation) because their className already changes on click
+  // (open/closed). Two sources writing to the same className would fight —
+  // whichever rendered last wins, which is what caused items to "disappear"
+  // when clicked. Header text (eyebrow/heading/sub) never changes className
+  // on click, so the simpler DOM-mutation approach is safe for those.
+  const [revealedItems, setRevealedItems] = useState<boolean[]>(() =>
+    FAQS.map(() => false),
+  );
+
+  const sectionRef = useRef<HTMLElement>(null);
+  const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const headerEls = section.querySelectorAll<HTMLElement>(
+      "[data-reveal-header]",
+    );
+    const headerObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const el = entry.target as HTMLElement;
+            const delay = el.dataset.delay ?? "0";
+            el.style.transitionDelay = `${delay}ms`;
+            el.classList.add("fq-visible");
+            headerObserver.unobserve(el);
+          }
+        });
+      },
+      { threshold: 0.15 },
+    );
+    headerEls.forEach((el) => headerObserver.observe(el));
+
+    const itemObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const idxAttr = (entry.target as HTMLElement).dataset.index;
+          if (entry.isIntersecting && idxAttr !== undefined) {
+            const idx = Number(idxAttr);
+            setRevealedItems((prev) => {
+              if (prev[idx]) return prev;
+              const next = [...prev];
+              next[idx] = true;
+              return next;
+            });
+            itemObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 },
+    );
+    itemRefs.current.forEach((el) => el && itemObserver.observe(el));
+
+    return () => {
+      headerObserver.disconnect();
+      itemObserver.disconnect();
+    };
+  }, []);
+
   return (
-    <section className="ct-body bg-white py-24 px-5 sm:px-8 lg:px-16">
-      <div className="max-w-3xl mx-auto">
-        <div className="text-center mb-12">
-          <p className="inline-flex items-center gap-2 text-blue-600 font-semibold text-xs uppercase tracking-[0.22em] mb-4">
-            Common Questions
-          </p>
-          <h2 className="ct-heading text-[clamp(30px,4.5vw,48px)] font-extrabold text-[#081a3d] leading-tight tracking-tight mb-4">
-            Frequently Asked Questions
-          </h2>
-          <p className="text-slate-500 text-[15px] leading-relaxed max-w-xl mx-auto">
-            Find answers to common questions about our cleaning services.
-          </p>
-        </div>
-        <div className="flex flex-col gap-3">
-          {FAQS.map((faq, i) => (
-            <div
-              key={i}
-              className={`ct-faq-item ${openIdx === i ? "open" : ""}`}
-            >
-              <button
-                className="ct-faq-trigger"
-                onClick={() => setOpenIdx(openIdx === i ? null : i)}
-              >
-                <span
-                  className="ct-heading text-[15px] font-bold leading-snug"
-                  style={{ color: openIdx === i ? "#081a3d" : "#0d2257" }}
-                >
-                  {faq.q}
-                </span>
-                <span className="ct-faq-icon">
-                  <svg
-                    className="w-3.5 h-3.5"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={2.5}
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M12 4.5v15m7.5-7.5h-15"
-                    />
-                  </svg>
-                </span>
-              </button>
-              <div className="ct-faq-body-text">
-                <p className="text-slate-500 text-[14px] leading-relaxed border-t border-slate-100 pt-4">
-                  {faq.a}
-                </p>
-              </div>
+    <>
+      <style>{`
+        .fq-section {
+          font-family: 'Inter', sans-serif;
+          background: #f8fafc;
+        }
+
+        [data-reveal-header] {
+          opacity: 0;
+          transform: translateY(22px);
+          transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+                      transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        [data-reveal-header].fq-visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        .fq-eyebrow {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          font-family: 'Inter', sans-serif;
+          font-size: 12px;
+          font-weight: 600;
+          letter-spacing: 0.22em;
+          text-transform: uppercase;
+          color: #2563eb;
+          margin-bottom: 20px;
+        }
+        .fq-eyebrow::before {
+          content: '';
+          display: block;
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: #2563eb;
+          flex-shrink: 0;
+        }
+
+        .fq-heading {
+          font-family: 'Inter Tight', sans-serif;
+          font-size: clamp(32px, 3.8vw, 48px);
+          font-weight: 500;
+          color: #0d1b3e;
+          line-height: 1.08;
+          letter-spacing: -1px;
+          margin: 0 0 20px;
+        }
+        .fq-heading em {
+          font-style: normal;
+          color: #2563eb;
+        }
+
+        .fq-sub {
+          font-size: 14.5px;
+          font-weight: 400;
+          color: #64748b;
+          line-height: 1.7;
+          margin: 0 0 36px;
+        }
+
+        .fq-item {
+          background: #ffffff;
+          border: 1px solid #e2e8f0;
+          border-radius: 14px;
+          overflow: hidden;
+          opacity: 0;
+          transform: translateY(22px);
+          transition: border-color 0.22s, box-shadow 0.22s,
+                      opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+                      transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .fq-item.fq-visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        .fq-item.open {
+          border-color: #2563eb;
+          box-shadow: 0 4px 20px rgba(37,99,235,0.10);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          [data-reveal-header],
+          .fq-item {
+            opacity: 1;
+            transform: none;
+            transition: border-color 0.22s, box-shadow 0.22s;
+          }
+        }
+
+        .fq-trigger {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 16px;
+          padding: 18px 22px;
+          background: transparent;
+          border: none;
+          cursor: pointer;
+          text-align: left;
+          transition: background 0.18s;
+        }
+        .fq-trigger:hover { background: #f8fafc; }
+        .fq-item.open .fq-trigger { background: #f8fafc; }
+
+        .fq-q {
+          font-family: 'Inter', sans-serif;
+          font-size: 17px;
+          font-weight: 500;
+          color: #0d1b3e;
+          line-height: 1.35;
+          letter-spacing: -0.2px;
+        }
+
+        .fq-icon {
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
+          border: 1.5px solid #cbd5e1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+          color: #94a3b8;
+          transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.26s;
+        }
+        .fq-item.open .fq-icon {
+          background: #2563eb;
+          border-color: #2563eb;
+          color: #ffffff;
+          transform: rotate(45deg);
+        }
+
+        .fq-answer {
+          max-height: 0;
+          overflow: hidden;
+          transition: max-height 0.35s ease, padding 0.28s ease;
+          padding: 0 22px;
+        }
+        .fq-item.open .fq-answer {
+          max-height: 300px;
+          padding: 0 22px 20px;
+        }
+
+        .fq-answer-inner {
+          font-size: 14px;
+          font-weight: 400;
+          color: #64748b;
+          line-height: 1.7;
+          border-top: 1px solid #e2e8f0;
+          padding-top: 16px;
+        }
+
+        .fq-grid {
+          display: grid;
+          grid-template-columns: 1fr 1.55fr;
+          gap: 72px;
+          align-items: start;
+        }
+
+        @media (max-width: 1023px) {
+          .fq-grid {
+            grid-template-columns: 1fr;
+            gap: 48px;
+          }
+        }
+      `}</style>
+
+      <section
+        ref={sectionRef}
+        className="fq-section px-5 py-20 lg:py-28 sm:px-8 lg:px-16"
+      >
+        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+          <div className="fq-grid">
+            {/* ── Left: heading ── */}
+            <div className="fq-left">
+              <p className="fq-eyebrow" data-reveal-header data-delay="0">
+                Got Questions?
+              </p>
+              <h2 className="fq-heading" data-reveal-header data-delay="80">
+                Answers to your
+                <br />
+                <em>common</em> queries.
+              </h2>
+              <p className="fq-sub" data-reveal-header data-delay="140">
+                Everything you need to know about our gutter cleaning and
+                property maintenance services. Can&apos;t find the answer
+                you&apos;re looking for? Give us a call.
+              </p>
             </div>
-          ))}
+
+            {/* ── Right: accordion ── */}
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "10px" }}
+            >
+              {FAQS.map((faq, i) => (
+                <div
+                  key={i}
+                  ref={(el) => {
+                    itemRefs.current[i] = el;
+                  }}
+                  data-index={i}
+                  className={`fq-item${revealedItems[i] ? " fq-visible" : ""}${openIdx === i ? " open" : ""}`}
+                  style={{ transitionDelay: `${i * 60}ms` }}
+                >
+                  <button
+                    className="fq-trigger"
+                    onClick={() => setOpenIdx(openIdx === i ? null : i)}
+                  >
+                    <span className="fq-q">{faq.q}</span>
+                    <span className="fq-icon">
+                      <svg
+                        width="13"
+                        height="13"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth={2.5}
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 4.5v15m7.5-7.5h-15"
+                        />
+                      </svg>
+                    </span>
+                  </button>
+                  <div className="fq-answer">
+                    <p className="fq-answer-inner">{faq.a}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }
 
@@ -518,20 +701,21 @@ function FAQSection() {
 function MapSection() {
   return (
     <section
-      className="ct-body py-16 px-5 sm:px-8 lg:px-16"
-      style={{ background: "#f8f9ff" }}
+      className="ct-body py-16 lg:py-24 px-5 sm:px-8 lg:px-16"
+      style={{ background: "#ffffff" }}
     >
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-10">
-          <p className="inline-flex items-center gap-2 text-blue-600 font-semibold text-xs uppercase tracking-[0.22em] mb-4">
+          <p className="ct-eyebrow text-[#2563eb] justify-center mb-4">
+            <span className="dot" style={{ background: "#2563eb" }} />
             Our Location
           </p>
-          <h2 className="ct-heading text-[clamp(28px,3.5vw,40px)] font-extrabold text-[#0d2257] leading-tight tracking-tight">
+          <h2 className="ct-display text-[clamp(28px,3.5vw,40px)] font-medium text-[#0d1b3e] leading-tight tracking-[-1px]">
             Find Us in Birmingham
           </h2>
         </div>
         <div
-          className="rounded-2xl overflow-hidden border border-[#e8edf5] shadow-lg"
+          className="rounded-2xl overflow-hidden border border-[#e2e8f0] shadow-lg"
           style={{ height: 400 }}
         >
           <iframe
@@ -559,10 +743,9 @@ export default function ContactPage() {
       <ContactStyles />
       <HeroSection />
       <InfoCardsSection />
-      <QuoteCTASection />
       <FAQSection />
       <MapSection />
-      <CTASection/>
+      <CTASection />
       <CTAAndFooter />
     </>
   );

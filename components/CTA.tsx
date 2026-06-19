@@ -37,14 +37,18 @@ const WatermarkSwirl = () => (
 
 export interface CTAData {
   badge: string;
-  heading: string;
+  headingLines: [string, string, string];
   body: string;
 }
 
 const DEFAULT_CTA_DATA: CTAData = {
   badge: "Get In Touch",
-  heading: "We'd Like To Hear From You",
-  body: "Reach out today to learn more about what we can do for you, your industry, and your market.",
+  headingLines: [
+    "Book Trusted Gutter &",
+    "Exterior Cleaning Services",
+    "Today",
+  ],
+  body: "Get a free quote for gutter cleaning, roof cleaning, pressure washing and exterior property maintenance across Birmingham and the West Midlands.",
 };
 
 interface CTASectionProps {
@@ -54,7 +58,8 @@ interface CTASectionProps {
 export default function CTASection({
   data = DEFAULT_CTA_DATA,
 }: CTASectionProps) {
-  const { badge, heading, body } = data;
+  const { badge, headingLines, body } = data;
+  const heading = headingLines.join(" ");
 
   return (
     <>
@@ -67,9 +72,9 @@ export default function CTASection({
           display: inline-flex;
           align-items: center;
           gap: 14px;
-          background: transparent;
-          color: #ffffff;
-          font-family: 'Inter', sans-serif;
+          background: #ffffff;
+  color: #3a52d4;
+  font-family: 'Inter', sans-serif;
           font-weight: 700;
           font-size: 12px;
           letter-spacing: 0.12em;
@@ -85,28 +90,31 @@ export default function CTASection({
         }
         .cta-btn:hover {
           border-color: rgba(255,255,255,0.85);
-          background: rgba(255,255,255,0.06);
+          background: #f8fafc;
         }
         .cta-btn-circle {
           width: 34px;
           height: 34px;
           border-radius: 50%;
-          background: #ffffff;
-          display: flex;
+           background: #3a52d4;
+  color: #ffffff;
+  display: flex;
           align-items: center;
           justify-content: center;
           flex-shrink: 0;
-          color: #3a52d4;
         }
+          .cta-btn:hover .cta-btn-circle {
+  background: #2742c5;
+}
       `}</style>
 
-      <div className="cta-body relative bg-white pt-16">
+      <div className="cta-body relative bg-[#F8F9FC] pt-16">
         <div
           style={{ borderTopLeftRadius: "20px", borderTopRightRadius: "20px" }}
           className="absolute w-[98%] left-[1%] inset-x-0 bottom-0 h-1/2 bg-[#081a3d]"
         />
 
-        <div className="relative z-10 w-[90%] mx-auto">
+        <div className="relative z-10 w-[85%] mx-auto">
           <div
             className="relative rounded-[20px] overflow-hidden px-10 sm:px-16 py-16"
             style={{ background: "#3a52d4" }}
@@ -160,8 +168,8 @@ export default function CTASection({
                 </p>
 
                 <div className="mt-2">
-                  <a href="#contact" className="cta-btn">
-                    Contact Us
+                  <a href="/enquiry-now" className="cta-btn">
+                    Get Free Quote
                     <span className="cta-btn-circle">
                       <svg
                         width="14"

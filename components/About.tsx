@@ -305,7 +305,7 @@ export default function AboutSection() {
                     </svg>
                   </span>
                 </a>
-                <a href="/services" className="btn-services">
+                <a href="#services" className="btn-services">
                   Our services
                   <span className="svc-arrow">
                     <svg

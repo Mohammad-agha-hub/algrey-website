@@ -19,7 +19,7 @@ const STATS = [
     label: "On-time arrival rate for scheduled appointments.",
   },
   {
-    value: "20",
+    value: "5",
     suffix: "+",
     label: "Years of professional cleaning experience you can rely on.",
   },

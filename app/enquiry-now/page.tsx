@@ -37,14 +37,19 @@ const URGENCY_OPTIONS = [
   "Flexible - No specific timeframe",
 ];
 
-/* ─────────────────────────────────────────────────── STYLES */
+/* ═══════════════════════════════════════════════════════════════════
+   DESIGN TOKENS — matched to the about page:
+   - Fonts: Inter Tight (display/headings) + Inter (body)
+   - Navy:  #0d1b3e   Blue accent: #2563eb
+   - Body text: slate-500 (#64748b)   Muted/secondary: slate-400 (#94a3b8)
+   - Light section bg: #f8fafc (slate-50)   Card border: #e2e8f0 (slate-200)
+═══════════════════════════════════════════════════════════════════ */
 function EnquiryStyles() {
   return (
     <style>{`
-      @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Manrope:wght@400;600;700;800;900&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
 
-      .enq-display { font-family: 'Bebas Neue', sans-serif; }
-      .enq-heading { font-family: 'Manrope', sans-serif; }
+      .enq-display { font-family: 'Inter Tight', sans-serif; }
       .enq-body    { font-family: 'Inter', sans-serif; }
 
       @keyframes enq-fadeUp {
@@ -56,86 +61,129 @@ function EnquiryStyles() {
         from { opacity: 0; transform: translateY(-6px); }
         to   { opacity: 1; transform: translateY(0); }
       }
+      .enq-anim-2 { animation: enq-fadeUp .65s .10s ease both; }
       .enq-anim-3 { animation: enq-fadeUp .65s .22s ease both; }
       .enq-anim-4 { animation: enq-fadeUp .65s .34s ease both; }
+      @media (prefers-reduced-motion: reduce) {
+        .enq-anim-2, .enq-anim-3, .enq-anim-4 { animation: none; opacity: 1; transform: none; }
+      }
 
+      /* ── Eyebrow (shared dot-bullet style) ── */
+      .enq-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-family: 'Inter', sans-serif;
+        font-weight: 600;
+        font-size: 12px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+      }
+      .enq-eyebrow .dot {
+        width: 6px; height: 6px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+
+      /* ── CTA pill button ── */
+      .enq-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 0;
+        padding: 7px 7px 7px 26px;
+        border-radius: 100px;
+        background: #2563eb;
+        color: #ffffff;
+        font-family: 'Inter', sans-serif;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        transition: background 0.22s ease, gap 0.2s ease,
+                    transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        flex-shrink: 0;
+      }
+      .enq-cta:hover { background: #1d4ed8; gap: 6px; transform: scale(1.03); }
+      .enq-cta:active { transform: scale(0.96); }
+      .enq-cta:disabled { opacity: 0.6; cursor: not-allowed; }
+      .enq-cta-circle {
+        width: 36px; height: 36px;
+        border-radius: 50%;
+        background: #ffffff;
+        color: #0d1b3e;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 16px;
+        flex-shrink: 0;
+        transition: background 0.22s, color 0.22s;
+      }
+      .enq-cta:hover .enq-cta-circle { background: #dbeafe; }
+
+      .enq-cta-outline {
+        background: transparent;
+        border: 1.5px solid rgba(255,255,255,0.55);
+        color: #ffffff;
+      }
+      .enq-cta-outline:hover { border-color: #fff; background: rgba(255,255,255,0.08); }
+      .enq-cta-outline .enq-cta-circle { background: rgba(255,255,255,0.15); color: #fff; }
+      .enq-cta-outline:hover .enq-cta-circle { background: rgba(255,255,255,0.25); }
+
+      /* ── Why-choose cards (sidebar) ── */
       .enq-why-card {
         position: relative;
-        padding: 28px 24px;
-        border-radius: 16px;
-        border: 1px solid rgba(226,232,240,0.8);
+        padding: 26px 24px;
+        border-radius: 18px;
+        border: 1px solid #e2e8f0;
         background: #ffffff;
         overflow: hidden;
-        transition: border-color .25s, box-shadow .25s, transform .25s;
-      }
-      .enq-why-card::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(135deg, rgba(37,99,235,0.04) 0%, rgba(99,159,255,0.0) 60%);
-        opacity: 0;
-        transition: opacity .3s ease;
+        transition: border-color .25s ease, box-shadow .25s ease, transform .25s ease;
       }
       .enq-why-card:hover {
-        border-color: rgba(37,99,235,0.35);
-        box-shadow: 0 0 0 1px rgba(37,99,235,0.12), 0 8px 32px rgba(37,99,235,0.10);
-        transform: translateY(-2px);
+        border-color: #2563eb;
+        box-shadow: 0 16px 40px rgba(13,27,62,.1);
+        transform: translateY(-4px);
       }
-      .enq-why-card:hover::before { opacity: 1; }
-
-      .enq-why-card-accent {
-        position: absolute;
-        top: 0; left: 0; right: 0;
-        height: 2px;
-        background: linear-gradient(90deg, #2563eb, #60a5fa);
-        transform: scaleX(0);
-        transform-origin: left;
-        transition: transform .3s ease;
-        border-radius: 2px 2px 0 0;
-      }
-      .enq-why-card:hover .enq-why-card-accent { transform: scaleX(1); }
-
       .enq-why-num {
-        font-family: 'Bebas Neue', sans-serif;
-        font-size: 64px;
+        font-family: 'Inter Tight', sans-serif;
+        font-size: 52px;
+        font-weight: 800;
         line-height: 1;
-        letter-spacing: 2px;
-        background: linear-gradient(135deg, #e8edf8 0%, #f1f5fd 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        letter-spacing: -2px;
+        color: #0d1b3e;
+        opacity: 0.06;
         position: absolute;
-        right: 20px;
-        top: 16px;
+        right: 22px;
+        top: 20px;
         user-select: none;
-        transition: opacity .25s;
       }
-      .enq-why-card:hover .enq-why-num { opacity: 0.6; }
-
       .enq-why-icon-wrap {
-        width: 44px; height: 44px;
-        border-radius: 12px;
-        background: linear-gradient(135deg, #0d2257 0%, #1a3a7a 100%);
+        width: 48px; height: 48px;
+        border-radius: 14px;
+        background: #eff4ff;
+        color: #2563eb;
         display: flex; align-items: center; justify-content: center;
-        color: #ffffff;
         margin-bottom: 16px;
         flex-shrink: 0;
-        transition: background .3s ease, transform .25s ease;
-        box-shadow: 0 4px 12px rgba(13,34,87,.2);
+        transition: background .22s ease, color .22s ease, transform .3s cubic-bezier(0.34, 1.56, 0.64, 1);
       }
       .enq-why-card:hover .enq-why-icon-wrap {
-        background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
-        transform: scale(1.06);
-        box-shadow: 0 6px 20px rgba(37,99,235,.28);
+        background: #dbeafe;
+        color: #1d4ed8;
+        transform: rotate(-8deg) scale(1.08);
       }
 
+      /* ── Service cards (dark navy) ── */
       .enq-svc-card {
         position: relative;
         border-radius: 20px;
         overflow: hidden;
         display: flex;
         flex-direction: column;
-        background: #0d1f4e;
+        background: #0d1b3e;
         border: 1px solid rgba(255,255,255,0.06);
         transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
       }
@@ -183,6 +231,13 @@ function EnquiryStyles() {
       }
       .enq-svc-body { padding: 0 28px 28px; flex: 1; display: flex; flex-direction: column; }
 
+      /* ── Form card ── */
+      .enq-form-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 20px;
+      }
+
       .enq-dropdown-list {
         animation: enq-dropdownIn 0.15s ease both;
         scrollbar-width: thin;
@@ -191,6 +246,21 @@ function EnquiryStyles() {
       .enq-dropdown-list::-webkit-scrollbar { width: 4px; }
       .enq-dropdown-list::-webkit-scrollbar-track { background: transparent; }
       .enq-dropdown-list::-webkit-scrollbar-thumb { background-color: #d1d5db; border-radius: 99px; }
+
+      /* ── Reusable left-aligned section header ── */
+      .enq-section-head {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        gap: 32px;
+        margin-bottom: 30px;
+      }
+      @media (min-width: 1024px) {
+        .enq-section-head {
+          flex-direction: row;
+          justify-content: space-between;
+        }
+      }
     `}</style>
   );
 }
@@ -209,41 +279,43 @@ function HeroSection() {
           className="object-cover object-center"
           sizes="100vw"
         />
-        <div className="hidden lg:block absolute inset-0 bg-gradient-to-r from-[#081a3d]/95 via-[#0d2257]/80 to-transparent" />
-        <div className="lg:hidden absolute inset-0 bg-gradient-to-b from-[#081a3d]/90 via-[#0d2257]/85 to-[#061530]/95" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#061530]/90 via-transparent to-transparent" />
+        <div className="hidden lg:block absolute inset-0 bg-gradient-to-r from-[#0d1b3e]/95 via-[#0d1b3e]/80 to-transparent" />
+        <div className="lg:hidden absolute inset-0 bg-gradient-to-b from-[#0d1b3e]/90 via-[#0d1b3e]/85 to-[#0d1b3e]/95" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0d1b3e]/90 via-transparent to-transparent" />
       </div>
       <div className="flex-1 max-w-7xl mx-auto w-full px-5 sm:px-8 lg:px-12 pt-36 pb-16 flex flex-col justify-end">
-        <h1 className="enq-anim-3 enq-display tracking-[4px] text-5xl sm:text-6xl xl:text-7xl leading-[0.95] font-bold uppercase mb-5 text-white">
-          Get Your
-          <br />
-          <span className="text-blue-500">Free Quote</span>
+        <p className="enq-anim-2 enq-eyebrow text-[#7da6f5] mb-4">
+          <span className="dot" style={{ background: "#7da6f5" }} />
+          Free, No-Obligation Quote
+        </p>
+        <h1 className="enq-anim-3 enq-display text-[44px] sm:text-[56px] lg:text-[64px] leading-[1.05] font-medium tracking-[-1.5px] mb-5 text-white">
+          Get Your <span className="text-[#5b8def]">Free Quote</span>
           <br />
           Today
         </h1>
-        <p className="enq-anim-4 text-gray-300 text-base leading-relaxed max-w-md mb-8">
+        <p className="enq-anim-4 text-[#cbd5e1] text-base leading-relaxed max-w-md mb-8">
           Professional cleaning with transparent pricing. Fill in your details
-          and we'll get back to you within 2 hours.
+          and we&apos;ll get back to you within 2 hours.
         </p>
         <div className="enq-anim-4">
-          <a
-            href="#quote-form"
-            className="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-bold uppercase tracking-widest text-sm px-7 py-3.5 rounded-md transition-all duration-200 shadow-lg shadow-blue-900/40"
-          >
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2.5}
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-              />
-            </svg>
+          <a href="#quote-form" className="enq-cta">
             Get Started
+            <span className="enq-cta-circle">
+              <svg
+                width="15"
+                height="15"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2.5}
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                />
+              </svg>
+            </span>
           </a>
         </div>
       </div>
@@ -280,7 +352,7 @@ function CustomSelect({
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className={`w-full flex items-center justify-between px-4 py-3 border rounded-lg text-sm bg-white transition-all duration-150 focus:outline-none ${open ? "border-blue-500 ring-2 ring-blue-500" : "border-gray-200 hover:border-gray-300"} ${value ? "text-gray-800" : "text-gray-400"}`}
+        className={`enq-body w-full flex items-center justify-between px-4 py-3 border rounded-lg text-sm bg-white transition-all duration-150 focus:outline-none ${open ? "border-[#2563eb] ring-2 ring-[#2563eb]" : "border-gray-200 hover:border-gray-300"} ${value ? "text-[#0d1b3e]" : "text-gray-400"}`}
       >
         <span className="flex items-center gap-2.5">
           {icon}
@@ -312,12 +384,12 @@ function CustomSelect({
                   onChange(opt);
                   setOpen(false);
                 }}
-                className={`w-full flex items-center justify-between px-4 py-2.5 text-sm text-left transition-colors duration-100 ${isSel ? "bg-blue-50 text-blue-600 font-medium" : "text-gray-700 hover:bg-gray-50"}`}
+                className={`enq-body w-full flex items-center justify-between px-4 py-2.5 text-sm text-left transition-colors duration-100 ${isSel ? "bg-[#eff4ff] text-[#2563eb] font-medium" : "text-gray-700 hover:bg-gray-50"}`}
               >
                 <span>{opt}</span>
                 {isSel && (
                   <svg
-                    className="w-4 h-4 text-blue-500 shrink-0"
+                    className="w-4 h-4 text-[#2563eb] shrink-0"
                     fill="none"
                     stroke="currentColor"
                     strokeWidth={2.5}
@@ -478,7 +550,7 @@ function QuoteFormSection() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          source: "enquiry", // ← identifies this form
+          source: "enquiry",
           firstName: form.firstName,
           lastName: form.lastName || undefined,
           email: form.email,
@@ -571,17 +643,17 @@ function QuoteFormSection() {
   return (
     <section
       id="quote-form"
-      className="enq-body bg-white py-24 px-5 sm:px-8 lg:px-16"
+      className="enq-body bg-white py-20 lg:py-28 px-5 sm:px-8 lg:px-16"
     >
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 lg:gap-14 items-start">
           {/* ── LEFT: Form ── */}
-          <div className="lg:col-span-3 bg-white rounded-2xl border border-[#e8edf5] shadow-xl p-8 sm:p-10">
+          <div className="enq-form-card lg:col-span-3 shadow-xl p-8 sm:p-10">
             {submitted ? (
               <div className="flex flex-col items-center text-center py-16 gap-4">
-                <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center">
+                <div className="w-20 h-20 rounded-full bg-[#eff4ff] flex items-center justify-center">
                   <svg
-                    className="w-10 h-10 text-green-600"
+                    className="w-10 h-10 text-[#2563eb]"
                     fill="none"
                     stroke="currentColor"
                     strokeWidth={2.5}
@@ -594,17 +666,19 @@ function QuoteFormSection() {
                     />
                   </svg>
                 </div>
-                <h3 className="enq-heading text-2xl font-bold text-gray-900">
+                <h3 className="enq-display text-2xl font-semibold text-[#0d1b3e] tracking-[-0.3px]">
                   Quote Requested!
                 </h3>
-                <p className="text-gray-500 text-sm leading-relaxed max-w-sm">
-                  Thanks, <strong>{form.firstName}</strong>! We'll review your
-                  details and get back to you within 2 hours. A confirmation
-                  email has been sent to <strong>{form.email}</strong>.
+                <p className="text-[#64748b] text-sm leading-relaxed max-w-sm">
+                  Thanks,{" "}
+                  <strong className="text-[#0d1b3e]">{form.firstName}</strong>!
+                  We&apos;ll review your details and get back to you within 2
+                  hours. A confirmation email has been sent to{" "}
+                  <strong className="text-[#0d1b3e]">{form.email}</strong>.
                 </p>
                 <button
                   onClick={resetForm}
-                  className="mt-2 text-blue-600 hover:text-blue-700 text-sm font-semibold underline underline-offset-2"
+                  className="mt-2 text-[#2563eb] hover:text-[#1d4ed8] text-sm font-semibold underline underline-offset-2"
                 >
                   Submit another request
                 </button>
@@ -612,14 +686,16 @@ function QuoteFormSection() {
             ) : (
               <>
                 <div className="mb-8">
-                  <p className="inline-flex items-center gap-2 text-blue-600 font-semibold text-xs uppercase tracking-[0.22em] mb-3">
+                  <p className="enq-eyebrow text-[#2563eb] mb-3">
+                    <span className="dot" style={{ background: "#2563eb" }} />
                     Free Quote Request
                   </p>
-                  <h2 className="enq-heading text-[clamp(24px,3vw,34px)] font-extrabold text-[#0d2257] leading-tight tracking-tight">
+                  <h2 className="enq-display text-[clamp(24px,3vw,34px)] font-semibold text-[#0d1b3e] leading-tight tracking-[-0.5px]">
                     Request Your Quote
                   </h2>
-                  <p className="text-gray-500 text-sm mt-2">
-                    Fill out the form and we'll get back to you within 2 hours.
+                  <p className="text-[#64748b] text-sm mt-2">
+                    Fill out the form and we&apos;ll get back to you within 2
+                    hours.
                   </p>
                 </div>
 
@@ -652,7 +728,7 @@ function QuoteFormSection() {
                           value={(form as any)[name]}
                           onChange={handleInput}
                           placeholder={ph}
-                          className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                          className="enq-body w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg text-sm text-[#0d1b3e] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2563eb] focus:border-transparent transition"
                         />
                       </div>
                     ))}
@@ -681,7 +757,7 @@ function QuoteFormSection() {
                       value={form.email}
                       onChange={handleInput}
                       placeholder="Email Address *"
-                      className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                      className="enq-body w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg text-sm text-[#0d1b3e] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2563eb] focus:border-transparent transition"
                     />
                   </div>
 
@@ -709,7 +785,7 @@ function QuoteFormSection() {
                         value={form.phone}
                         onChange={handleInput}
                         placeholder="Phone Number *"
-                        className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                        className="enq-body w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg text-sm text-[#0d1b3e] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2563eb] focus:border-transparent transition"
                       />
                     </div>
                     <div className="relative">
@@ -734,7 +810,7 @@ function QuoteFormSection() {
                         value={form.postcode}
                         onChange={handleInput}
                         placeholder="Postcode *"
-                        className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                        className="enq-body w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg text-sm text-[#0d1b3e] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2563eb] focus:border-transparent transition"
                       />
                     </div>
                   </div>
@@ -767,7 +843,7 @@ function QuoteFormSection() {
                     onChange={handleInput}
                     placeholder="Additional Details — Tell us about your requirements, any specific issues, or questions..."
                     rows={5}
-                    className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none"
+                    className="enq-body w-full px-4 py-3 border border-gray-200 rounded-lg text-sm text-[#0d1b3e] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2563eb] focus:border-transparent transition resize-none"
                   />
 
                   {/* API Error */}
@@ -793,33 +869,53 @@ function QuoteFormSection() {
                   <button
                     onClick={handleSubmit}
                     disabled={loading}
-                    className="w-full bg-blue-600 hover:bg-blue-500 active:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold uppercase tracking-widest text-sm py-3.5 rounded-lg transition-all duration-200 shadow-md shadow-blue-900/40 mt-1 flex items-center justify-center gap-2"
+                    className="enq-cta justify-center w-full !pl-7"
                   >
                     {loading ? (
                       <>
-                        <svg
-                          className="w-4 h-4 animate-spin"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                        >
-                          <circle
-                            className="opacity-25"
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            stroke="currentColor"
-                            strokeWidth="4"
-                          />
-                          <path
-                            className="opacity-75"
-                            fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-                          />
-                        </svg>
                         Sending...
+                        <span className="enq-cta-circle">
+                          <svg
+                            className="w-4 h-4 animate-spin"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle
+                              className="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                            />
+                            <path
+                              className="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                            />
+                          </svg>
+                        </span>
                       </>
                     ) : (
-                      "Submit Enquiry →"
+                      <>
+                        Submit Enquiry
+                        <span className="enq-cta-circle">
+                          <svg
+                            width="15"
+                            height="15"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth={2.5}
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                            />
+                          </svg>
+                        </span>
+                      </>
                     )}
                   </button>
                   <p className="text-center text-gray-400 text-xs">
@@ -833,10 +929,11 @@ function QuoteFormSection() {
           {/* ── RIGHT: Why Cards ── */}
           <div className="lg:col-span-2 flex flex-col gap-3 lg:sticky lg:top-8">
             <div className="mb-5">
-              <p className="inline-flex items-center gap-2 text-blue-600 font-semibold text-xs uppercase tracking-[0.22em] mb-3">
-                The Al Grey's Difference
+              <p className="enq-eyebrow text-[#2563eb] mb-3">
+                <span className="dot" style={{ background: "#2563eb" }} />
+                The Al Grey&apos;s Difference
               </p>
-              <h2 className="enq-heading text-[clamp(22px,2.5vw,30px)] font-extrabold text-[#0d2257] leading-tight tracking-tight">
+              <h2 className="enq-display text-[clamp(22px,2.5vw,30px)] font-semibold text-[#0d1b3e] leading-tight tracking-[-0.4px]">
                 Why Choose Us
               </h2>
             </div>
@@ -847,56 +944,16 @@ function QuoteFormSection() {
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <div className="enq-why-icon-wrap">{item.icon}</div>
-                <h3 className="enq-heading text-[14px] font-extrabold text-[#0d2257] leading-snug mb-1.5 relative">
+                <h3 className="enq-display text-[15px] font-semibold text-[#0d1b3e] leading-snug tracking-[-0.2px] mb-1.5 relative">
                   {item.title}
                 </h3>
-                <p className="enq-body text-gray-500 text-[13px] leading-relaxed relative">
+                <p className="enq-body text-[#64748b] text-[13px] leading-relaxed relative">
                   {item.desc}
                 </p>
               </div>
             ))}
 
-            {/* Trust strip */}
-            <div className="mt-2 flex items-center gap-3 px-4 py-3 bg-[#f8f9ff] rounded-xl border border-[#e8edf5]">
-              <div className="flex -space-x-2">
-                {["#0d2257", "#1a3a7a", "#2563eb"].map((c, i) => (
-                  <span
-                    key={i}
-                    style={{
-                      width: 28,
-                      height: 28,
-                      borderRadius: "50%",
-                      background: c,
-                      border: "2px solid #fff",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <svg
-                      width="12"
-                      height="12"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="#fff"
-                      strokeWidth={2}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0"
-                      />
-                    </svg>
-                  </span>
-                ))}
-              </div>
-              <p className="enq-body text-[12px] text-gray-500 leading-snug">
-                <span className="font-bold text-[#0d2257]">
-                  2,400+ customers
-                </span>{" "}
-                trust Al Grey's across London &amp; Surrey
-              </p>
-            </div>
+           
           </div>
         </div>
       </div>
@@ -953,18 +1010,21 @@ const SERVICES_CARDS = [
 function PopularServicesSection() {
   return (
     <section
-      className="enq-body py-24 px-5 sm:px-8 lg:px-16"
-      style={{ background: "#f0f4ff" }}
+      className="enq-body py-20 lg:py-28 px-5 sm:px-8 lg:px-16"
+      style={{ background: "#f8fafc" }}
     >
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-14">
-          <p className="inline-flex items-center gap-2 text-blue-600 font-semibold text-xs uppercase tracking-[0.22em] mb-4">
-            What We Offer
-          </p>
-          <h2 className="enq-heading text-[clamp(32px,4.5vw,50px)] font-extrabold text-[#0d2257] leading-tight tracking-tight mb-5">
-            Our Popular Services
-          </h2>
-          <p className="text-gray-500 text-[15px] leading-relaxed max-w-2xl mx-auto">
+        <div className="enq-section-head">
+          <div className="flex flex-col gap-5 lg:max-w-[52%]">
+            <p className="enq-eyebrow text-[#2563eb]">
+              <span className="dot" style={{ background: "#2563eb" }} />
+              What We Offer
+            </p>
+            <h2 className="enq-display text-[36px] sm:text-[44px] lg:text-[48px] font-medium text-[#0d1b3e] leading-[1.05] tracking-[-1px]">
+              Our Popular Services
+            </h2>
+          </div>
+          <p className="text-[#64748b] text-[16px] leading-relaxed lg:max-w-[360px]">
             Professional cleaning for your home or business — all with upfront
             pricing and no hidden fees.
           </p>
@@ -983,7 +1043,7 @@ function PopularServicesSection() {
                   </span>
                 </div>
                 <div className="text-right">
-                  <p className="enq-display text-[#FFF265] text-3xl tracking-wide leading-none">
+                  <p className="enq-display text-white text-3xl font-semibold tracking-[-0.5px] leading-none">
                     £{svc.price}
                   </p>
                   <p className="enq-body text-[#94a8cc] text-[10px] mt-0.5">
@@ -992,7 +1052,7 @@ function PopularServicesSection() {
                 </div>
               </div>
               <div className="px-7 pt-5">
-                <h3 className="enq-heading text-[22px] font-extrabold text-white leading-snug tracking-tight">
+                <h3 className="enq-display text-[22px] font-semibold text-white leading-snug tracking-[-0.3px]">
                   {svc.title}
                 </h3>
                 <p className="text-[#94a8cc] text-sm mt-1">{svc.tagline}</p>
@@ -1036,7 +1096,7 @@ function PopularServicesSection() {
                 </ul>
                 <Link
                   href={svc.href}
-                  className="w-full inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-blue-600 border border-white/15 hover:border-blue-500 text-white font-bold uppercase tracking-widest text-xs px-6 py-3 rounded-xl transition-all duration-250"
+                  className="w-full inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-[#2563eb] border border-white/15 hover:border-[#2563eb] text-white font-semibold uppercase tracking-widest text-xs px-6 py-3 rounded-xl transition-all duration-250"
                 >
                   Learn More
                   <svg
@@ -1067,8 +1127,8 @@ export default function EnquiryPage() {
     <>
       <EnquiryStyles />
       <HeroSection />
-      <QuoteFormSection />
       <PopularServicesSection />
+      <QuoteFormSection />
       <CTAAndFooter />
     </>
   );

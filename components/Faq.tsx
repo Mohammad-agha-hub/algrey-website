@@ -310,8 +310,6 @@ export default function FAQSection() {
           align-items: start;
         }
 
-        .fq-left { position: sticky; top: 100px; }
-
         @media (max-width: 1023px) {
           .fq-grid {
             grid-template-columns: 1fr;
@@ -325,7 +323,7 @@ export default function FAQSection() {
 
       <section
         ref={sectionRef}
-        className="fq-section py-24 px-5 sm:px-8 lg:px-16"
+        className="fq-section px-5 py-8 sm:px-8 lg:px-16"
       >
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <div className="fq-grid">

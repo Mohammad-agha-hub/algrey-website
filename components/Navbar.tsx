@@ -9,36 +9,36 @@ const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "About Us", href: "/about-us" },
   { label: "Services", href: "/services", hasDropdown: true },
-  { label: "Roof Cleaning", href: "/roof-cleaning" },
   { label: "Contact Us", href: "/contact-us" },
 ];
 
 const SERVICES_DROPDOWN = [
   {
-    category: "Gutter Services",
+    category: "Gutter & Roof",
     links: [
       { label: "Gutter Cleaning", href: "/gutter-cleaning" },
-      { label: "Brick Cleaning", href: "/brick-cleaning" },
-      { label: "Graffiti Cleaning", href: "/graffiti-cleaning" },
+      { label: "Roof Cleaning", href: "/roof-cleaning" },
       { label: "Downpipe Cleaning", href: "/downpipe-cleaning" },
+      { label: "Commercial Gutter", href: "/commercial-gutter" },
+      { label: "Residential Gutter", href: "/residential-gutter" },
     ],
   },
   {
-    category: "Cleaning Services",
+    category: "Exterior Cleaning",
     links: [
       { label: "Window Cleaning", href: "/window-cleaning" },
       { label: "Cladding Cleaning", href: "/cladding-cleaning" },
       { label: "Pressure Washing", href: "/pressure-washing" },
-      { label: "Patio Cleaning", href: "/patio-cleaning" },
+      { label: "Render Cleaning", href: "/render-cleaning" },
     ],
   },
   {
-    category: "Specialized Services",
+    category: "Surface Restoration",
     links: [
-      { label: "Commercial Gutter", href: "/commercial-gutter" },
-      { label: "Residential Gutter", href: "/residential-gutter" },
-      { label: "Render Cleaning", href: "/render-cleaning" },
+      { label: "Brick Cleaning", href: "/brick-cleaning" },
+      { label: "Patio Cleaning", href: "/patio-cleaning" },
       { label: "Driveway Cleaning", href: "/driveway-cleaning" },
+      { label: "Graffiti Cleaning", href: "/graffiti-cleaning" },
     ],
   },
 ];
@@ -363,7 +363,7 @@ export default function Navbar() {
               </svg>
             </span>
           </Link>
-
+            
           {/* Mobile hamburger */}
           <button
             className="lg:hidden flex flex-col justify-center items-center w-10 h-10 gap-[5px]"

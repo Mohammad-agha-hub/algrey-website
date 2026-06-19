@@ -66,23 +66,7 @@ const SLOT_B = [
   },
 ];
 
-function Stars({ size = 13 }: { size?: number }) {
-  return (
-    <div style={{ display: "flex", gap: 3 }}>
-      {[...Array(5)].map((_, i) => (
-        <svg
-          key={i}
-          width={size}
-          height={size}
-          viewBox="0 0 24 24"
-          fill="#f59e0b"
-        >
-          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-        </svg>
-      ))}
-    </div>
-  );
-}
+
 
 type CardItem = { quote: string; name: string; role: string; initials: string };
 
@@ -135,7 +119,7 @@ export default function TestimonialsSection() {
   const idxBRef = useRef(0);
   const darkARef = useRef(false);
   const darkBRef = useRef(false);
-  const slotH = useRef(220); // stable fixed height — no font-load race
+  const slotH = useRef(310); // just slightly taller than original 300
   const intervalA = useRef<ReturnType<typeof setInterval> | null>(null);
   const intervalB = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -186,7 +170,7 @@ export default function TestimonialsSection() {
     }, 20);
   }
 
-  // ── Card auto-rotation (unchanged) ──
+  // ── Card auto-rotation ──
   useEffect(() => {
     const slotA = slotARef.current;
     const slotB = slotBRef.current;
@@ -215,7 +199,7 @@ export default function TestimonialsSection() {
     firstB.style.right = "0";
     slotB.appendChild(firstB);
 
-    // start intervals — stored in refs so cleanup always reaches them
+    // start intervals
     const tA = setTimeout(() => {
       intervalA.current = setInterval(() => {
         runSlot(slotA, SLOT_A, idxARef, darkARef, "h");
@@ -236,10 +220,7 @@ export default function TestimonialsSection() {
     };
   }, []);
 
-  // ── Scroll-triggered reveal (same pattern as AboutSection) ──
-  // Safe to mutate the DOM directly here: nothing in this component holds
-  // React state that re-renders and recomputes these elements' className,
-  // so there's no risk of the class getting overwritten like in the FAQ fix.
+  // ── Scroll-triggered reveal ──
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
@@ -284,6 +265,35 @@ export default function TestimonialsSection() {
           opacity: 1;
           transform: translateY(0);
         }
+
+        /* Responsive grid */
+        .testimonials-grid {
+          display: grid;
+          grid-template-columns: 1.15fr 0.85fr;
+          gap: 16px;
+          align-items: stretch;
+        }
+
+        .animated-cards-row {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 12px;
+        }
+
+        @media (max-width: 1024px) {
+          .testimonials-grid {
+            grid-template-columns: 1fr;
+            gap: 16px;
+          }
+        }
+
+        @media (max-width: 768px) {
+          .animated-cards-row {
+            grid-template-columns: 1fr;
+            gap: 12px;
+          }
+        }
+
         @media (prefers-reduced-motion: reduce) {
           [data-reveal] { opacity: 1; transform: none; transition: none; }
         }
@@ -294,7 +304,7 @@ export default function TestimonialsSection() {
         style={{
           background: "#f8f9fc",
           fontFamily: "'Inter', sans-serif",
-          padding: "96px 40px",
+          padding: "clamp(48px, 8vw, 96px) clamp(16px, 5vw, 40px)",
         }}
       >
         <div style={{ maxWidth: 1200, margin: "0 auto" }}>
@@ -305,7 +315,7 @@ export default function TestimonialsSection() {
             style={{
               textAlign: "center",
               maxWidth: 680,
-              margin: "0 auto 64px",
+              margin: "0 auto clamp(32px, 6vw, 64px)",
             }}
           >
             <div
@@ -334,7 +344,7 @@ export default function TestimonialsSection() {
             <h2
               style={{
                 fontFamily: "'Inter Tight', sans-serif",
-                fontSize: "clamp(32px, 4vw, 48px)",
+                fontSize: "clamp(28px, 4vw, 48px)",
                 fontWeight: 500,
                 color: "#081a3d",
                 lineHeight: 1.05,
@@ -342,13 +352,13 @@ export default function TestimonialsSection() {
                 margin: "0 0 20px",
               }}
             >
-              What our customers
-              <br />
-              really <span style={{ color: "#2563eb" }}>think.</span>
+              What Birmingham homeowners say about
+              
+              our <span style={{ color: "#2563eb" }}>cleaning service.</span>
             </h2>
             <p
               style={{
-                fontSize: 15,
+                fontSize: "clamp(13px, 1.6vw, 15px)",
                 color: "#6b7a99",
                 lineHeight: 1.75,
                 margin: 0,
@@ -361,14 +371,7 @@ export default function TestimonialsSection() {
           </div>
 
           {/* Cards grid */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1.15fr 0.85fr",
-              gap: 16,
-              alignItems: "stretch",
-            }}
-          >
+          <div className="testimonials-grid">
             {/* Big left card */}
             <div
               data-reveal
@@ -377,15 +380,16 @@ export default function TestimonialsSection() {
                 background: "#ffffff",
                 border: "1px solid #e4e9f4",
                 borderRadius: 20,
-                padding: "36px 32px",
+                padding: "clamp(24px, 4vw, 36px) clamp(20px, 3vw, 32px)",
                 display: "flex",
+                minHeight: 550,
                 flexDirection: "column",
               }}
             >
               <div
                 style={{
                   fontFamily: "Georgia, serif",
-                  fontSize: 52,
+                  fontSize: "clamp(36px, 5vw, 52px)",
                   color: "#2563eb",
                   lineHeight: 0.8,
                   marginBottom: 20,
@@ -395,7 +399,7 @@ export default function TestimonialsSection() {
               </div>
               <p
                 style={{
-                  fontSize: 15,
+                  fontSize: "clamp(13px, 1.6vw, 15px)",
                   color: "#334155",
                   lineHeight: 1.8,
                   flex: 1,
@@ -407,7 +411,14 @@ export default function TestimonialsSection() {
               <div
                 style={{ height: 1, background: "#e4e9f4", marginBottom: 22 }}
               />
-              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 12,
+                  flexWrap: "wrap",
+                }}
+              >
                 <div
                   style={{
                     width: 40,
@@ -441,7 +452,6 @@ export default function TestimonialsSection() {
                     {BIG.role}
                   </div>
                 </div>
-                <Stars size={13} />
               </div>
             </div>
 
@@ -455,15 +465,16 @@ export default function TestimonialsSection() {
                   background: "#ffffff",
                   border: "1px solid #e4e9f4",
                   borderRadius: 20,
-                  padding: "28px 26px",
+                  padding: "clamp(20px, 3vw, 28px) clamp(18px, 2.5vw, 26px)",
                   display: "flex",
                   flexDirection: "column",
+                  minHeight: 260,
                 }}
               >
                 <div
                   style={{
                     fontFamily: "Georgia, serif",
-                    fontSize: 34,
+                    fontSize: "clamp(26px, 3.5vw, 34px)",
                     color: "#2563eb",
                     lineHeight: 0.8,
                     marginBottom: 14,
@@ -473,7 +484,7 @@ export default function TestimonialsSection() {
                 </div>
                 <p
                   style={{
-                    fontSize: 13.5,
+                    fontSize: "clamp(12px, 1.4vw, 13.5px)",
                     color: "#334155",
                     lineHeight: 1.75,
                     margin: "0 0 20px",
@@ -485,7 +496,14 @@ export default function TestimonialsSection() {
                 <div
                   style={{ height: 1, background: "#e4e9f4", marginBottom: 16 }}
                 />
-                <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 10,
+                    flexWrap: "wrap",
+                  }}
+                >
                   <div
                     style={{
                       width: 34,
@@ -521,22 +539,11 @@ export default function TestimonialsSection() {
                       {MID.role}
                     </div>
                   </div>
-                  <div style={{ marginLeft: "auto" }}>
-                    <Stars size={11} />
-                  </div>
                 </div>
               </div>
 
               {/* Animated bottom row */}
-              <div
-                data-reveal
-                data-delay="200"
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: 12,
-                }}
-              >
+              <div data-reveal data-delay="200" className="animated-cards-row">
                 <div
                   ref={slotARef}
                   style={{

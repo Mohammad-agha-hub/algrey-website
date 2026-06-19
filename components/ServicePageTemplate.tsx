@@ -2,364 +2,16 @@
 
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import CTAAndFooter from "@/components/Footer";
 import CTASection from "./CTA";
+import TestimonialsSection from "./Testemonial";
 
-/* ═══════════════════════════════════════════════════════════════════
-   CONSTANTS
-═══════════════════════════════════════════════════════════════════ */
-const ALL_SERVICES = [
-  "Gutter Cleaning",
-  "Roof Cleaning",
-  "Fascia & Soffit Cleaning",
-  "Pressure Washing",
-  "Window Cleaning",
-  "Driveway Cleaning",
-  "Patio Cleaning",
-  "Render Cleaning",
-  "Brick Cleaning",
-  "Cladding Cleaning",
-  "Downpipe Cleaning",
-  "Graffiti Removal",
-  "Commercial Gutter Cleaning",
-  "Conservatory Roof Cleaning",
-];
 
-const AVATARS = [
-  {
-    src: "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=60&h=60&dpr=1",
-    alt: "JM",
-  },
-  {
-    src: "https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=60&h=60&dpr=1",
-    alt: "SR",
-  },
-  {
-    src: "https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=60&h=60&dpr=1",
-    alt: "PK",
-  },
-  {
-    src: "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=60&h=60&dpr=1",
-    alt: "AL",
-  },
-];
 
-/* ═══════════════════════════════════════════════════════════════════
-   SHARED STYLES  — all section CSS in one block to avoid duplication
-═══════════════════════════════════════════════════════════════════ */
-function ServiceStyles() {
-  return (
-    <style>{`
-      @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Manrope:wght@400;600;700;800;900&display=swap');
-
-      .spt-display  { font-family: 'Bebas Neue', sans-serif; }
-      .spt-heading  { font-family: 'Manrope', sans-serif; }
-      .spt-body     { font-family: 'Inter', sans-serif; }
-
-      /* ── Animations ── */
-      @keyframes spt-fadeUp {
-        from { opacity: 0; transform: translateY(28px); }
-        to   { opacity: 1; transform: translateY(0); }
-      }
-      @keyframes spt-fadeIn {
-        from { opacity: 0; }
-        to   { opacity: 1; }
-      }
-      @keyframes spt-dropdownIn {
-        from { opacity: 0; transform: translateY(-6px); }
-        to   { opacity: 1; transform: translateY(0); }
-      }
-      .spt-anim-1 { animation: spt-fadeUp .65s ease both; }
-      .spt-anim-2 { animation: spt-fadeUp .65s .10s ease both; }
-      .spt-anim-3 { animation: spt-fadeUp .65s .22s ease both; }
-      .spt-anim-4 { animation: spt-fadeUp .65s .34s ease both; }
-      .spt-anim-5 { animation: spt-fadeIn  .8s .48s ease both; }
-
-      /* ── Hero: trust pill ── */
-      .spt-trust-pill {
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        background: rgba(255,255,255,0.08);
-        border: 1px solid rgba(255,255,255,0.15);
-        backdrop-filter: blur(8px);
-        border-radius: 999px;
-        padding: 7px 16px 7px 8px;
-      }
-      .spt-trust-pill-avatars { display: flex; }
-      .spt-trust-pill-avatars img {
-        width: 28px; height: 28px;
-        border-radius: 50%;
-        border: 2px solid rgba(255,255,255,0.5);
-        object-fit: cover;
-        margin-left: -6px;
-        flex-shrink: 0;
-        display: block;
-      }
-      .spt-trust-pill-avatars img:first-child { margin-left: 0; }
-
-      /* ── Hero: breadcrumb ── */
-      .spt-breadcrumb { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-      .spt-breadcrumb a {
-        color: rgba(255,255,255,0.5);
-        font-size: 12px;
-        font-weight: 500;
-        text-decoration: none;
-        transition: color .2s;
-      }
-      .spt-breadcrumb a:hover { color: rgba(255,255,255,0.9); }
-      .spt-breadcrumb .bc-sep { color: rgba(255,255,255,0.3); font-size: 12px; }
-      .spt-breadcrumb .bc-active { color: #FFF265; font-size: 12px; font-weight: 600; }
-
-      /* ── Hero: service dropdown ── */
-      .spt-dropdown-list {
-        animation: spt-dropdownIn 0.15s ease both;
-        scrollbar-width: thin;
-        scrollbar-color: #d1d5db transparent;
-      }
-      .spt-dropdown-list::-webkit-scrollbar { width: 4px; }
-      .spt-dropdown-list::-webkit-scrollbar-track { background: transparent; }
-      .spt-dropdown-list::-webkit-scrollbar-thumb { background-color: #d1d5db; border-radius: 99px; }
-
-      /* ── Service Cards — identical to AboutSection cards ── */
-      .spt-svc-card {
-        background: #0d2257;
-        border-radius: 16px;
-        padding: 36px 28px 32px;
-        display: flex;
-        flex-direction: column;
-        gap: 40px;
-        cursor: default;
-        min-height: 280px;
-        transition: background 0.3s ease;
-      }
-      .spt-svc-card:hover { background: #FFF265; }
-      .spt-svc-card .spt-card-icon { color: #ffffff; transition: color 0.3s ease; }
-      .spt-svc-card:hover .spt-card-icon { color: #0d2257; }
-      .spt-svc-card .spt-card-title { color: #ffffff; transition: color 0.3s ease; }
-      .spt-svc-card:hover .spt-card-title { color: #0d2257; }
-      .spt-svc-card .spt-card-desc {
-        color: #94a8cc;
-        font-size: 13.5px;
-        line-height: 1.7;
-        margin-top: 8px;
-        transition: color 0.3s ease;
-      }
-      .spt-svc-card:hover .spt-card-desc { color: #081a3d; }
-
-      /* ── Process Cards — identical to ApproachSection ── */
-      .spt-proc-card {
-        position: relative;
-        border-radius: 20px;
-        border: 1px solid #1a2f6e;
-        overflow: hidden;
-        height: 430px;
-        box-shadow: 0 4px 24px rgba(0,0,0,.25);
-        transition: transform .28s ease, box-shadow .28s ease;
-      }
-      .spt-proc-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 20px 48px rgba(0,0,0,.4);
-      }
-      .spt-proc-face {
-        position: absolute;
-        inset: 0;
-        padding: 32px;
-        display: flex;
-        flex-direction: column;
-        transition: opacity .38s ease;
-      }
-      .spt-proc-face-default {
-        background: #0d2257;
-        justify-content: space-between;
-        opacity: 1;
-      }
-      .spt-proc-card:hover .spt-proc-face-default { opacity: 0; pointer-events: none; }
-      .spt-proc-face-hover {
-        background: #FFF265;
-        justify-content: flex-start;
-        padding-top: 44px;
-        opacity: 0;
-        pointer-events: none;
-      }
-      .spt-proc-card:hover .spt-proc-face-hover { opacity: 1; pointer-events: auto; }
-
-      .spt-proc-icon {
-        width: 60px; height: 60px;
-        border-radius: 14px;
-        background: #2563eb;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-        color: #ffffff;
-      }
-      .spt-proc-num {
-        font-family: 'Manrope', sans-serif;
-        font-size: 64px;
-        font-weight: 800;
-        color: #ffffff;
-        opacity: 0.14;
-        line-height: 1;
-        letter-spacing: -2px;
-        pointer-events: none;
-        user-select: none;
-      }
-      .spt-proc-face-mobile { display: none; }
-
-      @media (max-width: 1023px) {
-        .spt-proc-card {
-          height: auto;
-          background: #0d2257;
-          border-radius: 16px;
-          transition: background .3s ease, box-shadow .28s ease, transform .28s ease;
-        }
-        .spt-proc-card:hover { background: #FFF265; transform: translateY(-4px); }
-        .spt-proc-face-default, .spt-proc-face-hover { display: none; }
-        .spt-proc-face-mobile {
-          display: flex;
-          flex-direction: column;
-          gap: 20px;
-          padding: 32px 28px;
-        }
-        .spt-proc-card .spt-mob-icon { color: #ffffff; transition: color .3s ease; }
-        .spt-proc-card:hover .spt-mob-icon { color: #081a3d; }
-        .spt-proc-card .spt-mob-title {
-          font-family: 'Manrope', sans-serif;
-          font-size: 20px;
-          font-weight: 800;
-          color: #ffffff;
-          line-height: 1.2;
-          letter-spacing: -0.3px;
-          margin-bottom: 10px;
-          transition: color .3s ease;
-        }
-        .spt-proc-card:hover .spt-mob-title { color: #081a3d; }
-        .spt-proc-card .spt-mob-bullet {
-          font-size: 13.5px;
-          font-weight: 600;
-          color: #94a8cc;
-          line-height: 1.5;
-          transition: color .3s ease;
-        }
-        .spt-proc-card:hover .spt-mob-bullet { color: #081a3d; }
-        .spt-proc-card .spt-mob-check {
-          width: 20px; height: 20px;
-          border-radius: 50%;
-          background: #081a3d;
-          display: flex; align-items: center; justify-content: center;
-          flex-shrink: 0; margin-top: 2px;
-          color: #2563eb;
-          transition: background .3s ease, color .3s ease;
-        }
-        .spt-proc-card:hover .spt-mob-check { color: #FFF265; }
-      }
-
-      /* ── Gallery — identical to GallerySection ── */
-      .spt-gal-card {
-        border-radius: 16px;
-        overflow: hidden;
-        position: relative;
-        cursor: pointer;
-      }
-      .spt-gal-card img { transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94); }
-      .spt-gal-card:hover img { transform: scale(1.06); }
-
-      .spt-bento { display: grid; gap: 14px; }
-
-      @media (max-width: 639px) {
-        .spt-bento { grid-template-columns: 1fr; grid-template-rows: repeat(6, 200px); }
-      }
-      @media (min-width: 640px) and (max-width: 1023px) {
-        .spt-bento { grid-template-columns: repeat(2,1fr); grid-template-rows: 240px 240px 220px 220px; }
-        .spt-bento .spt-gal-card:nth-child(1) { grid-column: 1/3; grid-row: 1/3; }
-        .spt-bento .spt-gal-card:nth-child(2) { grid-column: 1/2; grid-row: 3/4; }
-        .spt-bento .spt-gal-card:nth-child(3) { grid-column: 2/3; grid-row: 3/4; }
-        .spt-bento .spt-gal-card:nth-child(4) { grid-column: 1/2; grid-row: 4/5; }
-        .spt-bento .spt-gal-card:nth-child(5) { grid-column: 2/3; grid-row: 4/5; }
-        .spt-bento .spt-gal-card:nth-child(6) { display: none; }
-      }
-      @media (min-width: 1024px) {
-        .spt-bento { grid-template-columns: repeat(3,1fr); grid-template-rows: 272px 272px 256px; }
-        .spt-bento .spt-gal-card:nth-child(1) { grid-column: 1/3; grid-row: 1/3; }
-        .spt-bento .spt-gal-card:nth-child(2) { grid-column: 3/4; grid-row: 1/2; }
-        .spt-bento .spt-gal-card:nth-child(3) { grid-column: 3/4; grid-row: 2/3; }
-        .spt-bento .spt-gal-card:nth-child(4) { grid-column: 1/2; grid-row: 3/4; }
-        .spt-bento .spt-gal-card:nth-child(5) { grid-column: 2/3; grid-row: 3/4; }
-        .spt-bento .spt-gal-card:nth-child(6) { grid-column: 3/4; grid-row: 3/4; }
-      }
-
-      /* ── FAQ — identical to FAQSection ── */
-      .spt-faq-item {
-        border: 1px solid #e8edf5;
-        border-radius: 14px;
-        overflow: hidden;
-        transition: border-color .2s, box-shadow .2s;
-      }
-      .spt-faq-item.open { border-color: #2563eb; box-shadow: 0 4px 24px rgba(37,99,235,.1); }
-      .spt-faq-trigger {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-        padding: 20px 24px;
-        background: transparent;
-        border: none;
-        cursor: pointer;
-        text-align: left;
-        transition: background .2s;
-      }
-      .spt-faq-trigger:hover { background: #f8f9ff; }
-      .spt-faq-item.open .spt-faq-trigger { background: #f8f9ff; }
-      .spt-faq-icon {
-        width: 28px; height: 28px;
-        border-radius: 50%;
-        border: 1.5px solid #cbd5e1;
-        display: flex; align-items: center; justify-content: center;
-        flex-shrink: 0;
-        color: #94a3b8;
-        transition: background .2s, border-color .2s, color .2s, transform .25s;
-      }
-      .spt-faq-item.open .spt-faq-icon {
-        background: #2563eb;
-        border-color: #2563eb;
-        color: #ffffff;
-        transform: rotate(45deg);
-      }
-      .spt-faq-body-text {
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height .35s ease, padding .3s ease;
-        padding: 0 24px;
-      }
-      .spt-faq-item.open .spt-faq-body-text { max-height: 300px; padding: 0 24px 20px; }
-
-      /* ── Intro image ── */
-      .spt-intro-img {
-        border-radius: 20px;
-        overflow: hidden;
-        box-shadow: 0 20px 60px rgba(13,34,87,.15);
-        position: relative;
-      }
-    `}</style>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════════════════
-   SECTION 1 — HERO
-   Same as HeroSection.jsx + breadcrumb + pre-selected service
-═══════════════════════════════════════════════════════════════════ */
 /* ═══════════════════════════════════════════════════════════════════
    TYPES
 ═══════════════════════════════════════════════════════════════════ */
-interface Avatar {
-  src: string;
-  alt: string;
-}
-
 interface HeroData {
   serviceName: string;
   eyebrow?: string;
@@ -428,12 +80,15 @@ interface FaqData {
   subtext: string;
   items: FaqItem[];
 }
+
 interface CTAData {
   badge: string;
+  heading: string; // ← required by CTA.tsx
   headingLines: [string, string, string];
   body: string;
   pills: [string, string, string];
 }
+
 interface ServiceData {
   hero: HeroData;
   intro: IntroData;
@@ -441,147 +96,775 @@ interface ServiceData {
   process: ProcessData;
   gallery: GalleryData;
   faq: FaqData;
-  cta:CTAData
+  cta: CTAData;
 }
 
-function HeroSection({ data }: { data: HeroData }) {
+/* ═══════════════════════════════════════════════════════════════════
+   STYLES
+═══════════════════════════════════════════════════════════════════ */
+function ServiceStyles() {
+  return (
+    <style>{`
+      @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap');
+
+      .spt-display  { font-family: 'Inter Tight', sans-serif; }
+      .spt-heading  { font-family: 'Inter Tight', sans-serif; }
+      .spt-body     { font-family: 'Inter', sans-serif; }
+
+      /* ── Animations ── */
+      @keyframes spt-fadeUp {
+        from { opacity: 0; transform: translateY(28px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+      @keyframes spt-fadeIn {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+      }
+      .spt-anim-1 { animation: spt-fadeUp .65s ease both; }
+      .spt-anim-2 { animation: spt-fadeUp .65s .10s ease both; }
+      .spt-anim-3 { animation: spt-fadeUp .65s .22s ease both; }
+      .spt-anim-4 { animation: spt-fadeUp .65s .34s ease both; }
+      .spt-anim-5 { animation: spt-fadeIn  .8s .48s ease both; }
+      .spt-anim-6 { animation: spt-fadeIn  .9s .60s ease both; }
+      @media (prefers-reduced-motion: reduce) {
+        .spt-anim-1,.spt-anim-2,.spt-anim-3,.spt-anim-4,.spt-anim-5,.spt-anim-6 {
+          animation: none; opacity: 1; transform: none;
+        }
+      }
+
+      /* ── Eyebrow ── */
+      .spt-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-family: 'Inter', sans-serif;
+        font-weight: 700;
+        font-size: 11px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+      }
+      .spt-eyebrow .dot {
+        width: 6px; height: 6px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+
+      /* ── CTA pill button ── */
+      .spt-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 0;
+        padding: 7px 7px 7px 26px;
+        border-radius: 100px;
+        background: #2563eb;
+        color: #ffffff;
+        font-family: 'Inter', sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        transition: background 0.22s ease, gap 0.2s ease,
+                    transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        flex-shrink: 0;
+      }
+      .spt-cta:hover { background: #1d4ed8; gap: 6px; transform: scale(1.03); }
+      .spt-cta:active { transform: scale(0.96); }
+      .spt-cta-circle {
+        width: 38px; height: 38px;
+        border-radius: 50%;
+        background: #ffffff;
+        color: #0d1b3e;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 16px;
+        flex-shrink: 0;
+        transition: background 0.22s, color 0.22s;
+      }
+      .spt-cta:hover .spt-cta-circle { background: #dbeafe; }
+
+      /* Outline variant — over dark hero */
+      .spt-cta-outline {
+        background: transparent;
+        border: 1.5px solid rgba(255,255,255,0.55);
+        color: #ffffff;
+      }
+      .spt-cta-outline:hover { border-color: #fff; background: rgba(255,255,255,0.08); }
+      .spt-cta-outline .spt-cta-circle { background: rgba(255,255,255,0.15); color: #fff; }
+      .spt-cta-outline:hover .spt-cta-circle { background: rgba(255,255,255,0.25); }
+
+      /* Hero "View Services" plain text link — matches hs-btn-learn */
+      .spt-hero-learn {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        color: rgba(255,255,255,0.7);
+        font-size: 15px;
+        font-weight: 500;
+        transition: color .2s;
+        text-decoration: none;
+        white-space: nowrap;
+      }
+      .spt-hero-learn:hover { color: #fff; }
+      .spt-hero-learn:hover .spt-hero-learn-arrow { transform: translateX(3px); }
+      .spt-hero-learn-arrow { display: flex; transition: transform .2s ease; }
+
+      /* ── Hero trust pill ── */
+      .spt-trust-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.15);
+        backdrop-filter: blur(8px);
+        border-radius: 999px;
+        padding: 7px 16px 7px 8px;
+      }
+      .spt-trust-pill-avatars { display: flex; }
+      .spt-trust-pill-avatars img {
+        width: 28px; height: 28px;
+        border-radius: 50%;
+        border: 2px solid rgba(255,255,255,0.5);
+        object-fit: cover;
+        margin-left: -6px;
+        flex-shrink: 0;
+        display: block;
+      }
+      .spt-trust-pill-avatars img:first-child { margin-left: 0; }
+
+      /* ── Hero breadcrumb ── */
+      .spt-breadcrumb { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+      .spt-breadcrumb a {
+        color: rgba(255,255,255,0.5);
+        font-size: 12px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: color .2s;
+      }
+      .spt-breadcrumb a:hover { color: rgba(255,255,255,0.9); }
+      .spt-breadcrumb .bc-sep { color: rgba(255,255,255,0.3); font-size: 12px; }
+      .spt-breadcrumb .bc-active { color: #7da6f5; font-size: 12px; font-weight: 600; }
+
+      /* ── Infinite image strip ── */
+      .spt-strip-wrapper {
+        width: 100%;
+        overflow: hidden;
+        position: relative;
+      }
+      .spt-strip-track {
+        display: flex;
+        align-items: flex-end;
+        gap: 12px;
+        width: max-content;
+        will-change: transform;
+      }
+      .spt-strip-img {
+        border-radius: 12px;
+        object-fit: cover;
+        display: block;
+        flex-shrink: 0;
+      }
+      .spt-strip-img.is-a { width: 320px; height: 360px; }
+      .spt-strip-img.is-b { width: 380px; height: 270px; }
+
+      @media (max-width: 1023px) {
+        .spt-strip-img.is-a { width: 230px; height: 260px; }
+        .spt-strip-img.is-b { width: 280px; height: 200px; }
+      }
+      @media (max-width: 639px) {
+        .spt-strip-img.is-a { width: 170px; height: 200px; }
+        .spt-strip-img.is-b { width: 210px; height: 155px; }
+      }
+
+      /* ── Cards section — left-heading layout ── */
+      .spt-cards-section {
+        font-family: 'Inter', sans-serif;
+        background: #f8f9fc;
+        padding: clamp(40px, 6vw, 64px) 0;
+      }
+      .spt-cards-header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 40px;
+        margin-bottom: clamp(28px, 5vw, 44px);
+      }
+      .spt-cards-header-left { flex: 1; min-width: 0; }
+      .spt-cards-header-right {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 24px;
+        max-width: 360px;
+        padding-top: 3rem;
+      }
+      .spt-cards-sub {
+        font-size: 15px;
+        font-weight: 400;
+        color: #6b7a99;
+        line-height: 1.65;
+        margin: 0;
+      }
+
+      .spt-svc-card {
+        background: #ffffff;
+        border: 1px solid #e4e9f4;
+        border-radius: 20px;
+        padding: 36px 32px 40px;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        box-shadow: 0 2px 12px rgba(8,26,61,.06);
+        transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.3s cubic-bezier(0.22,1,0.36,1);
+      }
+      .spt-svc-card:hover {
+        border-color: #bfdbfe;
+        box-shadow: 0 16px 40px rgba(13,27,62,.13);
+        transform: translateY(-6px);
+      }
+      .spt-card-icon-badge {
+        width: 54px; height: 54px;
+        border-radius: 14px;
+        background: #eff4ff;
+        color: #2563eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        margin-bottom: 28px;
+        transition: background .22s, color .22s, transform .3s cubic-bezier(0.34,1.56,0.64,1);
+      }
+      .spt-svc-card:hover .spt-card-icon-badge {
+        background: #dbeafe;
+        color: #1d4ed8;
+        transform: rotate(-8deg) scale(1.08);
+      }
+      .spt-svc-card .spt-card-title { color: #0d1b3e; margin-bottom: 12px; }
+      .spt-svc-card .spt-card-desc {
+        color: #6b7a99;
+        font-size: 14px;
+        line-height: 1.7;
+      }
+
+      /* ── Process section — matches ApproachSection ── */
+      .spt-proc-section {
+        font-family: 'Inter', sans-serif;
+        background: #f8f9fc;
+        padding: clamp(40px, 6vw, 64px) 0;
+      }
+      .spt-proc-header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 40px;
+        margin-bottom: clamp(28px, 5vw, 44px);
+      }
+      .spt-proc-header-left { flex: 1; min-width: 0; }
+      .spt-proc-header-right {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 24px;
+        max-width: 340px;
+        margin-top: 3rem;
+      }
+      .spt-proc-header-sub {
+        font-size: 15px;
+        font-weight: 400;
+        color: #6b7a99;
+        line-height: 1.65;
+        margin: 0;
+      }
+
+      .spt-new-proc-card {
+        background: #ffffff;
+        border-radius: 20px;
+        border: 1px solid #e4e9f4;
+        padding: 36px 32px 40px;
+        box-shadow: 0 2px 12px rgba(8,26,61,0.06);
+        transition: box-shadow 0.26s ease, border-color 0.26s ease,
+                    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+        position: relative;
+        overflow: hidden;
+      }
+      .spt-new-proc-card:hover {
+        box-shadow: 0 16px 40px rgba(8,26,61,0.13);
+        border-color: #bfdbfe;
+        transform: translateY(-8px);
+      }
+      /* stagger applied via inline style on lg+ only — see JSX */
+
+      .spt-new-proc-icon {
+        width: 54px; height: 54px;
+        border-radius: 14px;
+        background: #eff4ff;
+        color: #2563eb;
+        display: flex; align-items: center; justify-content: center;
+        margin-bottom: 28px;
+        transition: background .22s, color .22s, transform .3s cubic-bezier(0.34,1.56,0.64,1);
+      }
+      .spt-new-proc-card:hover .spt-new-proc-icon {
+        background: #dbeafe; color: #1d4ed8;
+        transform: rotate(-8deg) scale(1.08);
+      }
+      .spt-new-proc-num {
+        position: absolute;
+        top: 28px; right: 28px;
+        font-family: 'Inter Tight', sans-serif;
+        font-size: 52px; font-weight: 800;
+        color: #081a3d; opacity: 0.06;
+        line-height: 1; letter-spacing: -2px;
+        pointer-events: none; user-select: none;
+      }
+      .spt-new-proc-title {
+        font-family: 'Inter Tight', sans-serif;
+        font-size: 22px; font-weight: 700;
+        color: #081a3d; line-height: 1.2;
+        letter-spacing: -0.4px; margin-bottom: 12px;
+      }
+      .spt-new-proc-desc {
+        font-size: 14px; font-weight: 400;
+        color: #6b7a99; line-height: 1.65;
+        margin-bottom: 28px;
+      }
+      .spt-new-proc-divider {
+        height: 1px; background: #e4e9f4;
+        margin-bottom: 24px;
+      }
+      .spt-new-proc-bullet {
+        display: flex; align-items: flex-start; gap: 11px;
+        margin-bottom: 11px;
+      }
+      .spt-new-proc-bullet:last-child { margin-bottom: 0; }
+      .spt-new-proc-check {
+        width: 20px; height: 20px;
+        border-radius: 50%;
+        background: #eff4ff;
+        border: 1px solid #bfd0f7;
+        display: flex; align-items: center; justify-content: center;
+        flex-shrink: 0; margin-top: 1px;
+      }
+      .spt-new-proc-bullet-text {
+        font-size: 13.5px; font-weight: 500;
+        color: #374151; line-height: 1.5;
+      }
+
+      /* ── FAQ — matches FAQSection.jsx ── */
+      .spt-faq-section {
+        font-family: 'Inter', sans-serif;
+        background: #f8f9fc;
+      }
+      .spt-faq-grid {
+        display: grid;
+        grid-template-columns: 1fr 1.55fr;
+        gap: 72px;
+        align-items: start;
+      }
+      .spt-faq-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-family: 'Inter', sans-serif;
+        font-size: 11px; font-weight: 700;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: #2563eb;
+        margin-bottom: 20px;
+      }
+      .spt-faq-eyebrow::before {
+        content: '';
+        display: block;
+        width: 6px; height: 6px;
+        border-radius: 50%;
+        background: #2563eb;
+        flex-shrink: 0;
+      }
+      .spt-faq-heading {
+        font-family: 'Inter Tight', sans-serif;
+        font-size: clamp(32px, 3.8vw, 50px);
+        font-weight: 500;
+        color: #081a3d;
+        line-height: 1.08;
+        letter-spacing: -1.5px;
+        margin: 0 0 20px;
+      }
+      .spt-faq-heading em { font-style: normal; color: #2563eb; }
+      .spt-faq-sub {
+        font-size: 14.5px; font-weight: 400;
+        color: #6b7a99; line-height: 1.7;
+        margin: 0 0 36px;
+      }
+      .spt-new-faq-item {
+        background: #ffffff;
+        border: 1px solid #e4e9f4;
+        border-radius: 14px;
+        overflow: hidden;
+        transition: border-color .22s, box-shadow .22s;
+      }
+      .spt-new-faq-item.open {
+        border-color: #2563eb;
+        box-shadow: 0 4px 20px rgba(37,99,235,.10);
+      }
+      .spt-new-faq-trigger {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 18px 22px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        text-align: left;
+        transition: background .18s;
+      }
+      .spt-new-faq-trigger:hover { background: #f5f7ff; }
+      .spt-new-faq-item.open .spt-new-faq-trigger { background: #f5f7ff; }
+      .spt-new-faq-q {
+        font-family: 'Inter', sans-serif;
+        font-size: 16px; font-weight: 500;
+        color: #081a3d;
+        line-height: 1.35;
+        letter-spacing: -0.2px;
+      }
+      .spt-new-faq-icon {
+        width: 28px; height: 28px;
+        border-radius: 50%;
+        border: 1.5px solid #cbd5e1;
+        display: flex; align-items: center; justify-content: center;
+        flex-shrink: 0;
+        color: #94a3b8;
+        transition: background .2s, border-color .2s, color .2s, transform .26s;
+      }
+      .spt-new-faq-item.open .spt-new-faq-icon {
+        background: #2563eb; border-color: #2563eb;
+        color: #ffffff; transform: rotate(45deg);
+      }
+      .spt-new-faq-answer {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height .35s ease, padding .28s ease;
+        padding: 0 22px;
+      }
+      .spt-new-faq-item.open .spt-new-faq-answer {
+        max-height: 300px;
+        padding: 0 22px 20px;
+      }
+      .spt-new-faq-answer-inner {
+        font-size: 14px; font-weight: 400;
+        color: #6b7a99; line-height: 1.7;
+        border-top: 1px solid #e4e9f4;
+        padding-top: 16px;
+      }
+
+      /* ── Intro image ── */
+      .spt-intro-img {
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(13,27,62,.15);
+        position: relative;
+      }
+
+      /* ── Responsive ── */
+      @media (max-width: 1023px) {
+        .spt-cards-header-row { flex-direction: column; align-items: flex-start; gap: 24px; }
+        .spt-cards-header-right { max-width: 100%; padding-top: 0; }
+        .spt-proc-header-row { flex-direction: column; align-items: flex-start; gap: 24px; }
+        .spt-proc-header-right { max-width: 100%; margin-top: 0; }
+        .spt-faq-grid { grid-template-columns: 1fr; gap: 48px; }
+      }
+
+      @media (max-width: 639px) {
+        .spt-new-proc-card { padding: 28px 22px 30px; }
+        .spt-new-proc-num { font-size: 40px; top: 20px; right: 20px; }
+        .spt-svc-card { padding: 28px 22px 30px; }
+      }
+    `}</style>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   INFINITE STRIP — same engine as HeroSection.jsx
+═══════════════════════════════════════════════════════════════════ */
+function InfiniteStrip({ images }: { images: GalleryImage[] }) {
+  const TRACK_IMAGES = [...images, ...images];
+  const xRef = useRef(0);
+  const rafRef = useRef<number>(0);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const halfWidthRef = useRef(images.length * 380);
+  const hoveringRef = useRef(false);
+  const visibleRef = useRef(true);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    const measure = () => {
+      halfWidthRef.current = track.scrollWidth / 2;
+    };
+    measure();
+    let raf: number;
+    const onResize = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(measure);
+    };
+    window.addEventListener("resize", onResize, { passive: true });
+
+    const io = new IntersectionObserver(
+      ([e]) => {
+        visibleRef.current = e.isIntersecting;
+      },
+      { threshold: 0 },
+    );
+    io.observe(track);
+
+    let last = performance.now();
+    const tick = (now: number) => {
+      const delta = Math.min(now - last, 100);
+      last = now;
+      if (visibleRef.current) {
+        const speed = hoveringRef.current ? 35 : 55;
+        xRef.current -= (speed * delta) / 1000;
+        const hw = halfWidthRef.current;
+        if (hw && xRef.current <= -hw) xRef.current += hw;
+        if (track) track.style.transform = `translateX(${xRef.current}px)`;
+      }
+      rafRef.current = requestAnimationFrame(tick);
+    };
+    rafRef.current = requestAnimationFrame(tick);
+
+    return () => {
+      window.removeEventListener("resize", onResize);
+      cancelAnimationFrame(raf);
+      cancelAnimationFrame(rafRef.current);
+      io.disconnect();
+    };
+  }, []);
+
+  return (
+    <div
+      className="spt-strip-wrapper"
+      onMouseEnter={() => {
+        hoveringRef.current = true;
+      }}
+      onMouseLeave={() => {
+        hoveringRef.current = false;
+      }}
+    >
+      <div ref={trackRef} className="spt-strip-track">
+        {TRACK_IMAGES.map((img, i) => (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            key={img.src + i}
+            src={img.src}
+            alt={img.alt}
+            aria-hidden={i >= images.length ? true : undefined}
+            className={`spt-strip-img ${i % 2 === 0 ? "is-a" : "is-b"}`}
+            width={i % 2 === 0 ? 320 : 380}
+            height={i % 2 === 0 ? 360 : 270}
+            loading={i < 3 ? "eager" : "lazy"}
+            decoding="async"
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   SECTION 1 — HERO  (matches HeroSection.jsx layout)
+═══════════════════════════════════════════════════════════════════ */
+function HeroSection({
+  data,
+  galleryImages,
+}: {
+  data: HeroData;
+  galleryImages: GalleryImage[];
+}) {
   const {
     serviceName,
     eyebrow = "Trusted Local Experts",
     line1,
-    line2, // This word gets blue — optional
-    line3, // optional third line
+    line2,
+    line3,
     subtext,
     bgImage,
   } = data;
 
-  const [form, setForm] = useState({
-    postcode: "",
-    name: "",
-    email: "",
-    phone: "",
-    service: serviceName ?? "",
-  });
-  const [submitted, setSubmitted] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    function handleClickOutside(e: MouseEvent) {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(e.target as Node)
-      ) {
-        setDropdownOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-
-  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    if (
-      !form.postcode ||
-      !form.name ||
-      !form.email ||
-      !form.phone ||
-      !form.service
-    )
-      return;
-    setSubmitted(true);
-  };
+  // Use all gallery images passed from the parent; fall back to bgImage repeated
+  const stripImages =
+    galleryImages.length > 0
+      ? galleryImages
+      : Array.from({ length: 6 }, (_, i) => ({
+          src: bgImage,
+          alt: `${serviceName} example ${i + 1}`,
+        }));
 
   return (
-    <section className="spt-body relative min-h-screen flex flex-col">
+    <section
+      className="spt-body relative flex flex-col"
+      style={{ borderRadius: 20 }}
+    >
       <Navbar />
+      {/* ── Wrapper that matches HeroSection.jsx outer shell ── */}
+      <div
+        className="flex flex-col items-center"
+        style={{ width: "97%", margin: "0 auto" }}
+      >
+        <div
+          className="relative w-full bg-[#0d1b3e] text-white"
+          style={{ borderRadius: 20 }}
+        >
+          {/* ── Hero copy — matches HeroSection.jsx two-column layout ── */}
+          <div className="max-w-7xl mx-auto w-full px-5 sm:px-8 lg:px-14 pt-28 pb-10 lg:pt-32">
+            {/* Tags row — spans full width above the two columns */}
+            <div className="spt-anim-1 flex items-center gap-2 mb-7 flex-wrap">
+              {[
+                "Fully Insured",
+                "Exterior Cleaning Specialists",
+                "Birmingham & UK",
+              ].map((tag) => (
+                <span
+                  key={tag}
+                  className="flex items-center gap-1.5 text-sm font-medium text-white/65"
+                >
+                  <svg
+                    width="15"
+                    height="15"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#3b82f6"
+                    strokeWidth="2.5"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M4.5 12.75l6 6 9-13.5"
+                    />
+                  </svg>
+                  {tag}
+                </span>
+              ))}
+            </div>
 
-      {/* ── Background ── */}
-      <div className="absolute inset-0 -z-10">
-        <Image
-          src={bgImage}
-          alt={`${serviceName} service`}
-          fill
-          priority
-          className="object-cover object-center"
-          sizes="100vw"
-        />
-        <div className="hidden lg:block absolute inset-0 bg-gradient-to-r from-[#081a3d]/95 via-[#0d2257]/80 to-transparent" />
-        <div className="lg:hidden absolute inset-0 bg-gradient-to-b from-[#081a3d]/90 via-[#0d2257]/85 to-[#061530]/95" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#061530]/90 via-transparent to-transparent" />
-      </div>
+            {/* Two-column row: headline left, description + CTAs right */}
+            <div className="flex flex-col lg:flex-row lg:items-start gap-8 lg:gap-16 pb-10">
+              {/* Left: big headline only */}
+              <div className="flex-1 min-w-0">
+                <h1 className="spt-anim-2 spt-display text-[44px] sm:text-[56px] lg:text-[68px] leading-[1.04] font-medium tracking-[-2px]">
+                  {line1}
+                  {line2 && (
+                    <>
+                      <br />
+                      <span className="text-[#3b82f6]">{line2}</span>
+                    </>
+                  )}
+                  {line3 && (
+                    <>
+                      <br />
+                      {line3}
+                    </>
+                  )}
+                </h1>
+              </div>
 
-      {/* ── Content ── */}
-      <div className="flex-1 max-w-7xl mx-auto w-full px-5 sm:px-8 lg:px-12 pt-32 pb-10 lg:pt-36 flex flex-col lg:flex-row items-center lg:items-start gap-10 lg:gap-8">
-        {/* Left: Copy */}
-        <div className="flex-1 flex flex-col justify-center text-white text-center lg:text-left">
-          {/* Breadcrumb */}
-          <div className="spt-breadcrumb spt-anim-1 justify-center lg:justify-start mb-4">
-            <Link href="/">Home</Link>
-            <span className="bc-sep">›</span>
-            <Link href="/services">Services</Link>
-            <span className="bc-sep">›</span>
-            <span className="bc-active">{serviceName}</span>
+              {/* Right: subtext + CTAs + trust pill */}
+              <div className="spt-anim-3 lg:max-w-[360px] flex flex-col justify-center gap-6 lg:pt-3 shrink-0">
+                <p className="text-[#cbd5e1] text-[16px] leading-relaxed">
+                  {subtext}
+                </p>
+
+                <div className="flex flex-wrap items-center gap-4">
+                  <a href="/enquiry-now" className="spt-cta">
+                    Get a Quote
+                    <span className="spt-cta-circle">
+                      <svg
+                        width="15"
+                        height="15"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth={2.5}
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                        />
+                      </svg>
+                    </span>
+                  </a>
+                  <a href="#services" className="spt-hero-learn">
+                    View Services
+                    <span className="spt-hero-learn-arrow">
+                      <svg
+                        width="15"
+                        height="15"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M8.25 4.5l7.5 7.5-7.5 7.5"
+                        />
+                      </svg>
+                    </span>
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
 
-          {/* Eyebrow */}
-          <p className="spt-anim-2 inline-flex items-center justify-center lg:justify-start gap-2 text-[#FFF265] font-semibold text-sm uppercase tracking-[0.2em] mb-4">
-            {eyebrow}
-          </p>
+          {/* ── Infinite image strip (replaces gallery section) ── */}
+          <div className="spt-anim-6 mt-6 pb-10 lg:pb-14">
+            <InfiniteStrip images={stripImages} />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
 
-          {/* Headline */}
-          <h1 className="spt-anim-3 spt-display tracking-[4px] text-5xl sm:text-6xl xl:text-7xl leading-[0.95] font-bold uppercase mb-5">
-            {line1}
-            {line2 && (
-              <>
-                <br />
-                <span className="text-blue-600">{line2}</span>
-              </>
-            )}
-            {line3 && (
-              <>
-                <br />
-                {line3}
-              </>
-            )}
-          </h1>
+/* ═══════════════════════════════════════════════════════════════════
+   SECTION 2 — INTRO
+═══════════════════════════════════════════════════════════════════ */
+function IntroSection({ data }: { data: IntroData }) {
+  const { eyebrow, heading, paragraphs, image, imageAlt } = data;
 
-          {/* Subtext */}
-          <p className="spt-anim-4 text-gray-300 text-base leading-relaxed max-w-md mx-auto lg:mx-0 mb-8">
-            {subtext}
-          </p>
-
-          {/* CTAs + Trust */}
-          <div className="spt-anim-4 flex flex-col gap-4">
-            <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
-              <a
-                href="#services"
-                className="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white font-bold uppercase tracking-widest text-sm px-7 py-3.5 rounded-md transition-all duration-200 shadow-lg shadow-blue-900/40"
-              >
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth={2.5}
-                  viewBox="0 0 24 24"
+  return (
+    <section className="spt-body bg-[#F8F9FC] py-14 lg:py-20 px-5 sm:px-8 lg:px-16">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+          <div>
+            <p className="spt-eyebrow text-[#2563eb] mb-4">
+              <span className="dot" style={{ background: "#2563eb" }} />
+              {eyebrow}
+            </p>
+            <h2 className="spt-heading text-[clamp(28px,3.5vw,44px)] font-medium text-[#0d1b3e] leading-[1.05] tracking-[-1px] mb-6">
+              {heading}
+            </h2>
+            <div className="flex flex-col gap-4">
+              {paragraphs.map((p, i) => (
+                <p
+                  key={i}
+                  className="text-slate-500 text-[15px] leading-relaxed"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-                  />
-                </svg>
-                Our Services
-              </a>
-              <a
-                href="#quote"
-                className="inline-flex items-center justify-center gap-2 border-2 border-white/60 hover:border-white text-white font-bold uppercase tracking-widest text-sm px-7 py-3.5 rounded-md transition-all duration-200 hover:bg-white/10"
-              >
+                  {p}
+                </p>
+              ))}
+            </div>
+            <a href="#quote" className="spt-cta mt-8 inline-flex">
+              Get Your Free Quote
+              <span className="spt-cta-circle">
                 <svg
-                  className="w-4 h-4"
+                  width="15"
+                  height="15"
                   fill="none"
                   stroke="currentColor"
                   strokeWidth={2.5}
@@ -593,357 +876,10 @@ function HeroSection({ data }: { data: HeroData }) {
                     d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
                   />
                 </svg>
-                Get Free Quote
-              </a>
-            </div>
-
-            {/* Trust pill */}
-            <div className="flex justify-center lg:justify-start pt-2">
-              <div className="spt-trust-pill">
-                <div className="spt-trust-pill-avatars">
-                  {AVATARS.map((avatar) => (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img key={avatar.alt} src={avatar.src} alt={avatar.alt} />
-                  ))}
-                </div>
-                <div className="flex flex-col leading-tight">
-                  <div className="flex items-center gap-0.5">
-                    {[...Array(5)].map((_, i) => (
-                      <svg
-                        key={i}
-                        className="w-3 h-3 text-yellow-400"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                      </svg>
-                    ))}
-                  </div>
-                  <span className="text-white text-xs font-medium">
-                    <span className="text-yellow-400 font-bold">2,000+</span>{" "}
-                    homeowners trust us
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Right: Quote Form */}
-        <div
-          id="quote"
-          className="spt-anim-5 w-full lg:w-[400px] xl:w-[420px] bg-white rounded-2xl shadow-2xl p-7 sm:p-8 shrink-0"
-        >
-          {submitted ? (
-            <div className="flex flex-col items-center text-center py-8 gap-4">
-              <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
-                <svg
-                  className="w-8 h-8 text-green-600"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth={2.5}
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M4.5 12.75l6 6 9-13.5"
-                  />
-                </svg>
-              </div>
-              <h3 className="spt-heading text-2xl font-bold text-gray-900">
-                Quote Requested!
-              </h3>
-              <p className="text-gray-500 text-sm leading-relaxed">
-                Thanks, <strong>{form.name.split(" ")[0]}</strong>! We'll be in
-                touch within 2 hours with your free quote.
-              </p>
-              <button
-                onClick={() => {
-                  setSubmitted(false);
-                  setForm({
-                    postcode: "",
-                    name: "",
-                    email: "",
-                    phone: "",
-                    service: serviceName ?? "",
-                  });
-                }}
-                className="mt-2 text-blue-600 hover:text-blue-700 text-sm font-semibold underline underline-offset-2"
-              >
-                Submit another request
-              </button>
-            </div>
-          ) : (
-            <>
-              <div className="mb-6">
-                <h2 className="spt-heading text-2xl sm:text-[1.6rem] font-bold text-gray-900 leading-tight tracking-tight">
-                  Request a Free Quote
-                </h2>
-                <p className="text-gray-500 text-sm mt-1">
-                  No obligation — get a price in minutes.
-                </p>
-              </div>
-
-              <div className="flex flex-col gap-3">
-                {/* Postcode */}
-                <div className="relative">
-                  <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400">
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0zM19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
-                      />
-                    </svg>
-                  </span>
-                  <input
-                    type="text"
-                    name="postcode"
-                    value={form.postcode}
-                    onChange={handleChange}
-                    placeholder="Enter your postcode"
-                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-                  />
-                </div>
-
-                {/* Name */}
-                <div className="relative">
-                  <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400">
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
-                      />
-                    </svg>
-                  </span>
-                  <input
-                    type="text"
-                    name="name"
-                    value={form.name}
-                    onChange={handleChange}
-                    placeholder="Enter your full name"
-                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-                  />
-                </div>
-
-                {/* Email */}
-                <div className="relative">
-                  <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400">
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
-                      />
-                    </svg>
-                  </span>
-                  <input
-                    type="email"
-                    name="email"
-                    value={form.email}
-                    onChange={handleChange}
-                    placeholder="Enter your email"
-                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-                  />
-                </div>
-
-                {/* Phone */}
-                <div className="relative">
-                  <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400">
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106a1.125 1.125 0 00-1.31.52l-.97 1.293a15.727 15.727 0 01-6.684-6.684l1.293-.97a1.125 1.125 0 00.52-1.31L9.572 3.1a1.125 1.125 0 00-1.091-.852H7.25A2.25 2.25 0 005 4.5v.75a2.25 2.25 0 002.25 2.25z"
-                      />
-                    </svg>
-                  </span>
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={form.phone}
-                    onChange={handleChange}
-                    placeholder="Enter your phone"
-                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-                  />
-                </div>
-
-                {/* Service Dropdown */}
-                <div className="relative" ref={dropdownRef}>
-                  <button
-                    type="button"
-                    onClick={() => setDropdownOpen((o) => !o)}
-                    className={`w-full flex items-center justify-between px-4 py-3 border rounded-lg text-sm bg-white transition-all duration-150 focus:outline-none ${
-                      dropdownOpen
-                        ? "border-blue-500 ring-2 ring-blue-500"
-                        : "border-gray-200 hover:border-gray-300"
-                    } ${form.service ? "text-gray-800" : "text-gray-400"}`}
-                  >
-                    <span className="flex items-center gap-2.5">
-                      <svg
-                        className="w-4 h-4 shrink-0 text-gray-400"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437l1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008z"
-                        />
-                      </svg>
-                      {form.service || "Select a Service"}
-                    </span>
-                    <svg
-                      className={`w-4 h-4 text-gray-400 shrink-0 transition-transform duration-200 ${dropdownOpen ? "rotate-180" : ""}`}
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-                      />
-                    </svg>
-                  </button>
-
-                  {dropdownOpen && (
-                    <div className="spt-dropdown-list absolute z-50 mt-1.5 w-full bg-white border border-gray-200 rounded-lg shadow-xl overflow-y-auto max-h-[180px]">
-                      {ALL_SERVICES.map((s) => {
-                        const isSelected = form.service === s;
-                        return (
-                          <button
-                            key={s}
-                            type="button"
-                            onClick={() => {
-                              setForm((prev) => ({ ...prev, service: s }));
-                              setDropdownOpen(false);
-                            }}
-                            className={`w-full flex items-center justify-between px-4 py-2.5 text-sm text-left transition-colors duration-100 ${
-                              isSelected
-                                ? "bg-blue-50 text-blue-600 font-medium"
-                                : "text-gray-700 hover:bg-gray-50"
-                            }`}
-                          >
-                            <span>{s}</span>
-                            {isSelected && (
-                              <svg
-                                className="w-4 h-4 text-blue-500 shrink-0"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth={2.5}
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  d="M4.5 12.75l6 6 9-13.5"
-                                />
-                              </svg>
-                            )}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  )}
-                </div>
-
-                {/* Submit */}
-                <button
-                  onClick={handleSubmit}
-                  className="w-full bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white font-bold uppercase tracking-widest text-sm py-3.5 rounded-lg transition-all duration-200 shadow-md shadow-blue-900/40 mt-1"
-                >
-                  Get My Free Quote →
-                </button>
-              </div>
-            </>
-          )}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════════════════
-   SECTION 2 — INTRO  (Why X is Essential)
-   White bg, text left + image right
-═══════════════════════════════════════════════════════════════════ */
-function IntroSection({ data }: { data: IntroData }) {
-  const { eyebrow, heading, paragraphs, image, imageAlt } = data;
-
-  return (
-    <section className="spt-body bg-white py-24 px-5 sm:px-8 lg:px-16">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          {/* Text */}
-          <div>
-            <p className="inline-flex items-center gap-2 text-blue-600 font-semibold text-xs uppercase tracking-[0.22em] mb-4">
-              {eyebrow}
-            </p>
-            <h2 className="spt-heading text-[clamp(28px,3.5vw,44px)] font-extrabold text-[#0d2257] leading-tight tracking-tight mb-6">
-              {heading}
-            </h2>
-            <div className="flex flex-col gap-4">
-              {paragraphs.map((p, i) => (
-                <p
-                  key={i}
-                  className="text-gray-500 text-[15px] leading-relaxed"
-                >
-                  {p}
-                </p>
-              ))}
-            </div>
-            <a
-              href="#quote"
-              className="inline-flex items-center gap-2 mt-8 bg-blue-600 hover:bg-blue-500 text-white font-bold uppercase tracking-widest text-sm px-7 py-3.5 rounded-md transition-all duration-200 shadow-lg shadow-blue-900/30"
-            >
-              Get Your Free Quote
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2.5}
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                />
-              </svg>
+              </span>
             </a>
           </div>
 
-          {/* Image */}
           <div className="spt-intro-img h-[360px] lg:h-[460px]">
             <Image
               src={image}
@@ -960,13 +896,12 @@ function IntroSection({ data }: { data: IntroData }) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   SECTION 3 — SERVICE CARDS
-   Identical card style to AboutSection.jsx
+   SECTION 3 — WHAT WE OFFER (left heading + right subtext/cta layout)
+   Matches ApproachSection header pattern
 ═══════════════════════════════════════════════════════════════════ */
 function CardsSection({ data }: { data: CardsData }) {
   const { eyebrow, heading, subtext, items } = data;
 
-  // Dynamically handle 2-col (4 cards) or 3-col (3 or 6 cards)
   const colClass =
     items.length === 4
       ? "grid grid-cols-1 sm:grid-cols-2 gap-5"
@@ -975,27 +910,52 @@ function CardsSection({ data }: { data: CardsData }) {
   return (
     <section
       id="services"
-      className="spt-body bg-white py-24 px-5 sm:px-8 lg:px-16"
+    
+      className="spt-body spt-cards-section px-5 sm:px-8 lg:px-16"
     >
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-14">
-          <p className="inline-flex items-center gap-2 text-blue-600 font-semibold text-xs uppercase tracking-[0.22em] mb-4">
-            {eyebrow}
-          </p>
-          <h2 className="spt-heading text-[clamp(32px,4.5vw,50px)] font-extrabold text-[#0d2257] leading-tight tracking-tight mb-5">
-            {heading}
-          </h2>
-          <p className="text-gray-500 text-[15px] leading-relaxed max-w-2xl mx-auto">
-            {subtext}
-          </p>
+        {/* Left heading / right subtext + CTA */}
+        <div className="spt-cards-header-row">
+          <div className="spt-cards-header-left">
+            <p className="spt-eyebrow text-[#2563eb] mb-4">
+              <span className="dot" style={{ background: "#2563eb" }} />
+              {eyebrow}
+            </p>
+            <h2 className="spt-heading text-[clamp(32px,4.5vw,50px)] font-medium text-[#0d1b3e] leading-[1.05] tracking-[-1px]">
+              {heading}
+            </h2>
+          </div>
+
+          <div className="spt-cards-header-right">
+            <p className="spt-cards-sub">{subtext}</p>
+            <a href="#quote" className="spt-cta inline-flex">
+              Get a Free Quote
+              <span className="spt-cta-circle">
+                <svg
+                  width="15"
+                  height="15"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2.5}
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                  />
+                </svg>
+              </span>
+            </a>
+          </div>
         </div>
 
         <div className={colClass}>
           {items.map((card) => (
             <div key={card.title} className="spt-svc-card">
-              <div className="spt-card-icon">{card.icon}</div>
+              <div className="spt-card-icon-badge">{card.icon}</div>
               <div>
-                <h3 className="spt-heading spt-card-title text-[20px] font-extrabold leading-snug tracking-[-0.3px]">
+                <h3 className="spt-heading spt-card-title text-[19px] font-semibold leading-snug tracking-[-0.2px]">
                   {card.title}
                 </h3>
                 <p className="spt-card-desc">{card.desc}</p>
@@ -1009,174 +969,104 @@ function CardsSection({ data }: { data: CardsData }) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   SECTION 4 — PROCESS
-   Identical flip-card style to ApproachSection.jsx
-   Supports 3 or 4 steps automatically
+   SECTION 4 — PROCESS  (matches ApproachSection.tsx card style)
 ═══════════════════════════════════════════════════════════════════ */
 function ProcessSection({ data }: { data: ProcessData }) {
   const { eyebrow, heading, subtext, steps } = data;
 
   const gridClass =
     steps.length === 4
-      ? "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4"
-      : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4";
+      ? "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 items-start"
+      : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 items-start";
 
   return (
-    <section className="spt-body py-24" style={{ background: "#081a3d" }}>
-      <div className="max-w-7xl mx-auto px-7">
-        <div className="text-center max-w-xl mx-auto mb-16">
-          <p className="inline-flex items-center justify-center gap-2 text-[#FFF265] font-semibold text-xs uppercase tracking-[0.22em] mb-4">
-            {eyebrow}
-          </p>
-          <h2 className="spt-heading text-[clamp(32px,4.5vw,48px)] font-extrabold text-white leading-tight tracking-tight mb-5">
-            {heading}
-          </h2>
-          <p className="text-[#94a8cc] text-[15px] leading-relaxed">
-            {subtext}
-          </p>
+    <section className="spt-body spt-proc-section px-5 sm:px-8 lg:px-16">
+      <div className="max-w-7xl mx-auto">
+        {/* Header row — left heading, right sub + cta */}
+        <div className="spt-proc-header-row">
+          <div className="spt-proc-header-left">
+            <p className="spt-eyebrow text-[#2563eb] mb-4">
+              <span className="dot" style={{ background: "#2563eb" }} />
+              {eyebrow}
+            </p>
+            <h2 className="spt-heading text-[clamp(32px,4.5vw,50px)] font-medium text-[#0d1b3e] leading-[1.05] tracking-[-1px]">
+              {heading}
+            </h2>
+          </div>
+
+          <div className="spt-proc-header-right">
+            <p className="spt-proc-header-sub">{subtext}</p>
+            <a href="#quote" className="spt-cta inline-flex">
+              Get in Touch
+              <span className="spt-cta-circle">
+                <svg
+                  width="15"
+                  height="15"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2.5}
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                  />
+                </svg>
+              </span>
+            </a>
+          </div>
         </div>
 
         <div className={gridClass}>
-          {steps.map((step, i) => (
-            <div key={step.title} className="spt-proc-card">
-              {/* Desktop default face */}
-              <div className="spt-proc-face spt-proc-face-default">
-                <div className="flex items-center justify-between">
-                  <div className="spt-proc-icon">{step.icon}</div>
-                  <span className="spt-proc-num">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                </div>
-                <div>
-                  <p
-                    style={{
-                      fontFamily: "'Manrope',sans-serif",
-                      fontSize: 24,
-                      fontWeight: 800,
-                      color: "#ffffff",
-                      lineHeight: 1.2,
-                      letterSpacing: "-0.3px",
-                      marginBottom: 10,
-                    }}
-                  >
-                    {step.title}
-                  </p>
-                  <p
-                    style={{
-                      fontSize: 13.5,
-                      fontWeight: 500,
-                      color: "#94a8cc",
-                      lineHeight: 1.6,
-                    }}
-                  >
-                    {step.desc}
-                  </p>
-                </div>
-              </div>
+          {steps.map((step, i) => {
+            // Stagger: only applies when using 3-column grid (3 steps)
+            // For 4 steps the grid is 2-col on most screens — no stagger needed
+            const staggerStyle =
+              steps.length === 3
+                ? { marginTop: i === 1 ? 48 : i === 2 ? 96 : 0 }
+                : {};
+            return (
+              <div
+                key={step.title}
+                className="spt-new-proc-card"
+                style={staggerStyle}
+              >
+                <span className="spt-new-proc-num">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
 
-              {/* Desktop hover face */}
-              <div className="spt-proc-face spt-proc-face-hover">
-                <p
-                  style={{
-                    fontFamily: "'Manrope',sans-serif",
-                    fontSize: 20,
-                    fontWeight: 800,
-                    color: "#081a3d",
-                    lineHeight: 1.2,
-                    letterSpacing: "-0.3px",
-                    marginBottom: 20,
-                  }}
-                >
-                  {step.title}
-                </p>
+                <div className="spt-new-proc-icon">{step.icon}</div>
+
+                <p className="spt-new-proc-title">{step.title}</p>
+                <p className="spt-new-proc-desc">{step.desc}</p>
+
+                <div className="spt-new-proc-divider" />
+
                 <div>
                   {step.bullets.map((b) => (
-                    <div
-                      key={b}
-                      style={{
-                        display: "flex",
-                        alignItems: "flex-start",
-                        gap: 12,
-                        marginBottom: 14,
-                      }}
-                    >
-                      <span
-                        style={{
-                          width: 22,
-                          height: 22,
-                          borderRadius: "50%",
-                          background: "#081a3d",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          flexShrink: 0,
-                          marginTop: 1,
-                        }}
-                      >
-                        <svg
-                          width="13"
-                          height="13"
-                          viewBox="0 0 14 14"
-                          fill="none"
-                          stroke="#FFF265"
-                          strokeWidth={2}
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <polyline points="2,7 5.5,10.5 12,3" />
-                        </svg>
-                      </span>
-                      <span
-                        style={{
-                          fontSize: 13.5,
-                          fontWeight: 600,
-                          color: "#081a3d",
-                          lineHeight: 1.4,
-                        }}
-                      >
-                        {b}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Mobile face */}
-              <div className="spt-proc-face-mobile">
-                <div className="spt-mob-icon">{step.icon}</div>
-                <div>
-                  <p className="spt-mob-title">{step.title}</p>
-                  {step.bullets.map((b) => (
-                    <div
-                      key={b}
-                      style={{
-                        display: "flex",
-                        alignItems: "flex-start",
-                        gap: 10,
-                        marginBottom: 10,
-                      }}
-                    >
-                      <span className="spt-mob-check">
+                    <div key={b} className="spt-new-proc-bullet">
+                      <span className="spt-new-proc-check">
                         <svg
                           width="11"
                           height="11"
                           viewBox="0 0 14 14"
                           fill="none"
-                          stroke="currentColor"
-                          strokeWidth={2}
+                          stroke="#2563eb"
+                          strokeWidth={2.2}
                           strokeLinecap="round"
                           strokeLinejoin="round"
                         >
                           <polyline points="2,7 5.5,10.5 12,3" />
                         </svg>
                       </span>
-                      <span className="spt-mob-bullet">{b}</span>
+                      <span className="spt-new-proc-bullet-text">{b}</span>
                     </div>
                   ))}
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
@@ -1184,107 +1074,64 @@ function ProcessSection({ data }: { data: ProcessData }) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   SECTION 5 — GALLERY
-   Identical bento grid to GallerySection.jsx — pass 6 images
-═══════════════════════════════════════════════════════════════════ */
-function GallerySection({ data }: { data: GalleryData }) {
-  const { eyebrow, heading, subtext, images } = data;
-
-  return (
-    <section className="spt-body bg-[#f8f9ff] py-24 px-5 sm:px-8 lg:px-16">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-10">
-          <p className="inline-flex items-center gap-2 text-blue-600 font-semibold text-xs uppercase tracking-[0.22em] mb-4">
-            {eyebrow}
-          </p>
-          <h2 className="spt-heading text-[clamp(32px,4.5vw,50px)] font-extrabold text-[#0d2257] leading-tight tracking-tight mb-5">
-            {heading}
-          </h2>
-          <p className="text-gray-500 text-[15px] leading-relaxed max-w-2xl mx-auto">
-            {subtext}
-          </p>
-        </div>
-
-        <div className="spt-bento">
-          {images.slice(0, 6).map((img, idx) => (
-            <div key={idx} className="spt-gal-card">
-              <Image
-                src={img.src}
-                alt={img.alt}
-                fill
-                className="object-cover"
-                sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 33vw"
-              />
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════════════════
-   SECTION 6 — FAQ
-   Identical accordion to FAQSection.jsx
+   SECTION 5 — FAQ  (matches FAQSection.jsx — left col heading + right accordion)
 ═══════════════════════════════════════════════════════════════════ */
 function FAQSection({ data }: { data: FaqData }) {
   const { eyebrow, heading, subtext, items } = data;
   const [openIdx, setOpenIdx] = useState<number | null>(null);
 
   return (
-    <section className="spt-body bg-white py-24 px-5 sm:px-8 lg:px-16">
-      <div className="max-w-3xl mx-auto">
-        <div className="text-center mb-12">
-          <p className="inline-flex items-center gap-2 text-blue-600 font-semibold text-xs uppercase tracking-[0.22em] mb-4">
-            {eyebrow}
-          </p>
-          <h2 className="spt-heading text-[clamp(30px,4.5vw,48px)] font-extrabold text-[#081a3d] leading-tight tracking-tight mb-4">
-            {heading}
-          </h2>
-          <p className="text-slate-500 text-[15px] leading-relaxed max-w-xl mx-auto">
-            {subtext}
-          </p>
-        </div>
+    <section className="spt-body spt-faq-section px-5 sm:px-8 lg:px-16 py-14 lg:py-20">
+      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+        <div className="spt-faq-grid">
+          {/* Left: heading + subtext */}
+          <div>
+            <p className="spt-faq-eyebrow">{eyebrow}</p>
+            <h2 className="spt-faq-heading">
+              {heading.split(" ").slice(0, -1).join(" ")}
+              <br />
+              <em>{heading.split(" ").slice(-1)[0]}</em>
+            </h2>
+            <p className="spt-faq-sub">{subtext}</p>
+          </div>
 
-        <div className="flex flex-col gap-3">
-          {items.map((faq, i) => (
-            <div
-              key={i}
-              className={`spt-faq-item ${openIdx === i ? "open" : ""}`}
-            >
-              <button
-                className="spt-faq-trigger"
-                onClick={() => setOpenIdx(openIdx === i ? null : i)}
+          {/* Right: accordion */}
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "10px" }}
+          >
+            {items.map((faq, i) => (
+              <div
+                key={i}
+                className={`spt-new-faq-item${openIdx === i ? " open" : ""}`}
               >
-                <span
-                  className="spt-heading text-[15px] font-bold leading-snug"
-                  style={{ color: openIdx === i ? "#081a3d" : "#0d2257" }}
+                <button
+                  className="spt-new-faq-trigger"
+                  onClick={() => setOpenIdx(openIdx === i ? null : i)}
                 >
-                  {faq.q}
-                </span>
-                <span className="spt-faq-icon">
-                  <svg
-                    className="w-3.5 h-3.5"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={2.5}
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M12 4.5v15m7.5-7.5h-15"
-                    />
-                  </svg>
-                </span>
-              </button>
-              <div className="spt-faq-body-text">
-                <p className="text-slate-500 text-[14px] leading-relaxed border-t border-slate-100 pt-4">
-                  {faq.a}
-                </p>
+                  <span className="spt-new-faq-q">{faq.q}</span>
+                  <span className="spt-new-faq-icon">
+                    <svg
+                      width="13"
+                      height="13"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={2.5}
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M12 4.5v15m7.5-7.5h-15"
+                      />
+                    </svg>
+                  </span>
+                </button>
+                <div className="spt-new-faq-answer">
+                  <p className="spt-new-faq-answer-inner">{faq.a}</p>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -1293,7 +1140,6 @@ function FAQSection({ data }: { data: FaqData }) {
 
 /* ═══════════════════════════════════════════════════════════════════
    MAIN EXPORT
-   Pass serviceData prop — see serviceData.example.js for the shape
 ═══════════════════════════════════════════════════════════════════ */
 export default function ServicePageTemplate({
   serviceData,
@@ -1303,13 +1149,16 @@ export default function ServicePageTemplate({
   return (
     <>
       <ServiceStyles />
-      <HeroSection data={serviceData.hero} />
+      <HeroSection
+        data={serviceData.hero}
+        galleryImages={serviceData.gallery.images}
+      />
       <IntroSection data={serviceData.intro} />
       <CardsSection data={serviceData.cards} />
       <ProcessSection data={serviceData.process} />
-      <GallerySection data={serviceData.gallery} />
       <FAQSection data={serviceData.faq} />
-      <CTASection data={serviceData.cta}/>
+      <TestimonialsSection/>
+      <CTASection data={serviceData.cta} />
       <CTAAndFooter />
     </>
   );

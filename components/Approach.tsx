@@ -410,7 +410,7 @@ export default function ApproachSection() {
                 A simple, professional process designed to deliver reliable
                 exterior cleaning results for every property.
               </p>
-              <Link href="#contact" className="ap2-cta">
+              <Link href="/contact-us" className="ap2-cta">
                 Get in Touch
                 <span className="ap2-cta-circle">
                   <svg

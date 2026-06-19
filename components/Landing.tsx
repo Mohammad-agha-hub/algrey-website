@@ -321,7 +321,7 @@ export default function HeroSection() {
                 </p>
                 <div className="flex flex-wrap items-center gap-4">
                   <motion.a
-                    href="#quote"
+                    href="/enquiry-now"
                     className="hs-btn-book"
                     {...ctaMotionProps}
                   >

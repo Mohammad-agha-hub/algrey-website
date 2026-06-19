@@ -1,4 +1,3 @@
-
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import CTAAndFooter from "@/components/Footer";
@@ -7,7 +6,7 @@ import CTASection from "@/components/CTA";
 export const metadata = {
   title: "About Us | Al Grey's Cleaning Services",
   description:
-    "Learn about Al Grey's Cleaning Services — trusted gutter cleaning and property maintenance specialists in Birmingham and the Midlands since 2010. Meet our team and discover our values.",
+    "Learn about Al Grey's Cleaning Services — trusted gutter cleaning and property maintenance specialists in Birmingham and the Midlands since 2020. Meet our team and discover our values.",
   keywords: [
     "about Al Grey's Cleaning Services",
     "gutter cleaning Birmingham",
@@ -18,7 +17,7 @@ export const metadata = {
   openGraph: {
     title: "About Us | Al Grey's Cleaning Services",
     description:
-      "Trusted gutter cleaning and property maintenance across Birmingham and the Midlands since 2010. Discover our story, mission, and the team behind the work.",
+      "Trusted gutter cleaning and property maintenance across Birmingham and the Midlands since 2020. Discover our story, mission, and the team behind the work.",
     url: "https://www.algreyscleaningservices.co.uk/about-us",
     siteName: "Al Grey's Cleaning Services",
     images: [
@@ -36,24 +35,28 @@ export const metadata = {
     card: "summary_large_image",
     title: "About Us | Al Grey's Cleaning Services",
     description:
-      "Trusted gutter cleaning and property maintenance across Birmingham and the Midlands since 2010.",
+      "Trusted gutter cleaning and property maintenance across Birmingham and the Midlands since 2020.",
     images: ["/gutter-6.webp"],
   },
   alternates: {
     canonical: "https://www.algreyscleaningservices.co.uk/about-us",
   },
 };
+
 /* ═══════════════════════════════════════════════════════════════════
-   STYLES
+   DESIGN TOKENS — matched to the home page's BeforeAfterSection:
+   - Fonts: Inter Tight (display/headings) + Inter (body)
+   - Navy:  #0d1b3e   Blue accent: #2563eb
+   - Body text: slate-500 (#64748b)   Muted/secondary: slate-400 (#94a3b8)
+   - Light section bg: #f8fafc (slate-50)   Card border: #e2e8f0 (slate-200)
 ═══════════════════════════════════════════════════════════════════ */
 function AboutStyles() {
   return (
     <style>{`
-      @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Manrope:wght@400;600;700;800;900&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
 
-      .abt-display  { font-family: 'Bebas Neue', sans-serif; }
-      .abt-heading  { font-family: 'Manrope', sans-serif; }
-      .abt-body     { font-family: 'Inter', sans-serif; }
+      .abt-display { font-family: 'Inter Tight', sans-serif; }
+      .abt-body    { font-family: 'Inter', sans-serif; }
 
       /* ── Animations ── */
       @keyframes abt-fadeUp {
@@ -69,242 +72,280 @@ function AboutStyles() {
       .abt-anim-3 { animation: abt-fadeUp .65s .22s ease both; }
       .abt-anim-4 { animation: abt-fadeUp .65s .34s ease both; }
       .abt-anim-5 { animation: abt-fadeIn  .8s .48s ease both; }
+      @media (prefers-reduced-motion: reduce) {
+        .abt-anim-1, .abt-anim-2, .abt-anim-3, .abt-anim-4, .abt-anim-5 {
+          animation: none; opacity: 1; transform: none;
+        }
+      }
 
-      /* ── Breadcrumb ── */
-      .abt-breadcrumb { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-      .abt-breadcrumb a {
-        color: rgba(255,255,255,0.5);
+      /* ── Eyebrow (shared dot-bullet style used across the home page) ── */
+      .abt-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-family: 'Inter', sans-serif;
+        font-weight: 600;
         font-size: 12px;
-        font-weight: 500;
-        text-decoration: none;
-        transition: color .2s;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
       }
-      .abt-breadcrumb a:hover { color: rgba(255,255,255,0.9); }
-      .abt-breadcrumb .bc-sep    { color: rgba(255,255,255,0.3); font-size: 12px; }
-      .abt-breadcrumb .bc-active { color: #FFF265; font-size: 12px; font-weight: 600; }
+      .abt-eyebrow .dot {
+        width: 6px; height: 6px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
 
-      /* ── Service Cards (mission / values) ── */
-      .abt-svc-card {
-        background: #0d2257;
-        border-radius: 16px;
-        padding: 36px 28px 32px;
-        display: flex;
-        flex-direction: column;
-        gap: 40px;
-        cursor: default;
-        min-height: 260px;
-        transition: background 0.3s ease;
-      }
-      .abt-svc-card:hover { background: #FFF265; }
-      .abt-svc-card .abt-card-icon  { color: #ffffff; transition: color 0.3s ease; }
-      .abt-svc-card:hover .abt-card-icon { color: #0d2257; }
-      .abt-svc-card .abt-card-title { color: #ffffff; transition: color 0.3s ease; }
-      .abt-svc-card:hover .abt-card-title { color: #0d2257; }
-      .abt-svc-card .abt-card-desc {
-        color: #94a8cc;
-        font-size: 13.5px;
-        line-height: 1.7;
-        margin-top: 8px;
-        transition: color 0.3s ease;
-      }
-      .abt-svc-card:hover .abt-card-desc { color: #081a3d; }
-
-      /* ── Process / Why-choose cards (flip) ── */
-      .abt-proc-card {
-        position: relative;
-        border-radius: 20px;
-        border: 1px solid #1a2f6e;
-        overflow: hidden;
-        height: 430px;
-        box-shadow: 0 4px 24px rgba(0,0,0,.25);
-        transition: transform .28s ease, box-shadow .28s ease;
-      }
-      .abt-proc-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 20px 48px rgba(0,0,0,.4);
-      }
-      .abt-proc-face {
-        position: absolute;
-        inset: 0;
-        padding: 32px;
-        display: flex;
-        flex-direction: column;
-        transition: opacity .38s ease;
-      }
-      .abt-proc-face-default {
-        background: #0d2257;
-        justify-content: space-between;
-        opacity: 1;
-      }
-      .abt-proc-card:hover .abt-proc-face-default { opacity: 0; pointer-events: none; }
-      .abt-proc-face-hover {
-        background: #FFF265;
-        justify-content: flex-start;
-        padding-top: 44px;
-        opacity: 0;
-        pointer-events: none;
-      }
-      .abt-proc-card:hover .abt-proc-face-hover { opacity: 1; pointer-events: auto; }
-      .abt-proc-icon {
-        width: 60px; height: 60px;
-        border-radius: 14px;
+      /* ── CTA pill button (matches ApproachSection's .ap2-cta) ── */
+      .abt-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 0;
+        padding: 7px 7px 7px 26px;
+        border-radius: 100px;
         background: #2563eb;
+        color: #ffffff;
+        font-family: 'Inter', sans-serif;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        text-decoration: none;
+        transition: background 0.22s ease, gap 0.2s ease,
+                    transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        flex-shrink: 0;
+      }
+      .abt-cta:hover { background: #1d4ed8; gap: 6px; transform: scale(1.03); }
+      .abt-cta:active { transform: scale(0.96); }
+      .abt-cta-circle {
+        width: 36px; height: 36px;
+        border-radius: 50%;
+        background: #ffffff;
+        color: #0d1b3e;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 16px;
+        flex-shrink: 0;
+        transition: background 0.22s, color 0.22s;
+      }
+      .abt-cta:hover .abt-cta-circle { background: #dbeafe; }
+
+      /* Outline variant — for use as a secondary action over the dark hero photo */
+      .abt-cta-outline {
+        background: transparent;
+        border: 1.5px solid rgba(255,255,255,0.55);
+        color: #ffffff;
+      }
+      .abt-cta-outline:hover { border-color: #fff; background: rgba(255,255,255,0.08); }
+      .abt-cta-outline .abt-cta-circle { background: rgba(255,255,255,0.15); color: #fff; }
+      .abt-cta-outline:hover .abt-cta-circle { background: rgba(255,255,255,0.25); }
+
+      /* ── Light cards (white bg sections, e.g. Core Values) ── */
+      .abt-card-light {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 18px;
+        padding: 32px 28px;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        transition: border-color .25s ease, box-shadow .25s ease, transform .25s ease;
+      }
+      .abt-card-light:hover {
+        border-color: #2563eb;
+        box-shadow: 0 16px 40px rgba(13,27,62,.1);
+        transform: translateY(-4px);
+      }
+      .abt-card-icon-badge {
+        width: 52px; height: 52px;
+        border-radius: 14px;
+        background: #eff4ff;
+        color: #2563eb;
         display: flex;
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
-        color: #ffffff;
       }
-      .abt-proc-num {
-        font-family: 'Manrope', sans-serif;
-        font-size: 64px;
+
+      /* ── Dark cards (navy bg sections, e.g. Mission & Vision) ── */
+      .abt-card-dark {
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 18px;
+        padding: 32px 28px;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        transition: border-color .25s ease, background .25s ease, transform .25s ease;
+      }
+      .abt-card-dark:hover {
+        border-color: #2563eb;
+        background: rgba(255,255,255,0.08);
+        transform: translateY(-4px);
+      }
+      .abt-card-icon-badge-dark {
+        width: 52px; height: 52px;
+        border-radius: 14px;
+        background: #2563eb;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      /* ── Why-choose-us cards (matches ApproachSection's .ap2-card system) ── */
+      .abt-why-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        align-items: start;
+      }
+      .abt-why-card {
+        background: #ffffff;
+        border-radius: 20px;
+        border: 1px solid #e4e9f4;
+        padding: 36px 32px 40px;
+        box-shadow: 0 2px 12px rgba(8,26,61,0.06);
+        transition: box-shadow .26s ease, border-color .26s ease,
+                    transform .3s cubic-bezier(0.22, 1, 0.36, 1);
+        position: relative;
+        overflow: hidden;
+      }
+      .abt-why-card:hover {
+        box-shadow: 0 16px 40px rgba(8,26,61,.13);
+        border-color: #bfdbfe;
+        transform: translateY(-8px);
+      }
+      /* staggered offset, repeating every 3 cards like the Approach section */
+      .abt-why-card:nth-child(3n+2) { margin-top: 48px; }
+      .abt-why-card:nth-child(3n+3) { margin-top: 96px; }
+
+      .abt-why-icon {
+        width: 54px; height: 54px;
+        border-radius: 14px;
+        background: #eff4ff;
+        color: #2563eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 28px;
+        transition: background .22s ease, color .22s ease,
+                    transform .3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      .abt-why-card:hover .abt-why-icon {
+        background: #dbeafe;
+        color: #1d4ed8;
+        transform: rotate(-8deg) scale(1.08);
+      }
+      .abt-why-num {
+        position: absolute;
+        top: 28px; right: 28px;
+        font-family: 'Inter Tight', sans-serif;
+        font-size: 52px;
         font-weight: 800;
-        color: #ffffff;
-        opacity: 0.14;
+        color: #0d1b3e;
+        opacity: 0.06;
         line-height: 1;
         letter-spacing: -2px;
         pointer-events: none;
         user-select: none;
       }
-      .abt-proc-face-mobile { display: none; }
+      .abt-why-title {
+        font-family: 'Inter Tight', sans-serif;
+        font-size: 22px;
+        font-weight: 700;
+        color: #0d1b3e;
+        line-height: 1.2;
+        letter-spacing: -0.4px;
+        margin-bottom: 12px;
+      }
+      .abt-why-desc {
+        font-size: 14px;
+        color: #64748b;
+        line-height: 1.65;
+        margin-bottom: 28px;
+      }
+      .abt-why-divider { height: 1px; background: #e4e9f4; margin-bottom: 24px; }
+      .abt-why-bullet { display: flex; align-items: flex-start; gap: 11px; margin-bottom: 11px; }
+      .abt-why-bullet:last-child { margin-bottom: 0; }
+      .abt-why-check {
+        width: 20px; height: 20px;
+        border-radius: 50%;
+        background: #eff4ff;
+        border: 1px solid #bfd0f7;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        margin-top: 1px;
+      }
+      .abt-why-bullet-text { font-size: 13.5px; font-weight: 500; color: #374151; line-height: 1.5; }
 
       @media (max-width: 1023px) {
-        .abt-proc-card {
-          height: auto;
-          background: #0d2257;
-          border-radius: 16px;
-          transition: background .3s ease, box-shadow .28s ease, transform .28s ease;
-        }
-        .abt-proc-card:hover { background: #FFF265; transform: translateY(-4px); }
-        .abt-proc-face-default, .abt-proc-face-hover { display: none; }
-        .abt-proc-face-mobile {
-          display: flex;
-          flex-direction: column;
-          gap: 20px;
-          padding: 32px 28px;
-        }
-        .abt-proc-card .abt-mob-icon  { color: #ffffff; transition: color .3s ease; }
-        .abt-proc-card:hover .abt-mob-icon { color: #081a3d; }
-        .abt-proc-card .abt-mob-title {
-          font-family: 'Manrope', sans-serif;
-          font-size: 20px;
-          font-weight: 800;
-          color: #ffffff;
-          line-height: 1.2;
-          letter-spacing: -0.3px;
-          margin-bottom: 10px;
-          transition: color .3s ease;
-        }
-        .abt-proc-card:hover .abt-mob-title { color: #081a3d; }
-        .abt-proc-card .abt-mob-bullet {
-          font-size: 13.5px;
-          font-weight: 600;
-          color: #94a8cc;
-          line-height: 1.5;
-          transition: color .3s ease;
-        }
-        .abt-proc-card:hover .abt-mob-bullet { color: #081a3d; }
-        .abt-proc-card .abt-mob-check {
-          width: 20px; height: 20px;
-          border-radius: 50%;
-          background: #081a3d;
-          display: flex; align-items: center; justify-content: center;
-          flex-shrink: 0; margin-top: 2px;
-          color: #2563eb;
-          transition: background .3s ease, color .3s ease;
-        }
-        .abt-proc-card:hover .abt-mob-check { color: #FFF265; }
+        .abt-why-grid { grid-template-columns: 1fr; gap: 16px; }
+        .abt-why-card:nth-child(3n+2),
+        .abt-why-card:nth-child(3n+3) { margin-top: 0; }
+      }
+      @media (min-width: 640px) and (max-width: 1023px) {
+        .abt-why-grid { grid-template-columns: repeat(2, 1fr); }
+      }
+      @media (max-width: 639px) {
+        .abt-why-card { padding: 28px 22px 30px; }
+        .abt-why-num { font-size: 40px; top: 20px; right: 20px; }
+      }
+      @media (max-width: 420px) {
+        .abt-why-card { padding: 24px 18px 26px; border-radius: 16px; }
+        .abt-why-icon { width: 46px; height: 46px; margin-bottom: 22px; }
+        .abt-why-title { font-size: 19px; }
+        .abt-why-desc { font-size: 13.5px; }
+        .abt-why-bullet-text { font-size: 13px; }
       }
 
       /* ── Team cards ── */
       .abt-team-card {
         background: #ffffff;
-        border-radius: 20px;
+        border-radius: 18px;
         overflow: hidden;
-        border: 1px solid #e8edf5;
+        border: 1px solid #e2e8f0;
         transition: box-shadow .28s ease, transform .28s ease;
       }
       .abt-team-card:hover {
-        box-shadow: 0 20px 48px rgba(13,34,87,.12);
+        box-shadow: 0 20px 48px rgba(13,27,62,.12);
         transform: translateY(-6px);
       }
       .abt-team-img {
         width: 100%;
-        height: 360px;
+        height: 340px;
         position: relative;
         overflow: hidden;
       }
       .abt-team-img img { transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94); }
       .abt-team-card:hover .abt-team-img img { transform: scale(1.05); }
-      .abt-team-body { padding: 24px 28px 28px; }
-
-      /* ── Stat pill ── */
-      .abt-stat-pill {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        background: rgba(255,255,255,0.06);
-        border: 1px solid rgba(255,255,255,0.12);
-        border-radius: 16px;
-        padding: 24px 20px;
-        text-align: center;
-        backdrop-filter: blur(6px);
-      }
+      .abt-team-body { padding: 24px 26px 28px; }
 
       /* ── Intro image ── */
       .abt-intro-img {
         border-radius: 20px;
         overflow: hidden;
-        box-shadow: 0 20px 60px rgba(13,34,87,.15);
+        box-shadow: 0 20px 60px rgba(13,27,62,.15);
         position: relative;
       }
 
-      /* ── FAQ ── */
-      .abt-faq-item {
-        border: 1px solid #e8edf5;
-        border-radius: 14px;
-        overflow: hidden;
-        transition: border-color .2s, box-shadow .2s;
-      }
-      .abt-faq-item.open { border-color: #2563eb; box-shadow: 0 4px 24px rgba(37,99,235,.1); }
-      .abt-faq-trigger {
-        width: 100%;
+      /* ── Reusable left-aligned section header (matches home page) ── */
+      .abt-section-head {
         display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-        padding: 20px 24px;
-        background: transparent;
-        border: none;
-        cursor: pointer;
-        text-align: left;
-        transition: background .2s;
+        flex-direction: column;
+        align-items:start;
+        gap: 32px;
+        margin-bottom: 30px;
       }
-      .abt-faq-trigger:hover { background: #f8f9ff; }
-      .abt-faq-item.open .abt-faq-trigger { background: #f8f9ff; }
-      .abt-faq-icon {
-        width: 28px; height: 28px;
-        border-radius: 50%;
-        border: 1.5px solid #cbd5e1;
-        display: flex; align-items: center; justify-content: center;
-        flex-shrink: 0;
-        color: #94a3b8;
-        transition: background .2s, border-color .2s, color .2s, transform .25s;
+      @media (min-width: 1024px) {
+        .abt-section-head {
+          flex-direction: row;
+          justify-content: space-between;
+        }
       }
-      .abt-faq-item.open .abt-faq-icon {
-        background: #2563eb;
-        border-color: #2563eb;
-        color: #ffffff;
-        transform: rotate(45deg);
-      }
-      .abt-faq-body-text {
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height .35s ease, padding .3s ease;
-        padding: 0 24px;
-      }
-      .abt-faq-item.open .abt-faq-body-text { max-height: 300px; padding: 0 24px 20px; }
     `}</style>
   );
 }
@@ -327,29 +368,28 @@ function HeroSection() {
           className="object-cover object-center"
           sizes="100vw"
         />
-        <div className="hidden lg:block absolute inset-0 bg-gradient-to-r from-[#081a3d]/95 via-[#0d2257]/80 to-transparent" />
-        <div className="lg:hidden absolute inset-0 bg-gradient-to-b from-[#081a3d]/90 via-[#0d2257]/85 to-[#061530]/95" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#061530]/90 via-transparent to-transparent" />
+        <div className="hidden lg:block absolute inset-0 bg-gradient-to-r from-[#0d1b3e]/95 via-[#0d1b3e]/80 to-transparent" />
+        <div className="lg:hidden absolute inset-0 bg-gradient-to-b from-[#0d1b3e]/90 via-[#0d1b3e]/85 to-[#0d1b3e]/95" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0d1b3e]/90 via-transparent to-transparent" />
       </div>
 
       {/* Content */}
       <div className="max-w-7xl mx-auto w-full px-5 sm:px-8 lg:px-12 pt-34 pb-16 flex flex-col justify-end">
         {/* Eyebrow */}
-        <p className="abt-anim-2 inline-flex items-center gap-2 text-[#FFF265] font-semibold text-sm uppercase tracking-[0.2em] mb-4">
-          Trusted Since 2010
+        <p className="abt-anim-2 abt-eyebrow text-[#7da6f5] mb-4">
+          <span className="dot" style={{ background: "#7da6f5" }} />
+          Trusted Since 2020
         </p>
 
         {/* Headline */}
-        <h1 className="abt-anim-3 abt-display tracking-[4px] text-5xl sm:text-6xl xl:text-7xl leading-[0.95] font-bold uppercase mb-5 text-white">
-          About
-        
-          <span className="text-blue-600"> Al Grey's </span>
-          <br></br>
+        <h1 className="abt-anim-3 abt-display text-[44px] sm:text-[56px] lg:text-[64px] leading-[1.05] font-medium tracking-[-1.5px] mb-5 text-white">
+          About <span className="text-[#5b8def]">Al Grey&apos;s</span>
+          <br />
           Cleaning
         </h1>
 
         {/* Subtext */}
-        <p className="abt-anim-4 text-gray-300 text-base leading-relaxed max-w-lg text-center mb-8">
+        <p className="abt-anim-4 text-[#cbd5e1] text-base leading-relaxed max-w-lg mb-8">
           Learn about our journey, values, and commitment to excellence in
           gutter cleaning and property maintenance across Birmingham and the
           Midlands.
@@ -357,106 +397,12 @@ function HeroSection() {
 
         {/* CTA */}
         <div className="abt-anim-4 flex flex-col sm:flex-row gap-3">
-          <a
-            href="#story"
-            className="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white font-bold uppercase tracking-widest text-sm px-7 py-3.5 rounded-md transition-all duration-200 shadow-lg shadow-blue-900/40"
-          >
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2.5}
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-              />
-            </svg>
-            Our Story
-          </a>
-          <a
-            href="/contact-us"
-            className="inline-flex items-center justify-center gap-2 border-2 border-white/60 hover:border-white text-white font-bold uppercase tracking-widest text-sm px-7 py-3.5 rounded-md transition-all duration-200 hover:bg-white/10"
-          >
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2.5}
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-              />
-            </svg>
+          <a href="/contact-us" className="abt-cta">
             Contact Us
-          </a>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-
-
-/* ═══════════════════════════════════════════════════════════════════
-   SECTION 3 — OUR STORY  (text left + image right)
-═══════════════════════════════════════════════════════════════════ */
-function StorySection() {
-  return (
-    <section
-      id="story"
-      className="abt-body bg-white py-24 px-5 sm:px-8 lg:px-16"
-    >
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          {/* Text */}
-          <div>
-            <p className="inline-flex items-center gap-2 text-blue-600 font-semibold text-xs uppercase tracking-[0.22em] mb-4">
-              Cleaning Excellence Since 2010
-            </p>
-            <h2 className="abt-heading text-[clamp(28px,3.5vw,44px)] font-extrabold text-[#0d2257] leading-tight tracking-tight mb-6">
-              A Simple Mission, Exceptional Results
-            </h2>
-            <div className="flex flex-col gap-4">
-              <p className="text-gray-500 text-[15px] leading-relaxed">
-                Al Grey's Cleaning Services was founded in 2010 with a simple
-                yet powerful mission: to provide exceptional gutter cleaning and
-                property maintenance services that protect homes and businesses
-                while delivering outstanding customer value.
-              </p>
-              <p className="text-gray-500 text-[15px] leading-relaxed">
-                What started as a one-person operation has grown into a trusted
-                team of professionals serving Birmingham and surrounding areas.
-                Al Grey, our founder, began with just a ladder and a passion for
-                helping homeowners protect their properties from water damage
-                caused by clogged gutters.
-              </p>
-              <p className="text-gray-500 text-[15px] leading-relaxed">
-                Over the years, we've expanded our services to include window
-                cleaning, pressure washing, roof cleaning, and comprehensive
-                property maintenance solutions. Despite our growth, we've
-                maintained the commitment to the personal touch that made us
-                successful in the first place.
-              </p>
-              <p className="text-gray-500 text-[15px] leading-relaxed">
-                Today, we're proud to be one of Birmingham's most recommended
-                cleaning companies, with hundreds of satisfied residential and
-                commercial clients who trust us to keep their properties in
-                pristine condition year after year.
-              </p>
-            </div>
-            <a
-              href="/contact"
-              className="inline-flex items-center gap-2 mt-8 bg-blue-600 hover:bg-blue-500 text-white font-bold uppercase tracking-widest text-sm px-7 py-3.5 rounded-md transition-all duration-200 shadow-lg shadow-blue-900/30"
-            >
-              Get Your Free Quote
+            <span className="abt-cta-circle">
               <svg
-                className="w-4 h-4"
+                width="15"
+                height="15"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth={2.5}
@@ -468,6 +414,84 @@ function StorySection() {
                   d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
                 />
               </svg>
+            </span>
+          </a>
+          <a href="#story" style={{paddingRight:"1.5rem"}} className="abt-cta abt-cta-outline">
+            Our Story
+            
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   SECTION 2 — OUR STORY  (text left + image right)
+═══════════════════════════════════════════════════════════════════ */
+function StorySection() {
+  return (
+    <section
+      id="story"
+      className="abt-body bg-white py-20 lg:py-28 px-5 sm:px-8 lg:px-16"
+    >
+      <div className="max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+          {/* Text */}
+          <div>
+            <p className="abt-eyebrow text-[#2563eb] mb-4">
+              <span className="dot" style={{ background: "#2563eb" }} />
+              Cleaning Excellence Since 2020
+            </p>
+            <h2 className="abt-display text-[36px] sm:text-[44px] lg:text-[48px] font-medium text-[#0d1b3e] leading-[1.05] tracking-[-1px] mb-6">
+              A Simple Mission<br></br>Exceptional Results
+            </h2>
+            <div className="flex flex-col gap-4">
+              <p className="text-[#64748b] text-[15px] leading-relaxed">
+                Al Grey&apos;s Cleaning Services was founded in 2020 with a
+                simple yet powerful mission: to provide exceptional gutter
+                cleaning and property maintenance services that protect homes
+                and businesses while delivering outstanding customer value.
+              </p>
+              <p className="text-[#64748b] text-[15px] leading-relaxed">
+                What started as a one-person operation has grown into a trusted
+                team of professionals serving Birmingham and surrounding areas.
+                Al Grey, our founder, began with just a ladder and a passion for
+                helping homeowners protect their properties from water damage
+                caused by clogged gutters.
+              </p>
+              <p className="text-[#64748b] text-[15px] leading-relaxed">
+                Over the years, we&apos;ve expanded our services to include
+                window cleaning, pressure washing, roof cleaning, and
+                comprehensive property maintenance solutions. Despite our
+                growth, we&apos;ve maintained the commitment to the personal
+                touch that made us successful in the first place.
+              </p>
+              <p className="text-[#64748b] text-[15px] leading-relaxed">
+                Today, we&apos;re proud to be one of Birmingham&apos;s most
+                recommended cleaning companies, with hundreds of satisfied
+                residential and commercial clients who trust us to keep their
+                properties in pristine condition year after year.
+              </p>
+            </div>
+            <a href="/contact-us" className="abt-cta mt-8">
+              Get Your Free Quote
+              <span className="abt-cta-circle">
+                <svg
+                  width="15"
+                  height="15"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2.5}
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                  />
+                </svg>
+              </span>
             </a>
           </div>
 
@@ -488,7 +512,7 @@ function StorySection() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   SECTION 4 — MISSION & VISION  (dark bg, 2-col cards)
+   SECTION 3 — MISSION & VISION  (dark bg, 2-col cards)
 ═══════════════════════════════════════════════════════════════════ */
 const MISSION_CARDS = [
   {
@@ -496,7 +520,7 @@ const MISSION_CARDS = [
     desc: "To provide exceptional gutter cleaning and property maintenance services that protect our clients' investments, enhance property aesthetics, and deliver peace of mind through reliable, professional service and outstanding customer care.",
     icon: (
       <svg
-        className="w-9 h-9"
+        className="w-7 h-7"
         fill="none"
         stroke="currentColor"
         strokeWidth={1.8}
@@ -515,7 +539,7 @@ const MISSION_CARDS = [
     desc: "To become the most trusted and recommended cleaning service provider in the Midlands, recognised for our commitment to quality, innovation in service delivery, and positive impact on the communities we serve.",
     icon: (
       <svg
-        className="w-9 h-9"
+        className="w-7 h-7"
         fill="none"
         stroke="currentColor"
         strokeWidth={1.8}
@@ -539,31 +563,36 @@ const MISSION_CARDS = [
 function MissionSection() {
   return (
     <section
-      className="abt-body py-24 px-5 sm:px-8 lg:px-16"
-      style={{ background: "#081a3d" }}
+      className="abt-body py-20 lg:py-28 px-5 sm:px-8 lg:px-16"
+      style={{ background: "#0d1b3e" }}
     >
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-14">
-          <p className="inline-flex items-center gap-2 text-[#FFF265] font-semibold text-xs uppercase tracking-[0.22em] mb-4">
-            Driven by Purpose
-          </p>
-          <h2 className="abt-heading text-[clamp(32px,4.5vw,50px)] font-extrabold text-white leading-tight tracking-tight mb-5">
-            Our Mission &amp; Vision
-          </h2>
-          <p className="text-[#94a8cc] text-[15px] leading-relaxed max-w-2xl mx-auto">
+        <div className="abt-section-head">
+          <div className="flex flex-col gap-5 lg:max-w-[52%]">
+            <p className="abt-eyebrow text-[#5b8def]">
+              <span className="dot" style={{ background: "#5b8def" }} />
+              Driven by Purpose
+            </p>
+            <h2 className="abt-display text-[36px] sm:text-[44px] lg:text-[48px] font-medium text-white leading-[1.05] tracking-[-1px]">
+              Our Mission &amp; Vision
+            </h2>
+          </div>
+          <p className="text-[#94a3b8] text-[16px] leading-relaxed lg:max-w-[360px]">
             Driven by purpose, guided by vision — everything we do starts here.
           </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           {MISSION_CARDS.map((card) => (
-            <div key={card.title} className="abt-svc-card">
-              <div className="abt-card-icon">{card.icon}</div>
+            <div key={card.title} className="abt-card-dark">
+              <div className="abt-card-icon-badge-dark">{card.icon}</div>
               <div>
-                <h3 className="abt-heading abt-card-title text-[20px] font-extrabold leading-snug tracking-[-0.3px]">
+                <h3 className="abt-display text-white text-[19px] font-semibold leading-snug tracking-[-0.2px] mb-2">
                   {card.title}
                 </h3>
-                <p className="abt-card-desc">{card.desc}</p>
+                <p className="text-[#94a3b8] text-[13.5px] leading-relaxed">
+                  {card.desc}
+                </p>
               </div>
             </div>
           ))}
@@ -574,7 +603,7 @@ function MissionSection() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   SECTION 5 — CORE VALUES  (white bg, 3-col cards)
+   SECTION 4 — CORE VALUES  (white bg, 3-col cards)
 ═══════════════════════════════════════════════════════════════════ */
 const VALUES = [
   {
@@ -582,7 +611,7 @@ const VALUES = [
     desc: "We never compromise on quality. Every job, no matter how small, receives our full attention and commitment to excellence.",
     icon: (
       <svg
-        className="w-9 h-9"
+        className="w-7 h-7"
         fill="none"
         stroke="currentColor"
         strokeWidth={1.8}
@@ -601,7 +630,7 @@ const VALUES = [
     desc: "We build relationships based on honesty, transparency and reliability. Your trust is our most valuable asset.",
     icon: (
       <svg
-        className="w-9 h-9"
+        className="w-7 h-7"
         fill="none"
         stroke="currentColor"
         strokeWidth={1.8}
@@ -620,7 +649,7 @@ const VALUES = [
     desc: "Our clients are at the heart of everything we do. We listen carefully and tailor our services to meet your specific needs.",
     icon: (
       <svg
-        className="w-9 h-9"
+        className="w-7 h-7"
         fill="none"
         stroke="currentColor"
         strokeWidth={1.8}
@@ -639,7 +668,7 @@ const VALUES = [
     desc: "We use eco-friendly cleaning solutions and responsible waste disposal methods to minimise our environmental impact.",
     icon: (
       <svg
-        className="w-9 h-9"
+        className="w-7 h-7"
         fill="none"
         stroke="currentColor"
         strokeWidth={1.8}
@@ -658,7 +687,7 @@ const VALUES = [
     desc: "We continuously invest in new equipment, techniques, and training to deliver better, more efficient services.",
     icon: (
       <svg
-        className="w-9 h-9"
+        className="w-7 h-7"
         fill="none"
         stroke="currentColor"
         strokeWidth={1.8}
@@ -677,7 +706,7 @@ const VALUES = [
     desc: "We're proud to support local businesses and community initiatives, strengthening the areas we serve.",
     icon: (
       <svg
-        className="w-9 h-9"
+        className="w-7 h-7"
         fill="none"
         stroke="currentColor"
         strokeWidth={1.8}
@@ -695,16 +724,19 @@ const VALUES = [
 
 function ValuesSection() {
   return (
-    <section className="abt-body bg-white py-24 px-5 sm:px-8 lg:px-16">
+    <section className="abt-body bg-white py-20 lg:py-28 px-5 sm:px-8 lg:px-16">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-14">
-          <p className="inline-flex items-center gap-2 text-blue-600 font-semibold text-xs uppercase tracking-[0.22em] mb-4">
-            The Principles That Guide Us
-          </p>
-          <h2 className="abt-heading text-[clamp(32px,4.5vw,50px)] font-extrabold text-[#0d2257] leading-tight tracking-tight mb-5">
-            Our Core Values
-          </h2>
-          <p className="text-gray-500 text-[15px] leading-relaxed max-w-2xl mx-auto">
+        <div className="abt-section-head">
+          <div className="flex flex-col gap-5 lg:max-w-[52%]">
+            <p className="abt-eyebrow text-[#2563eb]">
+              <span className="dot" style={{ background: "#2563eb" }} />
+              The Principles That Guide Us
+            </p>
+            <h2 className="abt-display text-[36px] sm:text-[44px] lg:text-[48px] font-medium text-[#0d1b3e] leading-[1.05] tracking-[-1px]">
+              Our Core Values
+            </h2>
+          </div>
+          <p className="text-[#64748b] text-[16px] leading-relaxed lg:max-w-[360px]">
             The principles that guide everything we do — from the first call to
             the final clean.
           </p>
@@ -712,13 +744,15 @@ function ValuesSection() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {VALUES.map((card) => (
-            <div key={card.title} className="abt-svc-card">
-              <div className="abt-card-icon">{card.icon}</div>
+            <div key={card.title} className="abt-card-light">
+              <div className="abt-card-icon-badge">{card.icon}</div>
               <div>
-                <h3 className="abt-heading abt-card-title text-[20px] font-extrabold leading-snug tracking-[-0.3px]">
+                <h3 className="abt-display text-[#0d1b3e] text-[19px] font-semibold leading-snug tracking-[-0.2px] mb-2">
                   {card.title}
                 </h3>
-                <p className="abt-card-desc">{card.desc}</p>
+                <p className="text-[#64748b] text-[13.5px] leading-relaxed">
+                  {card.desc}
+                </p>
               </div>
             </div>
           ))}
@@ -729,7 +763,7 @@ function ValuesSection() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   SECTION 6 — MEET THE TEAM
+   SECTION 5 — MEET THE TEAM
 ═══════════════════════════════════════════════════════════════════ */
 const TEAM = [
   {
@@ -754,19 +788,19 @@ const TEAM = [
 
 function TeamSection() {
   return (
-    <section
-      className="abt-body py-24 px-5 sm:px-8 lg:px-16"
-      style={{ background: "#f8f9ff" }}
-    >
+    <section className="abt-body py-20 lg:py-28 px-5 sm:px-8 lg:px-16 bg-[#f8fafc]">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-14">
-          <p className="inline-flex items-center gap-2 text-blue-600 font-semibold text-xs uppercase tracking-[0.22em] mb-4">
-            The People Behind the Work
-          </p>
-          <h2 className="abt-heading text-[clamp(32px,4.5vw,50px)] font-extrabold text-[#0d2257] leading-tight tracking-tight mb-5">
-            Meet Our Team
-          </h2>
-          <p className="text-gray-500 text-[15px] leading-relaxed max-w-2xl mx-auto">
+        <div className="abt-section-head">
+          <div className="flex flex-col gap-5 lg:max-w-[52%]">
+            <p className="abt-eyebrow text-[#2563eb]">
+              <span className="dot" style={{ background: "#2563eb" }} />
+              The People Behind the Work
+            </p>
+            <h2 className="abt-display text-[36px] sm:text-[44px] lg:text-[48px] font-medium text-[#0d1b3e] leading-[1.05] tracking-[-1px]">
+              Meet Our Team
+            </h2>
+          </div>
+          <p className="text-[#64748b] text-[16px] leading-relaxed lg:max-w-[360px]">
             The dedicated professionals who show up every day committed to
             protecting your property.
           </p>
@@ -785,14 +819,13 @@ function TeamSection() {
                 />
               </div>
               <div className="abt-team-body">
-                {/* Role pill */}
-                <span className="inline-flex items-center px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-bold uppercase tracking-wider mb-3">
+                <span className="inline-flex items-center px-3 py-1 rounded-full bg-[#eff4ff] text-[#2563eb] text-xs font-semibold uppercase tracking-wider mb-3">
                   {member.role}
                 </span>
-                <h3 className="abt-heading text-[22px] font-extrabold text-[#0d2257] leading-snug tracking-tight mb-3">
+                <h3 className="abt-display text-[21px] font-semibold text-[#0d1b3e] leading-snug tracking-[-0.3px] mb-3">
                   {member.name}
                 </h3>
-                <p className="text-gray-500 text-[13.5px] leading-relaxed">
+                <p className="text-[#64748b] text-[13.5px] leading-relaxed">
                   {member.bio}
                 </p>
               </div>
@@ -805,7 +838,7 @@ function TeamSection() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   SECTION 7 — WHY CHOOSE US  (flip-card process style)
+   SECTION 6 — WHY CHOOSE US  (now matches ApproachSection's card system)
 ═══════════════════════════════════════════════════════════════════ */
 const WHY_ITEMS = [
   {
@@ -818,7 +851,7 @@ const WHY_ITEMS = [
     ],
     icon: (
       <svg
-        className="w-7 h-7"
+        className="w-6 h-6"
         fill="none"
         stroke="currentColor"
         strokeWidth={2}
@@ -842,7 +875,7 @@ const WHY_ITEMS = [
     ],
     icon: (
       <svg
-        className="w-7 h-7"
+        className="w-6 h-6"
         fill="none"
         stroke="currentColor"
         strokeWidth={2}
@@ -866,7 +899,7 @@ const WHY_ITEMS = [
     ],
     icon: (
       <svg
-        className="w-7 h-7"
+        className="w-6 h-6"
         fill="none"
         stroke="currentColor"
         strokeWidth={2}
@@ -890,7 +923,7 @@ const WHY_ITEMS = [
     ],
     icon: (
       <svg
-        className="w-7 h-7"
+        className="w-6 h-6"
         fill="none"
         stroke="currentColor"
         strokeWidth={2}
@@ -914,7 +947,7 @@ const WHY_ITEMS = [
     ],
     icon: (
       <svg
-        className="w-7 h-7"
+        className="w-6 h-6"
         fill="none"
         stroke="currentColor"
         strokeWidth={2}
@@ -938,7 +971,7 @@ const WHY_ITEMS = [
     ],
     icon: (
       <svg
-        className="w-7 h-7"
+        className="w-6 h-6"
         fill="none"
         stroke="currentColor"
         strokeWidth={2}
@@ -956,159 +989,82 @@ const WHY_ITEMS = [
 
 function WhySection() {
   return (
-    <section className="abt-body py-24" style={{ background: "#081a3d" }}>
-      <div className="max-w-7xl mx-auto px-7">
-        <div className="text-center max-w-xl mx-auto mb-16">
-          <p className="inline-flex items-center justify-center gap-2 text-[#FFF265] font-semibold text-xs uppercase tracking-[0.22em] mb-4">
-            What Sets Us Apart
-          </p>
-          <h2 className="abt-heading text-[clamp(32px,4.5vw,48px)] font-extrabold text-white leading-tight tracking-tight mb-5">
-            Why Choose Al Grey's
-          </h2>
-          <p className="text-[#94a8cc] text-[15px] leading-relaxed">
-            Six reasons thousands of homeowners and businesses across Birmingham
-            trust us with their properties.
-          </p>
+    <section
+      className="abt-body lg:pt-12 lg:pb-28 px-5 sm:px-8 lg:px-16"
+      style={{ background: "#f8fafc" }}
+    >
+      <div className="max-w-7xl mx-auto">
+        <div className="abt-section-head">
+          <div className="flex flex-col gap-5 lg:max-w-[52%]">
+            <p className="abt-eyebrow text-[#2563eb]">
+              <span className="dot" style={{ background: "#2563eb" }} />
+              What Sets Us Apart
+            </p>
+            <h2 className="abt-display text-[36px] sm:text-[44px] lg:text-[48px] font-medium text-[#0d1b3e] leading-[1.05] tracking-[-1px]">
+              Why Choose <span className="text-[#2563eb]">Al Grey&apos;s</span>
+            </h2>
+          </div>
+          <div className="flex flex-col items-start gap-6 lg:max-w-[340px]">
+            <p className="text-[#64748b] text-[16px] leading-relaxed">
+              Six reasons thousands of homeowners and businesses across
+              Birmingham trust us with their properties.
+            </p>
+            <a href="/contact-us" className="abt-cta">
+              Get a Free Quote
+              <span className="abt-cta-circle">
+                <svg
+                  width="15"
+                  height="15"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2.5}
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                  />
+                </svg>
+              </span>
+            </a>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+        <div className="abt-why-grid">
           {WHY_ITEMS.map((step, i) => (
-            <div key={step.title} className="abt-proc-card">
-              {/* Desktop default face */}
-              <div className="abt-proc-face abt-proc-face-default">
-                <div className="flex items-center justify-between">
-                  <div className="abt-proc-icon">{step.icon}</div>
-                  <span className="abt-proc-num">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                </div>
-                <div>
-                  <p
-                    style={{
-                      fontFamily: "'Manrope',sans-serif",
-                      fontSize: 24,
-                      fontWeight: 800,
-                      color: "#ffffff",
-                      lineHeight: 1.2,
-                      letterSpacing: "-0.3px",
-                      marginBottom: 10,
-                    }}
-                  >
-                    {step.title}
-                  </p>
-                  <p
-                    style={{
-                      fontSize: 13.5,
-                      fontWeight: 500,
-                      color: "#94a8cc",
-                      lineHeight: 1.6,
-                    }}
-                  >
-                    {step.desc}
-                  </p>
-                </div>
-              </div>
+            <div key={step.title} className="abt-why-card">
+              <span className="abt-why-num">
+                {String(i + 1).padStart(2, "0")}
+              </span>
 
-              {/* Desktop hover face */}
-              <div className="abt-proc-face abt-proc-face-hover">
-                <p
-                  style={{
-                    fontFamily: "'Manrope',sans-serif",
-                    fontSize: 20,
-                    fontWeight: 800,
-                    color: "#081a3d",
-                    lineHeight: 1.2,
-                    letterSpacing: "-0.3px",
-                    marginBottom: 20,
-                  }}
-                >
-                  {step.title}
-                </p>
-                <div>
-                  {step.bullets.map((b) => (
-                    <div
-                      key={b}
-                      style={{
-                        display: "flex",
-                        alignItems: "flex-start",
-                        gap: 12,
-                        marginBottom: 14,
-                      }}
-                    >
-                      <span
-                        style={{
-                          width: 22,
-                          height: 22,
-                          borderRadius: "50%",
-                          background: "#081a3d",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          flexShrink: 0,
-                          marginTop: 1,
-                        }}
-                      >
-                        <svg
-                          width="13"
-                          height="13"
-                          viewBox="0 0 14 14"
-                          fill="none"
-                          stroke="#FFF265"
-                          strokeWidth={2}
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <polyline points="2,7 5.5,10.5 12,3" />
-                        </svg>
-                      </span>
-                      <span
-                        style={{
-                          fontSize: 13.5,
-                          fontWeight: 600,
-                          color: "#081a3d",
-                          lineHeight: 1.4,
-                        }}
-                      >
-                        {b}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <div className="abt-why-icon">{step.icon}</div>
 
-              {/* Mobile face */}
-              <div className="abt-proc-face-mobile">
-                <div className="abt-mob-icon">{step.icon}</div>
-                <div>
-                  <p className="abt-mob-title">{step.title}</p>
-                  {step.bullets.map((b) => (
-                    <div
-                      key={b}
-                      style={{
-                        display: "flex",
-                        alignItems: "flex-start",
-                        gap: 10,
-                        marginBottom: 10,
-                      }}
-                    >
-                      <span className="abt-mob-check">
-                        <svg
-                          width="11"
-                          height="11"
-                          viewBox="0 0 14 14"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth={2}
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <polyline points="2,7 5.5,10.5 12,3" />
-                        </svg>
-                      </span>
-                      <span className="abt-mob-bullet">{b}</span>
-                    </div>
-                  ))}
-                </div>
+              <p className="abt-why-title">{step.title}</p>
+              <p className="abt-why-desc">{step.desc}</p>
+
+              <div className="abt-why-divider" />
+
+              <div>
+                {step.bullets.map((b) => (
+                  <div key={b} className="abt-why-bullet">
+                    <span className="abt-why-check">
+                      <svg
+                        width="11"
+                        height="11"
+                        viewBox="0 0 14 14"
+                        fill="none"
+                        stroke="#2563eb"
+                        strokeWidth={2.2}
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <polyline points="2,7 5.5,10.5 12,3" />
+                      </svg>
+                    </span>
+                    <span className="abt-why-bullet-text">{b}</span>
+                  </div>
+                ))}
               </div>
             </div>
           ))}
@@ -1118,7 +1074,6 @@ function WhySection() {
   );
 }
 
-
 /* ═══════════════════════════════════════════════════════════════════
    MAIN EXPORT
 ═══════════════════════════════════════════════════════════════════ */
@@ -1127,14 +1082,13 @@ export default function AboutPage() {
     <>
       <AboutStyles />
       <HeroSection />
-     
       <StorySection />
       <MissionSection />
       <ValuesSection />
       <TeamSection />
       <WhySection />
-        <FAQSection/>
-        <CTASection/>
+      <FAQSection />
+      <CTASection />
       <CTAAndFooter />
     </>
   );

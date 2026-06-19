@@ -432,7 +432,7 @@ export default function ServicesSection() {
         }
       `}</style>
 
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center pt-16 lg:pt-20">
         <section
           id="services"
           ref={sectionRef}
@@ -525,7 +525,7 @@ export default function ServicesSection() {
                                 className="sv-book-btn"
                                 onClick={(e) => e.stopPropagation()}
                               >
-                                Book Service
+                                More About {svc.title}
                                 <span className="arr">
                                   <svg
                                     width="14"
