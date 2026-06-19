@@ -145,7 +145,7 @@ export default function FAQSection() {
 
         .fq-heading {
           font-family: 'Inter Tight', sans-serif;
-          font-size: clamp(32px, 3.8vw, 50px);
+          font-size: clamp(40px, 3.8vw, 50px);
           font-weight: 500;
           color: #081a3d;
           line-height: 1.08;

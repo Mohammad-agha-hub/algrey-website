@@ -232,11 +232,18 @@ export default function WhyCleanSection() {
               </p>
 
               <h2
-                className="wc-display text-[40px] sm:text-[50px] font-medium text-[#0d1b3e] leading-[1.1] tracking-[-0.5px]"
-                data-reveal
-                data-delay="80"
+                style={{
+                  fontFamily: "'Inter Tight', sans-serif",
+                  fontSize: "clamp(40px, 4vw, 48px)",
+                  fontWeight: 500,
+                  color: "#081a3d",
+                  lineHeight: 1.05,
+                  letterSpacing: -1.5,
+                  margin: "0 0 20px",
+                }}
               >
-                Exterior Cleaning <br></br>Done Right.
+                Exterior Cleaning <br />
+                <span style={{ color: "#2563eb" }}>Done Right.</span>
               </h2>
 
               <p

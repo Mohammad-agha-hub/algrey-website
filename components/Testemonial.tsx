@@ -344,7 +344,7 @@ export default function TestimonialsSection() {
             <h2
               style={{
                 fontFamily: "'Inter Tight', sans-serif",
-                fontSize: "clamp(28px, 4vw, 48px)",
+                fontSize: "clamp(40px, 4vw, 48px)",
                 fontWeight: 500,
                 color: "#081a3d",
                 lineHeight: 1.05,
