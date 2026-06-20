@@ -31,13 +31,6 @@ const FAQS = [
 
 export default function FAQSection() {
   const [openIdx, setOpenIdx] = useState<number | null>(0);
-
-  // Revealed state for accordion items lives in React state (not a DOM
-  // classList mutation) because their className already changes on click
-  // (open/closed). Two sources writing to the same className would fight —
-  // whichever rendered last wins, which is what caused items to "disappear"
-  // when clicked. Header text (eyebrow/heading/sub) never changes className
-  // on click, so the simpler DOM-mutation approach is safe for those.
   const [revealedItems, setRevealedItems] = useState<boolean[]>(() =>
     FAQS.map(() => false),
   );
@@ -49,8 +42,6 @@ export default function FAQSection() {
     const section = sectionRef.current;
     if (!section) return;
 
-    // Header elements — safe to mutate the DOM directly, className never
-    // changes for these on re-render.
     const headerEls = section.querySelectorAll<HTMLElement>(
       "[data-reveal-header]",
     );
@@ -70,8 +61,6 @@ export default function FAQSection() {
     );
     headerEls.forEach((el) => headerObserver.observe(el));
 
-    // Accordion items — drive visibility through React state so it
-    // survives the re-render triggered when openIdx changes on click.
     const itemObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -101,14 +90,13 @@ export default function FAQSection() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap');
-
+        /* ── Base Typography ── */
         .fq-section {
-          font-family: 'Inter', sans-serif;
+          font-family: var(--font-inter), sans-serif;
           background: #f8f9fc;
         }
 
-        /* ── Reveal animation: header text ── */
+        /* ── Reveal Animation ── */
         [data-reveal-header] {
           opacity: 0;
           transform: translateY(22px);
@@ -120,71 +108,57 @@ export default function FAQSection() {
           transform: translateY(0);
         }
 
-        /* ── Left column ── */
+        /* ── Eyebrow ── */
         .fq-eyebrow {
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          font-family: 'Inter', sans-serif;
-          font-size: 11px;
-          font-weight: 700;
+          font-size: var(--step--1);
+          font-weight: var(--fw-semibold);
+          line-height: var(--leading-fine);
           letter-spacing: 0.2em;
           text-transform: uppercase;
           color: #2563eb;
-          margin-bottom: 20px;
-        }
-        .fq-eyebrow::before {
-          content: '';
-          display: block;
-          width: 6px;
-          height: 6px;
-          border-radius: 50%;
-          background: #2563eb;
-          flex-shrink: 0;
+          margin-bottom: var(--space-s);
         }
 
+        /* ── Heading ── */
         .fq-heading {
-          font-family: 'Inter Tight', sans-serif;
-          font-size: clamp(40px, 3.8vw, 50px);
-          font-weight: 500;
+          font-family: var(--font-inter-tight), sans-serif;
+          font-size: var(--step-5);
+          font-weight: var(--fw-medium);
           color: #081a3d;
-          line-height: 1.08;
-          letter-spacing: -1.5px;
-          margin: 0 0 20px;
-        }
-        .fq-heading em {
-          font-style: normal;
-          color: #2563eb;
+          line-height: var(--leading-flat);
+          letter-spacing: -0.02em;
+          margin: 0 0 var(--space-s);
         }
 
+        /* ── Subtitle ── */
         .fq-sub {
-          font-size: 14.5px;
-          font-weight: 400;
+          font-size: var(--step-0);
+          font-weight: var(--fw-normal);
           color: #6b7a99;
-          line-height: 1.7;
-          margin: 0 0 36px;
+          line-height: var(--leading-loose);
+          margin: 0 0 var(--space-xl);
         }
 
-        /* stat pills */
+        /* ── Stat Pills ── */
         .fq-stats {
           display: flex;
           flex-direction: column;
-          gap: 14px;
+          gap: var(--space-s);
         }
         .fq-stat {
           display: flex;
           align-items: center;
-          gap: 14px;
+          gap: var(--space-s);
           background: #ffffff;
           border: 1px solid #e4e9f4;
-          border-radius: 14px;
-          padding: 14px 18px;
-          box-shadow: 0 1px 6px rgba(8,26,61,0.05);
+          border-radius: var(--radius-lg);
+          padding: var(--space-s) var(--space-m);
+          box-shadow: 0 1px 6px rgba(8, 26, 61, 0.05);
         }
         .fq-stat-icon {
           width: 40px;
           height: 40px;
-          border-radius: 10px;
+          border-radius: var(--radius-md);
           background: #eff4ff;
           color: #2563eb;
           display: flex;
@@ -193,26 +167,26 @@ export default function FAQSection() {
           flex-shrink: 0;
         }
         .fq-stat-num {
-          font-family: 'Inter Tight', sans-serif;
-          font-size: 22px;
-          font-weight: 800;
+          font-family: var(--font-inter-tight), sans-serif;
+          font-size: var(--step-1);
+          font-weight: var(--fw-extrabold);
           color: #081a3d;
-          line-height: 1;
-          letter-spacing: -0.5px;
+          line-height: var(--leading-flat);
+          letter-spacing: -0.02em;
         }
         .fq-stat-label {
-          font-size: 12px;
-          font-weight: 500;
+          font-size: var(--step--1);
+          font-weight: var(--fw-medium);
           color: #6b7a99;
-          line-height: 1.3;
+          line-height: var(--leading-tight);
           margin-top: 2px;
         }
 
-        /* ── Accordion ── */
+        /* ── Accordion Items ── */
         .fq-item {
           background: #ffffff;
           border: 1px solid #e4e9f4;
-          border-radius: 14px;
+          border-radius: var(--radius-lg);
           overflow: hidden;
           opacity: 0;
           transform: translateY(22px);
@@ -226,7 +200,7 @@ export default function FAQSection() {
         }
         .fq-item.open {
           border-color: #2563eb;
-          box-shadow: 0 4px 20px rgba(37,99,235,0.10);
+          box-shadow: 0 4px 20px rgba(37, 99, 235, 0.10);
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -238,13 +212,14 @@ export default function FAQSection() {
           }
         }
 
+        /* ── Trigger Button ── */
         .fq-trigger {
           width: 100%;
           display: flex;
           align-items: center;
           justify-content: space-between;
-          gap: 16px;
-          padding: 18px 22px;
+          gap: var(--space-s);
+          padding: var(--space-s) var(--space-m);
           background: transparent;
           border: none;
           cursor: pointer;
@@ -255,18 +230,17 @@ export default function FAQSection() {
         .fq-item.open .fq-trigger { background: #f5f7ff; }
 
         .fq-q {
-          font-family: 'Inter', sans-serif;
-          font-size: 18px;
-          font-weight: 500;
+          font-size: var(--step-0);
+          font-weight: var(--fw-medium);
           color: #081a3d;
-          line-height: 1.35;
-          letter-spacing: -0.2px;
+          line-height: var(--leading-fine);
+          letter-spacing: -0.01em;
         }
 
         .fq-icon {
           width: 28px;
           height: 28px;
-          border-radius: 50%;
+          border-radius: var(--radius-full);
           border: 1.5px solid #cbd5e1;
           display: flex;
           align-items: center;
@@ -282,42 +256,48 @@ export default function FAQSection() {
           transform: rotate(45deg);
         }
 
+        /* ── Answer Panel ── */
         .fq-answer {
           max-height: 0;
           overflow: hidden;
           transition: max-height 0.35s ease, padding 0.28s ease;
-          padding: 0 22px;
+          padding: 0 var(--space-m);
         }
         .fq-item.open .fq-answer {
           max-height: 300px;
-          padding: 0 22px 20px;
+          padding: 0 var(--space-m) var(--space-s);
         }
 
         .fq-answer-inner {
-          font-size: 14px;
-          font-weight: 400;
+          font-size: var(--step--1);
+          font-weight: var(--fw-normal);
           color: #6b7a99;
-          line-height: 1.7;
+          line-height: var(--leading-loose);
           border-top: 1px solid #e4e9f4;
-          padding-top: 16px;
+          padding-top: var(--space-s);
         }
 
-        /* ── Layout ── */
+        /* ── Layout Grid ── */
         .fq-grid {
           display: grid;
           grid-template-columns: 1fr 1.55fr;
-          gap: 72px;
+          gap: var(--space-2xl);
           align-items: start;
         }
 
         @media (max-width: 1023px) {
           .fq-grid {
             grid-template-columns: 1fr;
-            gap: 48px;
+            gap: var(--space-3xs);
           }
           .fq-left { position: static; }
           .fq-stats { flex-direction: row; flex-wrap: wrap; }
           .fq-stat { flex: 1; min-width: 160px; }
+        }
+
+        @media (max-width: 639px) {
+          .fq-stats { flex-direction: column; }
+          .fq-stat { min-width: 0; }
         }
       `}</style>
 
@@ -327,15 +307,20 @@ export default function FAQSection() {
       >
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <div className="fq-grid">
-            {/* ── Left: heading + stats ── */}
+            {/* ── Left: Heading + Stats ── */}
             <div className="fq-left">
-              <p className="fq-eyebrow" data-reveal-header data-delay="0">
+              <p
+                className="fq-eyebrow flex items-center gap-2"
+                data-reveal-header
+                data-delay="0"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-[#2563eb] inline-block" />
                 Got Questions?
               </p>
               <h2 className="fq-heading" data-reveal-header data-delay="80">
                 Answers to your
                 <br />
-                <em>common</em> queries.
+                <span className="text-[#2563eb]">common</span> queries.
               </h2>
               <p className="fq-sub" data-reveal-header data-delay="140">
                 Everything you need to know about our gutter cleaning and
@@ -344,9 +329,13 @@ export default function FAQSection() {
               </p>
             </div>
 
-            {/* ── Right: accordion ── */}
+            {/* ── Right: Accordion ── */}
             <div
-              style={{ display: "flex", flexDirection: "column", gap: "10px" }}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "var(--space-2xs)",
+              }}
             >
               {FAQS.map((faq, i) => (
                 <div

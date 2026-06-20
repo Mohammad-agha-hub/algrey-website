@@ -181,8 +181,6 @@ export default function ServicesSection() {
 
   const sectionRef = useRef<HTMLElement>(null);
 
-  // Same scroll-reveal convention as About/Stats/WhyClean: IntersectionObserver
-  // adds .sv-visible to each [data-reveal] node as it enters the viewport.
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
@@ -211,11 +209,15 @@ export default function ServicesSection() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
+        /* ── Base Typography ── */
+        .sv-root { 
+          font-family: var(--font-inter), sans-serif; 
+        }
+        .sv-display { 
+          font-family: var(--font-inter-tight), sans-serif; 
+        }
 
-        .sv-root { font-family: 'Inter', sans-serif; }
-        .sv-display { font-family: 'Inter Tight', sans-serif; }
-
+        /* ── Reveal Animation ── */
         [data-reveal] {
           opacity: 0;
           transform: translateY(20px);
@@ -226,9 +228,6 @@ export default function ServicesSection() {
           opacity: 1;
           transform: translateY(0);
         }
-        /* Service rows get a more pronounced bottom-to-top fade than the
-           header text — these are tall elements, so a 20px shift barely
-           registers. Higher specificity overrides the base rule above. */
         .sv-row[data-reveal] {
           transform: translateY(40px);
           transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
@@ -241,33 +240,56 @@ export default function ServicesSection() {
           [data-reveal] { opacity: 1; transform: none; transition: none; }
         }
 
-        /* ── Row: 3-column grid ── */
+        /* ── Section Eyebrow ── */
+        .sv-eyebrow {
+          font-size: var(--step--1);
+          font-weight: var(--fw-semibold);
+          line-height: var(--leading-fine);
+          letter-spacing: 0.22em;
+          text-transform: uppercase;
+          color: #3b82f6;
+        }
+
+        /* ── Heading ── */
+        .sv-heading {
+          font-family: var(--font-inter-tight), sans-serif;
+          font-size: var(--step-5);
+          font-weight: var(--fw-medium);
+          line-height: var(--leading-flat);
+          letter-spacing: -0.02em;
+          color: #ffffff;
+        }
+
+        /* ── Body Text ── */
+        .sv-body {
+          font-size: var(--step-0);
+          font-weight: var(--fw-normal);
+          line-height: var(--leading-standard);
+          color: #64748b;
+        }
+
+        /* ── Row Grid ── */
         .sv-row {
           display: grid;
           grid-template-columns: 200px 1fr 72px;
-          /* align-items NOT set here — each cell manages its own alignment */
-          border-top: 1px solid rgba(255,255,255,0.10);
+          border-top: 1px solid rgba(255, 255, 255, 0.10);
           cursor: pointer;
           transition: background 0.18s;
           background: transparent;
         }
         .sv-row:last-child {
-          border-bottom: 1px solid rgba(255,255,255,0.10);
-        }
-        
-        @media (max-width: 768px) {
-          .sv-row { grid-template-columns: 64px 1fr 44px; }
+          border-bottom: 1px solid rgba(255, 255, 255, 0.10);
         }
 
-        /* ── Number — always top-aligned ── */
+        /* ── Number ── */
         .sv-num {
-          font-family: 'Inter Tight', sans-serif;
-          font-size: 30px;
-          font-weight: 400;
+          font-family: var(--font-inter-tight), sans-serif;
+          font-size: var(--step-3);
+          font-weight: var(--fw-normal);
+          line-height: var(--leading-flat);
           color: #3b82f6;
-          padding: 32px 0;
+          padding: var(--space-xl) 0;
           user-select: none;
-          line-height: 1;
           align-self: start;
           transition: color 0.2s;
         }
@@ -275,20 +297,20 @@ export default function ServicesSection() {
           color: #60a5fa;
         }
 
-        /* ── Center column ── */
+        /* ── Center Column ── */
         .sv-center {
-          padding: 28px 32px 28px 0;
+          padding: var(--space-l) var(--space-xl) var(--space-l) 0;
           align-self: start;
         }
 
-        /* ── Title ── */
+        /* ── Service Title ── */
         .sv-title {
-          font-family: 'Inter Tight', sans-serif;
-          font-size: clamp(26px, 3vw, 38px);
-          font-weight: 500;
+          font-family: var(--font-inter-tight), sans-serif;
+          font-size: var(--step-4);
+          font-weight: var(--fw-medium);
           color: #ffffff;
-          line-height: 1.1;
-          letter-spacing: -0.5px;
+          line-height: var(--leading-flat);
+          letter-spacing: -0.02em;
           margin: 0;
           transition: color 0.2s;
         }
@@ -296,39 +318,45 @@ export default function ServicesSection() {
           color: #e0e7ff;
         }
 
-        /* ── Plus column wrapper — handles centering vs top alignment ── */
+        /* ── Description ── */
+        .sv-desc {
+          color: rgba(255, 255, 255, 0.55);
+          font-size: var(--step-0);
+          line-height: var(--leading-standard);
+          padding-block: var(--space-s);
+          max-width: 600px;
+        }
+
+        /* ── Plus Column ── */
         .sv-plus-col {
-          /* When collapsed: fill full row height and center the icon vertically */
           align-self: stretch;
           display: flex;
-          align-items: center;   /* vertically center when collapsed */
+          align-items: center;
           justify-content: flex-end;
-          padding: 28px 0;
+          padding: var(--space-l) 0;
           transition: align-items 0.1s;
         }
-        /* When open: pin icon to top */
         .sv-plus-col.is-open {
           align-items: flex-start;
         }
 
-        /* ── The icon itself ── */
+        /* ── Plus Icon ── */
         .sv-plus {
           user-select: none;
           color: #3b82f6;
-          font-size: 50px;
-          line-height: 1;
-          display: inline-block;
-          transition: color 0.2s, transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+          display: inline-flex;
+          transform: rotate(0deg);
+          transition: color 0.2s, transform 0.35s cubic-bezier(0.65, 0, 0.35, 1);
           flex-shrink: 0;
         }
         .sv-row:hover .sv-plus {
           color: #60a5fa;
         }
         .sv-plus-col.is-open .sv-plus {
-          transform: rotate(180deg);
+          transform: rotate(45deg);
         }
 
-        /* ── Expand panel ── */
+        /* ── Expand Panel ── */
         .sv-panel {
           display: grid;
           grid-template-rows: 0fr;
@@ -341,15 +369,16 @@ export default function ServicesSection() {
           overflow: hidden;
         }
 
-        /* ── Tag pill — white background ── */
+        /* ── Tags ── */
         .sv-tag {
           display: inline-flex;
           align-items: center;
           background: #ffffff;
-          border-radius: 999px;
-          padding: 8px 20px;
-          font-size: 13.5px;
-          font-weight: 500;
+          border-radius: var(--radius-full);
+          padding: var(--space-2xs) var(--space-s);
+          font-size: var(--step--1);
+          font-weight: var(--fw-medium);
+          line-height: var(--leading-fine);
           color: #0d1b3e;
           white-space: nowrap;
           transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
@@ -357,12 +386,12 @@ export default function ServicesSection() {
         }
         .sv-tag:hover {
           transform: translateY(-2px);
-          box-shadow: 0 6px 18px rgba(0,0,0,0.22);
+          box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
         }
 
-        /* ── Expandable image ── */
+        /* ── Service Image ── */
         .sv-img-wrap {
-          border-radius: 16px;
+          border-radius: var(--radius-lg);
           overflow: hidden;
           max-width: 480px;
           height: 270px;
@@ -378,37 +407,30 @@ export default function ServicesSection() {
           transform: scale(1.05);
         }
 
-        /* ── Book Service button — exact match to About section's btn-quote ── */
+        /* ── CTA Button ── */
         .sv-book-btn {
           display: inline-flex;
           align-items: center;
-          gap: 0;
-          padding: 7px 7px 7px 26px;
-          border-radius: 100px;
+          gap: var(--space-s);
+          padding: var(--space-2xs) var(--space-s);
+          padding-left: var(--space-m);
+          border-radius: var(--radius-full);
           background: #2563eb;
           color: #ffffff;
-          font-family: 'Inter', sans-serif;
-          font-size: 12px;
-          font-weight: 700;
+          font-family: var(--font-inter), sans-serif;
+          font-size: var(--step--1);
+          font-weight: var(--fw-bold);
           letter-spacing: 0.14em;
+          line-height: 1;
           text-transform: uppercase;
           text-decoration: none;
-          transition: background 0.22s ease, padding-right 0.2s ease;
+          transition: background 0.22s ease, padding 0.2s ease;
           flex-shrink: 0;
           white-space: nowrap;
         }
-          .sv-plus {
-  display: inline-flex;
-  transform: rotate(0deg);
-  transition: transform 0.35s cubic-bezier(0.65, 0, 0.35, 1);
-}
-
-.sv-plus-col.is-open .sv-plus {
-  transform: rotate(45deg);
-}
         .sv-book-btn:hover {
           background: #1d4ed8;
-          padding-right: 13px;
+          padding-right: calc(var(--space-s) + 0.5rem);
         }
         .sv-book-btn:focus-visible {
           outline: 2px solid #2563eb;
@@ -417,18 +439,92 @@ export default function ServicesSection() {
         .sv-book-btn .arr {
           width: 36px;
           height: 36px;
-          border-radius: 50%;
+          border-radius: var(--radius-full);
           background: #ffffff;
           color: #2563eb;
           display: flex;
           align-items: center;
           justify-content: center;
-          margin-left: 16px;
           flex-shrink: 0;
           transition: background 0.22s, color 0.22s;
         }
         .sv-book-btn:hover .arr {
           background: #dbeafe;
+        }
+
+        /* ── Responsive: Tablet ── */
+        @media (max-width: 768px) {
+          .sv-row { 
+            grid-template-columns: 48px 1fr 44px;
+          }
+          .sv-num {
+            font-size: var(--step-1);
+            padding: var(--space-m) 0;
+          }
+          .sv-center {
+            padding: var(--space-m) var(--space-s) var(--space-m) 0;
+          }
+          .sv-title {
+            font-size: var(--step-2);
+          }
+          .sv-desc {
+            font-size: var(--step--1);
+            padding-block: var(--space-xs);
+          }
+          .sv-plus-col {
+            padding: var(--space-m) 0;
+          }
+          .sv-book-btn {
+            font-size: 0.65rem;
+            padding: 5px 5px 5px 16px;
+            letter-spacing: 0.08em;
+          }
+          .sv-book-btn .arr {
+            width: 28px;
+            height: 28px;
+          }
+          .sv-img-wrap {
+            height: 200px;
+          }
+        }
+
+        /* ── Responsive: Small Mobile ── */
+        @media (max-width: 480px) {
+          .sv-row {
+            grid-template-columns: 40px 1fr 36px;
+          }
+          .sv-num {
+            font-size: var(--step-0);
+            padding: var(--space-s) 0;
+          }
+          .sv-center {
+            padding: var(--space-s) var(--space-xs) var(--space-s) 0;
+          }
+          .sv-plus svg {
+            width: 28px;
+            height: 28px;
+          }
+          .sv-plus-col {
+            padding: var(--space-s) 0;
+          }
+          .sv-book-btn {
+            width: 100%;
+            justify-content: center;
+            font-size: 0.6rem;
+            padding: 5px 5px 5px 14px;
+          }
+          .sv-book-btn .arr {
+            width: 24px;
+            height: 24px;
+          }
+          .sv-tag {
+            font-size: 0.65rem;
+            padding: 5px 12px;
+          }
+          .sv-img-wrap {
+            height: 180px;
+            max-width: 100%;
+          }
         }
       `}</style>
 
@@ -437,32 +533,28 @@ export default function ServicesSection() {
           id="services"
           ref={sectionRef}
           style={{ borderRadius: "20px" }}
-          className="sv-root w-[97%]  bg-[#0d1b3e] py-20 lg:py-28 px-5 sm:px-8 lg:px-14"
+          className="sv-root w-[97%] bg-[#0d1b3e] py-20 lg:py-28 px-5 sm:px-8 lg:px-14"
         >
           <div className="max-w-7xl mx-auto">
             {/* ── Header ── */}
             <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-16 lg:mb-20">
               <div className="flex flex-col gap-5 lg:max-w-[52%]">
                 <p
-                  className="flex items-center gap-2 text-[#3b82f6] font-semibold text-[12px] uppercase tracking-[0.22em]"
+                  className="sv-eyebrow flex items-center gap-2"
                   data-reveal
                   data-delay="0"
                 >
                   <span className="w-1.5 h-1.5 rounded-full bg-[#3b82f6] inline-block" />
                   Our Services
                 </p>
-                <h2
-                  className="sv-display text-[42px] sm:text-[46px] lg:text-[50px] font-medium text-white leading-[1.05] tracking-[-1px]"
-                  data-reveal
-                  data-delay="80"
-                >
+                <h2 className="sv-heading" data-reveal data-delay="80">
                   Professional Exterior
                   <br />
                   <span className="text-[#3b82f6]">Cleaning Services.</span>
                 </h2>
               </div>
               <p
-                className="text-[#64748b] text-[16px] leading-relaxed lg:max-w-[380px]"
+                className="sv-body lg:max-w-[380px]"
                 data-reveal
                 data-delay="160"
               >
@@ -483,17 +575,15 @@ export default function ServicesSection() {
                     onClick={() => toggle(i)}
                     data-reveal
                   >
-                    {/* Left: number */}
+                    {/* Left: Number */}
                     <div className="sv-num">{svc.num}</div>
 
-                    {/* Center: always title + desc, expandable extras */}
+                    {/* Center: Content */}
                     <div className="sv-center">
                       <h3 className="sv-title">{svc.title}</h3>
-                      <p className="text-[rgba(255,255,255,0.55)] text-[15px] leading-relaxed py-3 max-w-[600px]">
-                        {svc.desc}
-                      </p>
+                      <p className="sv-desc">{svc.desc}</p>
 
-                      {/* Expandable: tags, image, CTA — stop clicks bubbling so content area doesn't close */}
+                      {/* Expandable Panel */}
                       <div className={`sv-panel ${isOpen ? "open" : ""}`}>
                         <div className="sv-panel-inner">
                           <div
@@ -518,7 +608,7 @@ export default function ServicesSection() {
                               />
                             </div>
 
-                            {/* Book Service CTA */}
+                            {/* CTA */}
                             <div className="flex justify-end">
                               <Link
                                 href={svc.href}
@@ -549,7 +639,7 @@ export default function ServicesSection() {
                       </div>
                     </div>
 
-                    {/* Right: plus icon — centered when closed, top-aligned + rotated into an × when open */}
+                    {/* Right: Plus Icon */}
                     <div className={`sv-plus-col ${isOpen ? "is-open" : ""}`}>
                       <span className="sv-plus" aria-hidden="true">
                         <svg

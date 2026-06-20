@@ -12,9 +12,6 @@ const FEATURES = [
 export default function AboutSection() {
   const sectionRef = useRef<HTMLElement>(null);
 
-  // Scroll-triggered reveal — IntersectionObserver adds .ab-visible to
-  // each [data-reveal] element when it enters the viewport. No framer-motion
-  // dependency needed for a section this simple.
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
@@ -43,11 +40,18 @@ export default function AboutSection() {
   return (
     <>
       <style>{`
+        /* ── Google Fonts Import ── */
         @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@700;800&family=Inter:wght@400;500;600;700&display=swap');
-        .ab-root    { font-family: 'Inter', sans-serif; }
-        .ab-display { font-family: 'Inter Tight', sans-serif; }
 
-        /* ── Reveal animation base ── */
+        /* ── Base Typography ── */
+        .ab-root { 
+          font-family: var(--font-inter), sans-serif; 
+        }
+        .ab-display { 
+          font-family: var(--font-inter-tight), sans-serif; 
+        }
+
+        /* ── Reveal Animation ── */
         [data-reveal] {
           opacity: 0;
           transform: translateY(22px);
@@ -62,10 +66,10 @@ export default function AboutSection() {
           [data-reveal] { opacity: 1; transform: none; transition: none; }
         }
 
-        /* ── Image wrapper ── */
+        /* ── Image Wrapper ── */
         .ab-img-wrap {
           position: relative;
-          border-radius: 20px;
+          border-radius: var(--radius-2xl);
           overflow: hidden;
           width: 100%;
           aspect-ratio: 3 / 4;
@@ -83,18 +87,18 @@ export default function AboutSection() {
           transform: scale(1.03);
         }
 
-        /* ── Floating stat card ── */
+        /* ── Floating Stat Card ── */
         .ab-stat-card {
           position: absolute;
-          bottom: 28px;
-          left: 28px;
+          bottom: var(--space-l);
+          left: var(--space-l);
           background: #ffffff;
-          border-radius: 16px;
-          padding: 18px 22px;
+          border-radius: var(--radius-lg);
+          padding: var(--space-s) var(--space-m);
           box-shadow: 0 8px 32px rgba(13, 27, 62, 0.18);
           display: flex;
           flex-direction: column;
-          gap: 8px;
+          gap: var(--space-2xs);
           min-width: 220px;
           transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
                       box-shadow 0.3s ease;
@@ -103,53 +107,102 @@ export default function AboutSection() {
           transform: translateY(-4px);
           box-shadow: 0 16px 40px rgba(13, 27, 62, 0.22);
         }
+        .ab-stat-value {
+          font-family: var(--font-inter-tight), sans-serif;
+          font-size: var(--step-3);
+          font-weight: var(--fw-bold);
+          line-height: var(--leading-flat);
+          color: #2563eb;
+        }
+        .ab-stat-label {
+          font-size: var(--step--1);
+          font-weight: var(--fw-normal);
+          line-height: var(--leading-tight);
+          color: #475569;
+        }
 
-        /* ── Check icon ── */
+        /* ── Section Eyebrow ── */
+        .ab-eyebrow {
+          font-size: var(--step--1);
+          font-weight: var(--fw-semibold);
+          line-height: var(--leading-fine);
+          letter-spacing: 0.2em;
+          text-transform: uppercase;
+          color: #2563eb;
+        }
+
+        /* ── Heading ── */
+        .ab-heading {
+          font-family: var(--font-inter-tight), sans-serif;
+          font-size: var(--step-5);
+          font-weight: var(--fw-medium);
+          line-height: var(--leading-flat);
+          letter-spacing: -0.02em;
+          color: #0d1b3e;
+        }
+
+        /* ── Body Text ── */
+        .ab-body {
+          font-size: var(--step-0);
+          font-weight: var(--fw-normal);
+          line-height: var(--leading-standard);
+          color: #64748b;
+        }
+
+        /* ── Feature List ── */
+        .ab-feature {
+          display: flex;
+          align-items: flex-start;
+          gap: var(--space-xs);
+          cursor: default;
+        }
+        .ab-feature-text {
+          font-size: var(--step-0);
+          font-weight: var(--fw-semibold);
+          line-height: var(--leading-fine);
+          color: #0d1b3e;
+        }
         .check-icon {
           width: 22px;
           height: 22px;
-          border-radius: 50%;
+          border-radius: var(--radius-full);
           background: #1e3a8a;
           display: flex;
           align-items: center;
           justify-content: center;
           flex-shrink: 0;
-          margin-top: 1px;
+          margin-top: 2px;
           transition: background 0.2s, transform 0.2s;
         }
         .ab-feature:hover .check-icon {
           background: #2563eb;
           transform: scale(1.12);
         }
-        .ab-feature {
-          display: flex;
-          align-items: flex-start;
-          gap: 12px;
-          cursor: default;
-        }
 
-        /* ── CTA button — matches hero / approach pill style ── */
+        /* ── CTA Button (matches hero) ── */
         .btn-quote {
           display: inline-flex;
           align-items: center;
-          gap: 0;
-          padding: 7px 7px 7px 26px;
-          border-radius: 100px;
+          gap: var(--space-s);
+          padding: var(--space-2xs) var(--space-s);
+          padding-left: var(--space-m);
+          border-radius: var(--radius-full);
           background: #2563eb;
           color: #ffffff;
-          font-family: 'Inter', sans-serif;
-          font-size: 12px;
-          font-weight: 700;
+          font-family: var(--font-inter), sans-serif;
+          font-size: var(--step--1);
+          font-weight: var(--fw-bold);
           letter-spacing: 0.14em;
+          line-height: 1;
           text-transform: uppercase;
           text-decoration: none;
-          transition: background 0.22s ease, padding-right 0.2s ease;
+          transition: background 0.22s ease, padding 0.2s ease;
           flex-shrink: 0;
           white-space: nowrap;
         }
         .btn-quote:hover {
           background: #1d4ed8;
-          padding-right: 13px;
+          padding-right: calc(var(--space-s) + 0.5rem);
         }
         .btn-quote:focus-visible {
           outline: 2px solid #2563eb;
@@ -158,13 +211,12 @@ export default function AboutSection() {
         .btn-quote .arrow-circle {
           width: 36px;
           height: 36px;
-          border-radius: 50%;
+          border-radius: var(--radius-full);
           background: #ffffff;
           color: #2563eb;
           display: flex;
           align-items: center;
           justify-content: center;
-          margin-left: 16px;
           flex-shrink: 0;
           transition: background 0.22s, color 0.22s;
         }
@@ -172,21 +224,35 @@ export default function AboutSection() {
           background: #dbeafe;
         }
 
-        /* ── Secondary link ── */
+        /* ── Secondary Link ── */
         .btn-services {
           display: inline-flex;
           align-items: center;
-          gap: 5px;
+          gap: var(--space-3xs);
           color: #0d1b3e;
-          font-family: 'Inter', sans-serif;
-          font-size: 15px;
-          font-weight: 600;
+          font-family: var(--font-inter), sans-serif;
+          font-size: var(--step-0);
+          font-weight: var(--fw-semibold);
+          line-height: var(--leading-fine);
           text-decoration: none;
           transition: color 0.2s;
         }
         .btn-services:hover { color: #2563eb; }
         .btn-services:hover .svc-arrow { transform: translateX(3px); }
         .svc-arrow { display: flex; transition: transform 0.2s ease; }
+
+        /* ── Responsive Adjustments ── */
+        @media (min-width: 640px) {
+          .ab-heading {
+            font-size: var(--step-5);
+          }
+        }
+        @media (min-width: 1024px) {
+          .ab-stat-card {
+            bottom: var(--space-l);
+            left: var(--space-l);
+          }
+        }
       `}</style>
 
       <section
@@ -195,19 +261,22 @@ export default function AboutSection() {
       >
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
-            {/* ── LEFT: Image + stat card ── */}
+            {/* ── LEFT: Image + Stat Card ── */}
             <div
               className="w-full lg:w-[48%] shrink-0"
               data-reveal
               data-delay="0"
             >
               <div className="ab-img-wrap">
-                <img src="/lp-9.webp" alt="Professional cleaning team at work" />
+                <img
+                  src="/lp-9.webp"
+                  alt="Professional cleaning team at work"
+                  loading="lazy"
+                  decoding="async"
+                />
                 <div className="ab-stat-card">
-                  <span className="ab-display text-[32px] font-bold text-[#2563eb] leading-none">
-                    100+
-                  </span>
-                  <p className="text-[#475569] text-[13.5px] leading-snug">
+                  <span className="ab-stat-value">100+</span>
+                  <p className="ab-stat-label">
                     Properties cleaned across
                     <br />
                     Birmingham and surrounding areas.
@@ -216,10 +285,10 @@ export default function AboutSection() {
               </div>
             </div>
 
-            {/* ── RIGHT: Copy ── */}
+            {/* ── RIGHT: Content ── */}
             <div className="flex-1 flex flex-col gap-7">
               <p
-                className="flex items-center gap-2 text-[#2563eb] font-semibold text-[13px] uppercase tracking-[0.2em]"
+                className="ab-eyebrow flex items-center gap-2"
                 data-reveal
                 data-delay="80"
               >
@@ -227,29 +296,21 @@ export default function AboutSection() {
                 About Algrey Cleaning Services
               </p>
 
-              <h2
-                className="ab-display text-[40px] sm:text-[48px] lg:text-[50px] font-medium text-[#0d1b3e] leading-[1.1] tracking-[-0.5px]"
-                data-reveal
-                data-delay="140"
-              >
+              <h2 className="ab-heading" data-reveal data-delay="140">
                 Expert Exterior Cleaning
                 <br />
                 for{" "}
                 <span className="text-[#2563eb]">Homes &amp; Businesses.</span>
               </h2>
 
-              <p
-                className="text-[#64748b] text-[16px] leading-relaxed max-w-[500px]"
-                data-reveal
-                data-delay="200"
-              >
+              <p className="ab-body max-w-[500px]" data-reveal data-delay="200">
                 We provide professional exterior cleaning services for homes and
                 businesses across Birmingham. From roofs and gutters to
                 driveways and patios, we deliver reliable results that keep
                 properties looking their best.
               </p>
 
-              {/* Feature grid */}
+              {/* Feature Grid */}
               <div
                 className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-4"
                 data-reveal
@@ -273,9 +334,7 @@ export default function AboutSection() {
                         />
                       </svg>
                     </div>
-                    <span className="text-[#0d1b3e] font-semibold text-[15px] leading-snug pt-0.5">
-                      {f}
-                    </span>
+                    <span className="ab-feature-text">{f}</span>
                   </div>
                 ))}
               </div>

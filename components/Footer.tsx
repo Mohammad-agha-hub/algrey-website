@@ -32,25 +32,111 @@ export default function Footer() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800;900&display=swap');
-        .footer-body    { font-family: 'Inter', sans-serif; }
-        .footer-heading { font-family: 'Manrope', sans-serif; }
+        /* ── Base Typography ── */
+        .footer-body { 
+          font-family: var(--font-inter), sans-serif; 
+        }
+        .footer-heading { 
+          font-family: var(--font-inter-tight), sans-serif; 
+        }
 
+        /* ── Footer Links ── */
         .footer-link {
-          font-family: 'Inter', sans-serif;
-          font-size: 13.5px;
+          font-size: var(--step--1);
+          font-weight: var(--fw-normal);
+          line-height: var(--leading-fine);
           color: #7a90bc;
           text-decoration: none;
           transition: color 0.18s;
           display: block;
-          margin-bottom: 10px;
+          margin-bottom: var(--space-2xs);
         }
         .footer-link:hover { color: #ffffff; }
         .footer-link:last-child { margin-bottom: 0; }
+
+        /* ── Column Headings ── */
+        .footer-heading-text {
+          font-size: var(--step--1);
+          font-weight: var(--fw-bold);
+          line-height: var(--leading-fine);
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          margin-bottom: var(--space-s);
+        }
+
+        /* ── Brand Description ── */
+        .footer-brand-desc {
+          font-size: var(--step--1);
+          font-weight: var(--fw-normal);
+          line-height: var(--leading-standard);
+          color: #7a90bc;
+          margin-bottom: var(--space-m);
+        }
+
+        /* ── Contact Items ── */
+        .footer-contact-text {
+          font-size: var(--step--1);
+          font-weight: var(--fw-normal);
+          line-height: var(--leading-fine);
+          color: #7a90bc;
+        }
+        .footer-contact-link {
+          font-size: var(--step--1);
+          font-weight: var(--fw-normal);
+          line-height: var(--leading-fine);
+          color: #7a90bc;
+          text-decoration: none;
+          transition: color 0.18s;
+        }
+        .footer-contact-link:hover { color: #ffffff; }
+
+        /* ── Social Icons ── */
+        .footer-social-icon {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 36px;
+          height: 36px;
+          border-radius: var(--radius-md);
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          color: #7a90bc;
+          transition: background 0.2s, color 0.2s, border-color 0.2s;
+        }
+        .footer-social-icon:hover {
+          background: #2563eb;
+          color: #ffffff;
+          border-color: #2563eb;
+        }
+
+        /* ── Bottom Bar ── */
+        .footer-bottom-text {
+          font-size: var(--step--1);
+          font-weight: var(--fw-normal);
+          line-height: var(--leading-fine);
+          color: #4a5c80;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 639px) {
+          .footer-link {
+            font-size: 0.75rem;
+          }
+          .footer-heading-text {
+            font-size: 0.65rem;
+            letter-spacing: 0.1em;
+          }
+        }
       `}</style>
 
       <div className="flex flex-col items-center">
-        <footer style={{borderBottomLeftRadius:'20px',borderBottomRightRadius:'20px'}} className="footer-body w-[98%] bg-[#081a3d]">
+        <footer
+          style={{
+            borderBottomLeftRadius: "20px",
+            borderBottomRightRadius: "20px",
+          }}
+          className="footer-body w-[98%] bg-[#081a3d]"
+        >
           <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-16 pt-20 pb-8">
             <div className="flex flex-col lg:flex-row lg:justify-between gap-10 mb-14">
               {/* Col 1 — Brand */}
@@ -63,7 +149,7 @@ export default function Footer() {
                     alt="logo"
                   />
                 </div>
-                <p className="footer-body text-[#7a90bc] text-[13.5px] leading-relaxed mb-6">
+                <p className="footer-brand-desc">
                   Protecting Birmingham homes and businesses from costly water
                   damage. Trusted, local and fully insured since 2010.
                 </p>
@@ -86,7 +172,7 @@ export default function Footer() {
                       key={s.label}
                       href="#"
                       aria-label={s.label}
-                      className="inline-flex items-center justify-center size-9 rounded-lg bg-white/5 border border-white/[0.08] text-[#7a90bc] hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all duration-200"
+                      className="footer-social-icon"
                     >
                       <svg
                         className="w-4 h-4"
@@ -104,7 +190,7 @@ export default function Footer() {
               <div className="flex flex-col sm:flex-row gap-10 lg:gap-16">
                 {/* Quick Links */}
                 <div className="shrink-0">
-                  <p className="footer-heading text-white text-[12px] font-bold uppercase tracking-[.14em] mb-5">
+                  <p className="footer-heading footer-heading-text text-white">
                     Quick Links
                   </p>
                   <nav>
@@ -116,9 +202,9 @@ export default function Footer() {
                   </nav>
                 </div>
 
-                {/* Services — two columns for 13 items */}
+                {/* Services */}
                 <div>
-                  <p className="footer-heading text-white text-[12px] font-bold uppercase tracking-[.14em] mb-5">
+                  <p className="footer-heading footer-heading-text text-white">
                     Our Services
                   </p>
                   <div className="grid grid-cols-2 gap-x-8">
@@ -132,7 +218,7 @@ export default function Footer() {
 
                 {/* Contact */}
                 <div className="shrink-0">
-                  <p className="footer-heading text-blue-500 text-[12px] font-bold uppercase tracking-[.14em] mb-5">
+                  <p className="footer-heading footer-heading-text text-[#3b82f6]">
                     Contact
                   </p>
                   {[
@@ -150,7 +236,7 @@ export default function Footer() {
                       content: (
                         <a
                           href="mailto:info@algreyscleaningservices.com"
-                          className="footer-body text-[13px] text-[#7a90bc] hover:text-white transition-colors"
+                          className="footer-contact-link"
                         >
                           info@algreyscleaningservices.com
                         </a>
@@ -171,7 +257,7 @@ export default function Footer() {
                         </svg>
                       ),
                       content: (
-                        <p className="footer-body text-[13px] text-[#7a90bc] leading-snug">
+                        <p className="footer-contact-text">
                           145 Barford St, Birmingham
                           <br />
                           B5 6AH, United Kingdom
@@ -197,7 +283,7 @@ export default function Footer() {
                       content: (
                         <a
                           href="tel:08001234456"
-                          className="footer-body text-[13px] text-[#7a90bc] hover:text-white transition-colors"
+                          className="footer-contact-link"
                         >
                           0800 123 456
                         </a>
@@ -220,7 +306,7 @@ export default function Footer() {
                         </svg>
                       ),
                       content: (
-                        <p className="footer-body text-[13px] text-[#7a90bc] leading-snug">
+                        <p className="footer-contact-text">
                           Mon–Sat: 7:00 AM – 7:00 PM
                           <br />
                           Emergency: 24/7
@@ -232,7 +318,7 @@ export default function Footer() {
                       key={i}
                       className="flex items-start gap-2.5 mb-4 last:mb-0"
                     >
-                      <span className="text-blue-500 mt-0.5 flex-shrink-0">
+                      <span className="text-[#3b82f6] mt-0.5 flex-shrink-0">
                         {item.icon}
                       </span>
                       {item.content}
@@ -243,13 +329,14 @@ export default function Footer() {
             </div>
           </div>
         </footer>
-          {/* Bottom bar */}
+
+        {/* Bottom bar */}
         <div className="border-t bg-white border-white/[0.07]">
           <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-16 py-4 flex flex-col sm:flex-row justify-between items-center gap-3">
-            <p className="footer-body text-[#4a5c80] text-[12px]">
+            <p className="footer-bottom-text">
               © 2025 Al Grey's Cleaning Services. All Rights Reserved.
             </p>
-            <p className="footer-body text-[#4a5c80] text-[12px]">
+            <p className="footer-bottom-text">
               Licensed & Insured · Member of British Cleaning Association
             </p>
           </div>

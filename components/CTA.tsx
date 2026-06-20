@@ -64,48 +64,108 @@ export default function CTASection({
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800;900&display=swap');
-        .cta-body    { font-family: 'Inter', sans-serif; }
-        .cta-heading { font-family: 'Manrope', sans-serif; }
+        /* ── Base Typography ── */
+        .cta-body { 
+          font-family: var(--font-inter), sans-serif; 
+        }
+        .cta-heading { 
+          font-family: var(--font-inter-tight), sans-serif; 
+        }
 
+        /* ── Badge ── */
+        .cta-badge {
+          font-size: var(--step--1);
+          font-weight: var(--fw-semibold);
+          line-height: var(--leading-fine);
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: rgba(255, 255, 255, 0.75);
+        }
+
+        /* ── Heading ── */
+        .cta-heading-text {
+          font-size: var(--step-3);
+          font-weight: var(--fw-medium);
+          line-height: var(--leading-tight);
+          letter-spacing: -0.01em;
+          color: #ffffff;
+        }
+
+        @media (min-width: 768px) {
+          .cta-heading-text {
+            font-size: var(--step-5);
+          }
+        }
+
+        /* ── Body ── */
+        .cta-body-text {
+          font-size: var(--step-0);
+          font-weight: var(--fw-normal);
+          line-height: var(--leading-standard);
+          color: rgba(255, 255, 255, 0.7);
+          max-width: 420px;
+        }
+
+        /* ── CTA Button (light variant) ── */
         .cta-btn {
           display: inline-flex;
           align-items: center;
-          gap: 14px;
+          gap: var(--space-s);
+          padding: var(--space-3xs) var(--space-3xs);
+          padding-left: var(--space-m);
+          border-radius: var(--radius-full);
           background: #ffffff;
-  color: #3a52d4;
-  font-family: 'Inter', sans-serif;
-          font-weight: 700;
-          font-size: 12px;
+          color: #3a52d4;
+          font-family: var(--font-inter), sans-serif;
+          font-size: var(--step--1);
+          font-weight: var(--fw-bold);
           letter-spacing: 0.12em;
+          line-height: 1;
           text-transform: uppercase;
-          padding: 6px 6px 6px 22px;
-          border-radius: 999px;
-          border: 1.5px solid rgba(255,255,255,0.45);
-          cursor: pointer;
           text-decoration: none;
-          transition: border-color 0.2s, background 0.2s;
+          border: 1.5px solid rgba(255, 255, 255, 0.45);
+          transition: border-color 0.2s, background 0.2s, padding 0.2s ease;
           white-space: nowrap;
           width: fit-content;
+          flex-shrink: 0;
         }
         .cta-btn:hover {
-          border-color: rgba(255,255,255,0.85);
+          border-color: rgba(255, 255, 255, 0.85);
           background: #f8fafc;
+          padding-right: var(--space-xs);
+        }
+        .cta-btn:focus-visible {
+          outline: 2px solid #ffffff;
+          outline-offset: 3px;
         }
         .cta-btn-circle {
           width: 34px;
           height: 34px;
-          border-radius: 50%;
-           background: #3a52d4;
-  color: #ffffff;
-  display: flex;
+          border-radius: var(--radius-full);
+          background: #3a52d4;
+          color: #ffffff;
+          display: flex;
           align-items: center;
           justify-content: center;
           flex-shrink: 0;
+          transition: background 0.22s;
         }
-          .cta-btn:hover .cta-btn-circle {
-  background: #2742c5;
-}
+        .cta-btn:hover .cta-btn-circle {
+          background: #2742c5;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 639px) {
+          .cta-btn {
+            font-size: 0.65rem;
+            padding-left: var(--space-s);
+            letter-spacing: 0.08em;
+          }
+          .cta-btn-circle {
+            width: 30px;
+            height: 30px;
+          }
+        }
       `}</style>
 
       <div className="cta-body relative bg-[#F8F9FC] pt-16">
@@ -127,45 +187,14 @@ export default function CTASection({
               <WatermarkSwirl />
             </div>
 
-            {/* All content — right side */}
+            {/* Content — right side */}
             <div className="relative z-10 flex justify-end">
               <div className="flex flex-col gap-5 w-full lg:w-[55%]">
-                <p
-                  className="cta-body"
-                  style={{
-                    color: "rgba(255,255,255,0.75)",
-                    fontSize: 12,
-                    fontWeight: 600,
-                    letterSpacing: "0.12em",
-                    textTransform: "uppercase",
-                  }}
-                >
-                  • {badge}
-                </p>
+                <p className="cta-badge">• {badge}</p>
 
-                <h2
-                  className="cta-heading text-white"
-                  style={{
-                    fontSize: "clamp(26px,3vw,42px)",
-                    fontWeight: 700,
-                    lineHeight: 1.15,
-                    letterSpacing: "-0.01em",
-                  }}
-                >
-                  {heading}
-                </h2>
+                <h2 className="cta-heading cta-heading-text">{heading}</h2>
 
-                <p
-                  className="cta-body"
-                  style={{
-                    color: "rgba(255,255,255,0.7)",
-                    fontSize: 15,
-                    lineHeight: 1.65,
-                    maxWidth: 420,
-                  }}
-                >
-                  {body}
-                </p>
+                <p className="cta-body cta-body-text">{body}</p>
 
                 <div className="mt-2">
                   <a href="/enquiry-now" className="cta-btn">

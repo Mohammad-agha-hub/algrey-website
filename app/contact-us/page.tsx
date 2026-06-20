@@ -142,6 +142,22 @@ function ContactStyles() {
           justify-content: space-between;
         }
       }
+        @media (max-width: 639px) {
+  .ct-cta {
+    padding: 8px 8px 8px 18px;
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+  }
+  .ct-cta-circle {
+    width: 28px;
+    height: 28px;
+    margin-left: 10px;
+  }
+  .ct-cta-circle svg {
+    width: 12px !important;
+    height: 12px !important;
+  }
+}
     `}</style>
   );
 }
@@ -181,7 +197,7 @@ function HeroSection() {
           Ready to protect your property? Contact Al Grey&apos;s Cleaning
           Services today for a free consultation and no-obligation quote.
         </p>
-        <div className="ct-anim-4 flex flex-col sm:flex-row gap-3">
+        <div className="ct-anim-4 flex  gap-3">
           <a href="tel:01215172372" className="ct-cta">
             Call Us Now
             <span className="ct-cta-circle">
@@ -202,7 +218,7 @@ function HeroSection() {
             </span>
           </a>
           <Link href="/enquiry-now" className="ct-cta ct-cta-outline">
-            Get a Free Quote
+            Get Free Quote
             <span className="ct-cta-circle">
               <svg
                 width="15"

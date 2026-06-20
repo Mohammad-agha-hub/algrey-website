@@ -7,8 +7,6 @@ import CTAAndFooter from "@/components/Footer";
 import CTASection from "./CTA";
 import TestimonialsSection from "./Testemonial";
 
-
-
 /* ═══════════════════════════════════════════════════════════════════
    TYPES
 ═══════════════════════════════════════════════════════════════════ */
@@ -83,7 +81,7 @@ interface FaqData {
 
 interface CTAData {
   badge: string;
-  heading: string; 
+  heading: string;
   headingLines: [string, string, string];
   body: string;
   pills: [string, string, string];
@@ -100,16 +98,15 @@ interface ServiceData {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   STYLES
+   STYLES — using global design tokens
 ═══════════════════════════════════════════════════════════════════ */
 function ServiceStyles() {
   return (
     <style>{`
-      @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap');
-
-      .spt-display  { font-family: 'Inter Tight', sans-serif; }
-      .spt-heading  { font-family: 'Inter Tight', sans-serif; }
-      .spt-body     { font-family: 'Inter', sans-serif; }
+      /* ── Base Typography ── */
+      .spt-display  { font-family: var(--font-inter-tight), sans-serif; }
+      .spt-heading  { font-family: var(--font-inter-tight), sans-serif; }
+      .spt-body     { font-family: var(--font-inter), sans-serif; }
 
       /* ── Animations ── */
       @keyframes spt-fadeUp {
@@ -132,61 +129,99 @@ function ServiceStyles() {
         }
       }
 
-      /* ── Eyebrow ── */
-      .spt-eyebrow {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        font-family: 'Inter', sans-serif;
-        font-weight: 700;
-        font-size: 11px;
-        letter-spacing: 0.22em;
-        text-transform: uppercase;
+      /* ── Consistent Section Padding ── */
+      .spt-section-padding {
+        padding-inline: clamp(20px, 5vw, 40px);
+        padding-block: clamp(48px, 8vw, 80px);
       }
-      .spt-eyebrow .dot {
-        width: 6px; height: 6px;
-        border-radius: 50%;
-        flex-shrink: 0;
+      @media (min-width: 1024px) {
+        .spt-section-padding {
+          padding-block: clamp(64px, 8vw, 96px);
+        }
       }
 
-      /* ── CTA pill button ── */
+      /* ── Eyebrow ── */
+      .spt-eyebrow {
+        font-size: var(--step--1);
+        font-weight: var(--fw-semibold);
+        line-height: var(--leading-fine);
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        margin-bottom: var(--space-s);
+      }
+
+      /* ── Heading ── */
+      .spt-section-heading {
+        font-family: var(--font-inter-tight), sans-serif;
+        font-size: var(--step-5);
+        font-weight: var(--fw-medium);
+        line-height: var(--leading-flat);
+        letter-spacing: -0.02em;
+        color: #0d1b3e;
+      }
+
+      /* ── Body Text ── */
+      .spt-body-text {
+        font-size: var(--step-0);
+        font-weight: var(--fw-normal);
+        line-height: var(--leading-standard);
+        color: #64748b;
+      }
+
+      /* ── Subtitle ── */
+      .spt-subtitle {
+        font-size: var(--step-0);
+        font-weight: var(--fw-normal);
+        color: #6b7a99;
+        line-height: var(--leading-standard);
+        margin: 0;
+      }
+
+      /* ── CTA Button (matches all sections) ── */
       .spt-cta {
         display: inline-flex;
         align-items: center;
-        gap: 0;
-        padding: 7px 7px 7px 26px;
-        border-radius: 100px;
+        gap: var(--space-s);
+        padding: var(--space-2xs) var(--space-s);
+        padding-left: var(--space-m);
+        border-radius: var(--radius-full);
         background: #2563eb;
         color: #ffffff;
-        font-family: 'Inter', sans-serif;
-        font-size: 13px;
-        font-weight: 700;
+        font-family: var(--font-inter), sans-serif;
+        font-size: var(--step--1);
+        font-weight: var(--fw-bold);
         letter-spacing: 0.14em;
+        line-height: 1;
         text-transform: uppercase;
         text-decoration: none;
-        border: none;
-        cursor: pointer;
-        transition: background 0.22s ease, gap 0.2s ease,
-                    transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        transition: background 0.22s ease, padding 0.2s ease;
         flex-shrink: 0;
+        white-space: nowrap;
+        width: fit-content;
       }
-      .spt-cta:hover { background: #1d4ed8; gap: 6px; transform: scale(1.03); }
-      .spt-cta:active { transform: scale(0.96); }
+      .spt-cta:hover {
+        background: #1d4ed8;
+        padding-right: calc(var(--space-s) + 0.5rem);
+      }
+      .spt-cta:focus-visible {
+        outline: 2px solid #2563eb;
+        outline-offset: 3px;
+      }
       .spt-cta-circle {
-        width: 38px; height: 38px;
-        border-radius: 50%;
+        width: 36px;
+        height: 36px;
+        border-radius: var(--radius-full);
         background: #ffffff;
         color: #0d1b3e;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-left: 16px;
         flex-shrink: 0;
         transition: background 0.22s, color 0.22s;
       }
       .spt-cta:hover .spt-cta-circle { background: #dbeafe; }
 
-      /* Outline variant — over dark hero */
+      /* Outline variant */
       .spt-cta-outline {
         background: transparent;
         border: 1.5px solid rgba(255,255,255,0.55);
@@ -196,14 +231,14 @@ function ServiceStyles() {
       .spt-cta-outline .spt-cta-circle { background: rgba(255,255,255,0.15); color: #fff; }
       .spt-cta-outline:hover .spt-cta-circle { background: rgba(255,255,255,0.25); }
 
-      /* Hero "View Services" plain text link — matches hs-btn-learn */
+      /* Hero "View Services" link */
       .spt-hero-learn {
         display: inline-flex;
         align-items: center;
-        gap: 5px;
+        gap: var(--space-3xs);
         color: rgba(255,255,255,0.7);
-        font-size: 15px;
-        font-weight: 500;
+        font-size: var(--step-0);
+        font-weight: var(--fw-medium);
         transition: color .2s;
         text-decoration: none;
         white-space: nowrap;
@@ -212,57 +247,46 @@ function ServiceStyles() {
       .spt-hero-learn:hover .spt-hero-learn-arrow { transform: translateX(3px); }
       .spt-hero-learn-arrow { display: flex; transition: transform .2s ease; }
 
-      /* ── Hero trust pill ── */
-      .spt-trust-pill {
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        background: rgba(255,255,255,0.08);
-        border: 1px solid rgba(255,255,255,0.15);
-        backdrop-filter: blur(8px);
-        border-radius: 999px;
-        padding: 7px 16px 7px 8px;
+      /* Hero Tags */
+      .spt-hero-tag {
+        font-size: var(--step-0);
+        font-weight: var(--fw-medium);
+        line-height: var(--leading-fine);
+        color: rgba(255,255,255,0.65);
       }
-      .spt-trust-pill-avatars { display: flex; }
-      .spt-trust-pill-avatars img {
-        width: 28px; height: 28px;
-        border-radius: 50%;
-        border: 2px solid rgba(255,255,255,0.5);
-        object-fit: cover;
-        margin-left: -6px;
-        flex-shrink: 0;
-        display: block;
-      }
-      .spt-trust-pill-avatars img:first-child { margin-left: 0; }
 
-      /* ── Hero breadcrumb ── */
-      .spt-breadcrumb { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-      .spt-breadcrumb a {
-        color: rgba(255,255,255,0.5);
-        font-size: 12px;
-        font-weight: 500;
-        text-decoration: none;
-        transition: color .2s;
+      /* Hero Heading */
+      .spt-hero-heading {
+        font-size: clamp(3rem, 6vw, 4.25rem);
+        font-weight: var(--fw-medium);
+        line-height: var(--leading-flat);
+        letter-spacing: -0.02em;
       }
-      .spt-breadcrumb a:hover { color: rgba(255,255,255,0.9); }
-      .spt-breadcrumb .bc-sep { color: rgba(255,255,255,0.3); font-size: 12px; }
-      .spt-breadcrumb .bc-active { color: #7da6f5; font-size: 12px; font-weight: 600; }
 
-      /* ── Infinite image strip ── */
+      /* Hero Subtext */
+      .spt-hero-sub {
+        font-size: var(--step-0);
+        font-weight: var(--fw-normal);
+        line-height: var(--leading-standard);
+        color: #cbd5e1;
+      }
+
+      /* ── Infinite Strip ── */
       .spt-strip-wrapper {
-        width: 100%;
+        width: 95%;
+        margin: 0 auto;
         overflow: hidden;
         position: relative;
       }
       .spt-strip-track {
         display: flex;
         align-items: flex-end;
-        gap: 12px;
+        gap: var(--space-s);
         width: max-content;
         will-change: transform;
       }
       .spt-strip-img {
-        border-radius: 12px;
+        border-radius: var(--radius-lg);
         object-fit: cover;
         display: block;
         flex-shrink: 0;
@@ -275,48 +299,45 @@ function ServiceStyles() {
         .spt-strip-img.is-b { width: 280px; height: 200px; }
       }
       @media (max-width: 639px) {
+        .spt-strip-wrapper { width: 100%; }
         .spt-strip-img.is-a { width: 170px; height: 200px; }
         .spt-strip-img.is-b { width: 210px; height: 155px; }
       }
 
-      /* ── Cards section — left-heading layout ── */
-      .spt-cards-section {
-        font-family: 'Inter', sans-serif;
-        background: #f8f9fc;
-        padding: clamp(40px, 6vw, 64px) 0;
+      /* ── Intro Image ── */
+      .spt-intro-img {
+        border-radius: var(--radius-2xl);
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(13,27,62,.15);
+        position: relative;
       }
-      .spt-cards-header-row {
+
+      /* ── Section Header Row (left heading / right subtext) ── */
+      .spt-header-row {
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
-        gap: 40px;
-        margin-bottom: clamp(28px, 5vw, 44px);
+        gap: var(--space-xl);
+        margin-bottom: clamp(32px, 5vw, 48px);
       }
-      .spt-cards-header-left { flex: 1; min-width: 0; }
-      .spt-cards-header-right {
+      .spt-header-left { flex: 1; min-width: 0; }
+      .spt-header-right {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        gap: 24px;
+        gap: var(--space-m);
         max-width: 360px;
         padding-top: 3rem;
       }
-      .spt-cards-sub {
-        font-size: 15px;
-        font-weight: 400;
-        color: #6b7a99;
-        line-height: 1.65;
-        margin: 0;
-      }
 
+      /* ── Service Cards ── */
       .spt-svc-card {
         background: #ffffff;
         border: 1px solid #e4e9f4;
-        border-radius: 20px;
-        padding: 36px 32px 40px;
+        border-radius: var(--radius-2xl);
+        padding: var(--space-xl) var(--space-l) var(--space-2xl);
         display: flex;
         flex-direction: column;
-        gap: 0;
         box-shadow: 0 2px 12px rgba(8,26,61,.06);
         transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.3s cubic-bezier(0.22,1,0.36,1);
       }
@@ -327,14 +348,14 @@ function ServiceStyles() {
       }
       .spt-card-icon-badge {
         width: 54px; height: 54px;
-        border-radius: 14px;
+        border-radius: var(--radius-lg);
         background: #eff4ff;
         color: #2563eb;
         display: flex;
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
-        margin-bottom: 28px;
+        margin-bottom: var(--space-l);
         transition: background .22s, color .22s, transform .3s cubic-bezier(0.34,1.56,0.64,1);
       }
       .spt-svc-card:hover .spt-card-icon-badge {
@@ -342,51 +363,30 @@ function ServiceStyles() {
         color: #1d4ed8;
         transform: rotate(-8deg) scale(1.08);
       }
-      .spt-svc-card .spt-card-title { color: #0d1b3e; margin-bottom: 12px; }
-      .spt-svc-card .spt-card-desc {
+      .spt-card-title {
+        font-family: var(--font-inter-tight), sans-serif;
+        font-size: var(--step-2);
+        font-weight: var(--fw-semibold);
+        color: #0d1b3e;
+        line-height: var(--leading-tight);
+        letter-spacing: -0.01em;
+        margin-bottom: var(--space-xs);
+      }
+      .spt-card-desc {
+        font-size: var(--step-0);
+        font-weight: var(--fw-normal);
         color: #6b7a99;
-        font-size: 14px;
-        line-height: 1.7;
+        line-height: var(--leading-loose);
       }
 
-      /* ── Process section — matches ApproachSection ── */
-      .spt-proc-section {
-        font-family: 'Inter', sans-serif;
-        background: #f8f9fc;
-        padding: clamp(40px, 6vw, 64px) 0;
-      }
-      .spt-proc-header-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 40px;
-        margin-bottom: clamp(28px, 5vw, 44px);
-      }
-      .spt-proc-header-left { flex: 1; min-width: 0; }
-      .spt-proc-header-right {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 24px;
-        max-width: 340px;
-        margin-top: 3rem;
-      }
-      .spt-proc-header-sub {
-        font-size: 15px;
-        font-weight: 400;
-        color: #6b7a99;
-        line-height: 1.65;
-        margin: 0;
-      }
-
+      /* ── Process Cards ── */
       .spt-new-proc-card {
         background: #ffffff;
-        border-radius: 20px;
+        border-radius: var(--radius-2xl);
         border: 1px solid #e4e9f4;
-        padding: 36px 32px 40px;
+        padding: var(--space-xl) var(--space-l) var(--space-2xl);
         box-shadow: 0 2px 12px rgba(8,26,61,0.06);
-        transition: box-shadow 0.26s ease, border-color 0.26s ease,
-                    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+        transition: box-shadow 0.26s ease, border-color 0.26s ease, transform 0.3s cubic-bezier(0.22,1,0.36,1);
         position: relative;
         overflow: hidden;
       }
@@ -395,15 +395,14 @@ function ServiceStyles() {
         border-color: #bfdbfe;
         transform: translateY(-8px);
       }
-      /* stagger applied via inline style on lg+ only — see JSX */
 
       .spt-new-proc-icon {
         width: 54px; height: 54px;
-        border-radius: 14px;
+        border-radius: var(--radius-lg);
         background: #eff4ff;
         color: #2563eb;
         display: flex; align-items: center; justify-content: center;
-        margin-bottom: 28px;
+        margin-bottom: var(--space-l);
         transition: background .22s, color .22s, transform .3s cubic-bezier(0.34,1.56,0.64,1);
       }
       .spt-new-proc-card:hover .spt-new-proc-icon {
@@ -412,95 +411,75 @@ function ServiceStyles() {
       }
       .spt-new-proc-num {
         position: absolute;
-        top: 28px; right: 28px;
-        font-family: 'Inter Tight', sans-serif;
-        font-size: 52px; font-weight: 800;
+        top: var(--space-l); right: var(--space-l);
+        font-family: var(--font-inter-tight), sans-serif;
+        font-size: var(--step-5);
+        font-weight: var(--fw-extrabold);
         color: #081a3d; opacity: 0.06;
-        line-height: 1; letter-spacing: -2px;
+        line-height: 1; letter-spacing: -0.04em;
         pointer-events: none; user-select: none;
       }
       .spt-new-proc-title {
-        font-family: 'Inter Tight', sans-serif;
-        font-size: 22px; font-weight: 700;
-        color: #081a3d; line-height: 1.2;
-        letter-spacing: -0.4px; margin-bottom: 12px;
+        font-family: var(--font-inter-tight), sans-serif;
+        font-size: var(--step-2);
+        font-weight: var(--fw-bold);
+        color: #081a3d; line-height: var(--leading-tight);
+        letter-spacing: -0.02em; margin-bottom: var(--space-xs);
       }
       .spt-new-proc-desc {
-        font-size: 14px; font-weight: 400;
-        color: #6b7a99; line-height: 1.65;
-        margin-bottom: 28px;
+        font-size: var(--step-0); font-weight: var(--fw-normal);
+        color: #6b7a99; line-height: var(--leading-standard);
+        margin-bottom: var(--space-l);
       }
       .spt-new-proc-divider {
         height: 1px; background: #e4e9f4;
-        margin-bottom: 24px;
+        margin-bottom: var(--space-m);
       }
       .spt-new-proc-bullet {
-        display: flex; align-items: flex-start; gap: 11px;
-        margin-bottom: 11px;
+        display: flex; align-items: flex-start; gap: var(--space-xs);
+        margin-bottom: var(--space-xs);
       }
       .spt-new-proc-bullet:last-child { margin-bottom: 0; }
       .spt-new-proc-check {
         width: 20px; height: 20px;
-        border-radius: 50%;
+        border-radius: var(--radius-full);
         background: #eff4ff;
         border: 1px solid #bfd0f7;
         display: flex; align-items: center; justify-content: center;
-        flex-shrink: 0; margin-top: 1px;
+        flex-shrink: 0; margin-top: 2px;
       }
       .spt-new-proc-bullet-text {
-        font-size: 13.5px; font-weight: 500;
-        color: #374151; line-height: 1.5;
+        font-size: var(--step-0); font-weight: var(--fw-medium);
+        color: #374151; line-height: var(--leading-fine);
       }
 
-      /* ── FAQ — matches FAQSection.jsx ── */
-      .spt-faq-section {
-        font-family: 'Inter', sans-serif;
-        background: #f8f9fc;
-      }
+      /* ── FAQ ── */
       .spt-faq-grid {
         display: grid;
         grid-template-columns: 1fr 1.55fr;
-        gap: 72px;
+        
         align-items: start;
       }
-      .spt-faq-eyebrow {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        font-family: 'Inter', sans-serif;
-        font-size: 11px; font-weight: 700;
-        letter-spacing: 0.2em;
-        text-transform: uppercase;
-        color: #2563eb;
-        margin-bottom: 20px;
-      }
-      .spt-faq-eyebrow::before {
-        content: '';
-        display: block;
-        width: 6px; height: 6px;
-        border-radius: 50%;
-        background: #2563eb;
-        flex-shrink: 0;
-      }
       .spt-faq-heading {
-        font-family: 'Inter Tight', sans-serif;
-        font-size: clamp(32px, 3.8vw, 50px);
-        font-weight: 500;
+        font-family: var(--font-inter-tight), sans-serif;
+        font-size: var(--step-5);
+        font-weight: var(--fw-medium);
         color: #081a3d;
-        line-height: 1.08;
-        letter-spacing: -1.5px;
-        margin: 0 0 20px;
+        line-height: var(--leading-flat);
+        letter-spacing: -0.02em;
+        margin: 0 0 var(--space-s);
       }
-      .spt-faq-heading em { font-style: normal; color: #2563eb; }
       .spt-faq-sub {
-        font-size: 14.5px; font-weight: 400;
-        color: #6b7a99; line-height: 1.7;
-        margin: 0 0 36px;
+        font-size: var(--step-0);
+        font-weight: var(--fw-normal);
+        color: #6b7a99;
+        line-height: var(--leading-loose);
+        margin: 0 0 var(--space-xl);
       }
       .spt-new-faq-item {
         background: #ffffff;
         border: 1px solid #e4e9f4;
-        border-radius: 14px;
+        border-radius: var(--radius-lg);
         overflow: hidden;
         transition: border-color .22s, box-shadow .22s;
       }
@@ -513,8 +492,8 @@ function ServiceStyles() {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 16px;
-        padding: 18px 22px;
+        gap: var(--space-s);
+        padding: var(--space-s) var(--space-m);
         background: transparent;
         border: none;
         cursor: pointer;
@@ -524,15 +503,15 @@ function ServiceStyles() {
       .spt-new-faq-trigger:hover { background: #f5f7ff; }
       .spt-new-faq-item.open .spt-new-faq-trigger { background: #f5f7ff; }
       .spt-new-faq-q {
-        font-family: 'Inter', sans-serif;
-        font-size: 16px; font-weight: 500;
+        font-size: var(--step-0);
+        font-weight: var(--fw-medium);
         color: #081a3d;
-        line-height: 1.35;
-        letter-spacing: -0.2px;
+        line-height: var(--leading-fine);
+        letter-spacing: -0.01em;
       }
       .spt-new-faq-icon {
         width: 28px; height: 28px;
-        border-radius: 50%;
+        border-radius: var(--radius-full);
         border: 1.5px solid #cbd5e1;
         display: flex; align-items: center; justify-content: center;
         flex-shrink: 0;
@@ -547,47 +526,55 @@ function ServiceStyles() {
         max-height: 0;
         overflow: hidden;
         transition: max-height .35s ease, padding .28s ease;
-        padding: 0 22px;
+        padding: 0 var(--space-m);
       }
       .spt-new-faq-item.open .spt-new-faq-answer {
         max-height: 300px;
-        padding: 0 22px 20px;
+        padding: 0 var(--space-m) var(--space-s);
       }
       .spt-new-faq-answer-inner {
-        font-size: 14px; font-weight: 400;
-        color: #6b7a99; line-height: 1.7;
+        font-size: var(--step--1);
+        font-weight: var(--fw-normal);
+        color: #6b7a99;
+        line-height: var(--leading-loose);
         border-top: 1px solid #e4e9f4;
-        padding-top: 16px;
-      }
-
-      /* ── Intro image ── */
-      .spt-intro-img {
-        border-radius: 20px;
-        overflow: hidden;
-        box-shadow: 0 20px 60px rgba(13,27,62,.15);
-        position: relative;
+        padding-top: var(--space-s);
       }
 
       /* ── Responsive ── */
       @media (max-width: 1023px) {
-        .spt-cards-header-row { flex-direction: column; align-items: flex-start; gap: 24px; }
-        .spt-cards-header-right { max-width: 100%; padding-top: 0; }
-        .spt-proc-header-row { flex-direction: column; align-items: flex-start; gap: 24px; }
-        .spt-proc-header-right { max-width: 100%; margin-top: 0; }
-        .spt-faq-grid { grid-template-columns: 1fr; gap: 48px; }
+        .spt-header-row { flex-direction: column; align-items: flex-start; gap: var(--space-m); }
+        .spt-header-right { max-width: 100%; padding-top: 0; }
+        .spt-faq-grid { grid-template-columns: 1fr;  }
       }
 
       @media (max-width: 639px) {
-        .spt-new-proc-card { padding: 28px 22px 30px; }
-        .spt-new-proc-num { font-size: 40px; top: 20px; right: 20px; }
-        .spt-svc-card { padding: 28px 22px 30px; }
+        .spt-section-padding {
+          padding-inline: var(--space-s);
+        }
+        .spt-svc-card,
+        .spt-new-proc-card {
+          padding: var(--space-l) var(--space-m) var(--space-xl);
+        }
+        .spt-new-proc-num {
+          font-size: var(--step-4);
+          top: var(--space-s);
+          right: var(--space-s);
+        }
+        .spt-eyebrow {
+          font-size: var(--step--2);
+          margin-bottom: var(--space-xs);
+        }
+        .spt-hero-heading {
+          font-size: clamp(2rem, 10vw, 3rem);
+        }
       }
     `}</style>
   );
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   INFINITE STRIP — same engine as HeroSection.jsx
+   INFINITE STRIP
 ═══════════════════════════════════════════════════════════════════ */
 function InfiniteStrip({ images }: { images: GalleryImage[] }) {
   const TRACK_IMAGES = [...images, ...images];
@@ -656,7 +643,6 @@ function InfiniteStrip({ images }: { images: GalleryImage[] }) {
     >
       <div ref={trackRef} className="spt-strip-track">
         {TRACK_IMAGES.map((img, i) => (
-          // eslint-disable-next-line @next/next/no-img-element
           <img
             key={img.src + i}
             src={img.src}
@@ -675,7 +661,7 @@ function InfiniteStrip({ images }: { images: GalleryImage[] }) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   SECTION 1 — HERO  (matches HeroSection.jsx layout)
+   SECTION 1 — HERO
 ═══════════════════════════════════════════════════════════════════ */
 function HeroSection({
   data,
@@ -684,23 +670,14 @@ function HeroSection({
   data: HeroData;
   galleryImages: GalleryImage[];
 }) {
-  const {
-    serviceName,
-    eyebrow = "Trusted Local Experts",
-    line1,
-    line2,
-    line3,
-    subtext,
-    bgImage,
-  } = data;
+  const { line1, line2, line3, subtext, bgImage } = data;
 
-  // Use all gallery images passed from the parent; fall back to bgImage repeated
   const stripImages =
     galleryImages.length > 0
       ? galleryImages
       : Array.from({ length: 6 }, (_, i) => ({
           src: bgImage,
-          alt: `${serviceName} example ${i + 1}`,
+          alt: `Example ${i + 1}`,
         }));
 
   return (
@@ -709,7 +686,6 @@ function HeroSection({
       style={{ borderRadius: 20 }}
     >
       <Navbar />
-      {/* ── Wrapper that matches HeroSection.jsx outer shell ── */}
       <div
         className="flex flex-col items-center"
         style={{ width: "97%", margin: "0 auto" }}
@@ -718,9 +694,7 @@ function HeroSection({
           className="relative w-full bg-[#0d1b3e] text-white"
           style={{ borderRadius: 20 }}
         >
-          {/* ── Hero copy — matches HeroSection.jsx two-column layout ── */}
           <div className="max-w-7xl mx-auto w-full px-5 sm:px-8 lg:px-14 pt-28 pb-10 lg:pt-32">
-            {/* Tags row — spans full width above the two columns */}
             <div className="spt-anim-1 flex items-center gap-2 mb-7 flex-wrap">
               {[
                 "Fully Insured",
@@ -729,7 +703,7 @@ function HeroSection({
               ].map((tag) => (
                 <span
                   key={tag}
-                  className="flex items-center gap-1.5 text-sm font-medium text-white/65"
+                  className="spt-hero-tag flex items-center gap-1.5"
                 >
                   <svg
                     width="15"
@@ -750,11 +724,9 @@ function HeroSection({
               ))}
             </div>
 
-            {/* Two-column row: headline left, description + CTAs right */}
             <div className="flex flex-col lg:flex-row lg:items-start gap-8 lg:gap-16 pb-10">
-              {/* Left: big headline only */}
               <div className="flex-1 min-w-0">
-                <h1 className="spt-anim-2 spt-display text-[44px] sm:text-[56px] lg:text-[68px] leading-[1.04] font-medium tracking-[-2px]">
+                <h1 className="spt-anim-2 spt-display spt-hero-heading">
                   {line1}
                   {line2 && (
                     <>
@@ -771,13 +743,9 @@ function HeroSection({
                 </h1>
               </div>
 
-              {/* Right: subtext + CTAs + trust pill */}
               <div className="spt-anim-3 lg:max-w-[360px] flex flex-col justify-center gap-6 lg:pt-3 shrink-0">
-                <p className="text-[#cbd5e1] text-[16px] leading-relaxed">
-                  {subtext}
-                </p>
-
-                <div className="flex flex-wrap items-center gap-4">
+                <p className="spt-hero-sub">{subtext}</p>
+                <div className="flex flex-row gap-4">
                   <a href="/enquiry-now" className="spt-cta">
                     Get a Quote
                     <span className="spt-cta-circle">
@@ -821,7 +789,6 @@ function HeroSection({
             </div>
           </div>
 
-          {/* ── Infinite image strip (replaces gallery section) ── */}
           <div className="spt-anim-6 mt-6 pb-10 lg:pb-14">
             <InfiniteStrip images={stripImages} />
           </div>
@@ -838,28 +805,23 @@ function IntroSection({ data }: { data: IntroData }) {
   const { eyebrow, heading, paragraphs, image, imageAlt } = data;
 
   return (
-    <section className="spt-body bg-[#F8F9FC] py-14 lg:py-20 px-5 sm:px-8 lg:px-16">
+    <section className="spt-body bg-[#F8F9FC] spt-section-padding">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           <div>
-            <p className="spt-eyebrow text-[#2563eb] mb-4">
-              <span className="dot" style={{ background: "#2563eb" }} />
+            <p className="spt-eyebrow text-[#2563eb] flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#2563eb] inline-block" />
               {eyebrow}
             </p>
-            <h2 className="spt-heading text-[clamp(28px,3.5vw,44px)] font-medium text-[#0d1b3e] leading-[1.05] tracking-[-1px] mb-6">
-              {heading}
-            </h2>
+            <h2 className="spt-section-heading mb-6">{heading}</h2>
             <div className="flex flex-col gap-4">
               {paragraphs.map((p, i) => (
-                <p
-                  key={i}
-                  className="text-slate-500 text-[15px] leading-relaxed"
-                >
+                <p key={i} className="spt-body-text">
                   {p}
                 </p>
               ))}
             </div>
-            <a href="#quote" className="spt-cta mt-8 inline-flex">
+            <a href="#quote" className="spt-cta mt-8">
               Get Your Free Quote
               <span className="spt-cta-circle">
                 <svg
@@ -879,7 +841,6 @@ function IntroSection({ data }: { data: IntroData }) {
               </span>
             </a>
           </div>
-
           <div className="spt-intro-img h-[360px] lg:h-[460px]">
             <Image
               src={image}
@@ -896,8 +857,7 @@ function IntroSection({ data }: { data: IntroData }) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   SECTION 3 — WHAT WE OFFER (left heading + right subtext/cta layout)
-   Matches ApproachSection header pattern
+   SECTION 3 — CARDS
 ═══════════════════════════════════════════════════════════════════ */
 function CardsSection({ data }: { data: CardsData }) {
   const { eyebrow, heading, subtext, items } = data;
@@ -910,25 +870,20 @@ function CardsSection({ data }: { data: CardsData }) {
   return (
     <section
       id="services"
-    
-      className="spt-body spt-cards-section px-5 sm:px-8 lg:px-16"
+      className="spt-body bg-[#f8f9fc] spt-section-padding"
     >
       <div className="max-w-7xl mx-auto">
-        {/* Left heading / right subtext + CTA */}
-        <div className="spt-cards-header-row">
-          <div className="spt-cards-header-left">
-            <p className="spt-eyebrow text-[#2563eb] mb-4">
-              <span className="dot" style={{ background: "#2563eb" }} />
+        <div className="spt-header-row">
+          <div className="spt-header-left">
+            <p className="spt-eyebrow text-[#2563eb] flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#2563eb] inline-block" />
               {eyebrow}
             </p>
-            <h2 className="spt-heading text-[clamp(32px,4.5vw,50px)] font-medium text-[#0d1b3e] leading-[1.05] tracking-[-1px]">
-              {heading}
-            </h2>
+            <h2 className="spt-section-heading">{heading}</h2>
           </div>
-
-          <div className="spt-cards-header-right">
-            <p className="spt-cards-sub">{subtext}</p>
-            <a href="#quote" className="spt-cta inline-flex">
+          <div className="spt-header-right">
+            <p className="spt-subtitle">{subtext}</p>
+            <a href="#quote" className="spt-cta">
               Get a Free Quote
               <span className="spt-cta-circle">
                 <svg
@@ -955,9 +910,7 @@ function CardsSection({ data }: { data: CardsData }) {
             <div key={card.title} className="spt-svc-card">
               <div className="spt-card-icon-badge">{card.icon}</div>
               <div>
-                <h3 className="spt-heading spt-card-title text-[19px] font-semibold leading-snug tracking-[-0.2px]">
-                  {card.title}
-                </h3>
+                <h3 className="spt-card-title">{card.title}</h3>
                 <p className="spt-card-desc">{card.desc}</p>
               </div>
             </div>
@@ -969,7 +922,7 @@ function CardsSection({ data }: { data: CardsData }) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   SECTION 4 — PROCESS  (matches ApproachSection.tsx card style)
+   SECTION 4 — PROCESS
 ═══════════════════════════════════════════════════════════════════ */
 function ProcessSection({ data }: { data: ProcessData }) {
   const { eyebrow, heading, subtext, steps } = data;
@@ -980,23 +933,19 @@ function ProcessSection({ data }: { data: ProcessData }) {
       : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 items-start";
 
   return (
-    <section className="spt-body spt-proc-section px-5 sm:px-8 lg:px-16">
+    <section className="spt-body bg-[#f8f9fc] spt-section-padding">
       <div className="max-w-7xl mx-auto">
-        {/* Header row — left heading, right sub + cta */}
-        <div className="spt-proc-header-row">
-          <div className="spt-proc-header-left">
-            <p className="spt-eyebrow text-[#2563eb] mb-4">
-              <span className="dot" style={{ background: "#2563eb" }} />
+        <div className="spt-header-row">
+          <div className="spt-header-left">
+            <p className="spt-eyebrow text-[#2563eb] flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#2563eb] inline-block" />
               {eyebrow}
             </p>
-            <h2 className="spt-heading text-[clamp(32px,4.5vw,50px)] font-medium text-[#0d1b3e] leading-[1.05] tracking-[-1px]">
-              {heading}
-            </h2>
+            <h2 className="spt-section-heading">{heading}</h2>
           </div>
-
-          <div className="spt-proc-header-right">
-            <p className="spt-proc-header-sub">{subtext}</p>
-            <a href="#quote" className="spt-cta inline-flex">
+          <div className="spt-header-right">
+            <p className="spt-subtitle">{subtext}</p>
+            <a href="#quote" className="spt-cta">
               Get in Touch
               <span className="spt-cta-circle">
                 <svg
@@ -1020,8 +969,6 @@ function ProcessSection({ data }: { data: ProcessData }) {
 
         <div className={gridClass}>
           {steps.map((step, i) => {
-            // Stagger: only applies when using 3-column grid (3 steps)
-            // For 4 steps the grid is 2-col on most screens — no stagger needed
             const staggerStyle =
               steps.length === 3
                 ? { marginTop: i === 1 ? 48 : i === 2 ? 96 : 0 }
@@ -1035,14 +982,10 @@ function ProcessSection({ data }: { data: ProcessData }) {
                 <span className="spt-new-proc-num">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-
                 <div className="spt-new-proc-icon">{step.icon}</div>
-
                 <p className="spt-new-proc-title">{step.title}</p>
                 <p className="spt-new-proc-desc">{step.desc}</p>
-
                 <div className="spt-new-proc-divider" />
-
                 <div>
                   {step.bullets.map((b) => (
                     <div key={b} className="spt-new-proc-bullet">
@@ -1074,30 +1017,37 @@ function ProcessSection({ data }: { data: ProcessData }) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   SECTION 5 — FAQ  (matches FAQSection.jsx — left col heading + right accordion)
+   SECTION 5 — FAQ
 ═══════════════════════════════════════════════════════════════════ */
 function FAQSection({ data }: { data: FaqData }) {
   const { eyebrow, heading, subtext, items } = data;
   const [openIdx, setOpenIdx] = useState<number | null>(null);
 
   return (
-    <section className="spt-body spt-faq-section px-5 sm:px-8 lg:px-16 py-14 lg:py-20">
+    <section className="spt-body bg-[#f8f9fc] spt-section-padding">
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
         <div className="spt-faq-grid">
-          {/* Left: heading + subtext */}
           <div>
-            <p className="spt-faq-eyebrow">{eyebrow}</p>
+            <p className="spt-eyebrow text-[#2563eb] flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#2563eb] inline-block" />
+              {eyebrow}
+            </p>
             <h2 className="spt-faq-heading">
               {heading.split(" ").slice(0, -1).join(" ")}
               <br />
-              <em>{heading.split(" ").slice(-1)[0]}</em>
+              <span className="text-[#2563eb]">
+                {heading.split(" ").slice(-1)[0]}
+              </span>
             </h2>
             <p className="spt-faq-sub">{subtext}</p>
           </div>
 
-          {/* Right: accordion */}
           <div
-            style={{ display: "flex", flexDirection: "column", gap: "10px" }}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "var(--space-2xs)",
+            }}
           >
             {items.map((faq, i) => (
               <div
@@ -1157,7 +1107,7 @@ export default function ServicePageTemplate({
       <CardsSection data={serviceData.cards} />
       <ProcessSection data={serviceData.process} />
       <FAQSection data={serviceData.faq} />
-      <TestimonialsSection/>
+      <TestimonialsSection />
       <CTASection data={serviceData.cta} />
       <CTAAndFooter />
     </>

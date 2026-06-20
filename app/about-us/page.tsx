@@ -253,8 +253,8 @@ function AboutStyles() {
       }
       .abt-why-title {
         font-family: 'Inter Tight', sans-serif;
-        font-size: 22px;
-        font-weight: 700;
+        font-size: 18px;
+        font-weight: 600;
         color: #0d1b3e;
         line-height: 1.2;
         letter-spacing: -0.4px;
@@ -280,7 +280,7 @@ function AboutStyles() {
         flex-shrink: 0;
         margin-top: 1px;
       }
-      .abt-why-bullet-text { font-size: 13.5px; font-weight: 500; color: #374151; line-height: 1.5; }
+      .abt-why-bullet-text { font-size: 12.5px; font-weight: 500; color: #374151; line-height: 1.5; }
 
       @media (max-width: 1023px) {
         .abt-why-grid { grid-template-columns: 1fr; gap: 16px; }
@@ -396,7 +396,7 @@ function HeroSection() {
         </p>
 
         {/* CTA */}
-        <div className="abt-anim-4 flex flex-col sm:flex-row gap-3">
+        <div className="abt-anim-4 flex  gap-3">
           <a href="/contact-us" className="abt-cta">
             Contact Us
             <span className="abt-cta-circle">
@@ -1005,7 +1005,7 @@ function WhySection() {
             </h2>
           </div>
           <div className="flex flex-col items-start gap-6 lg:max-w-[340px]">
-            <p className="text-[#64748b] text-[16px] leading-relaxed">
+            <p className="text-[#64748b] text-[14px] leading-relaxed">
               Six reasons thousands of homeowners and businesses across
               Birmingham trust us with their properties.
             </p>

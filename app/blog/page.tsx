@@ -1,15 +1,14 @@
-"use client";
-
 import Link from "next/link";
+import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import CTAAndFooter from "@/components/Footer";
+import { getPostsCollection } from "@/lib/posts";
+import { formatDate, estimateReadTime, makeExcerpt } from "@/lib/blog-helpers";
+
+export const revalidate = 60; // re-fetch from Mongo at most once a minute
 
 /* ═══════════════════════════════════════════════════════════════════
-   DESIGN TOKENS — matched to the about / contact / enquiry pages:
-   - Fonts: Inter Tight (display/headings) + Inter (body)
-   - Navy:  #0d1b3e   Blue accent: #2563eb
-   - Body text: slate-500 (#64748b)   Muted/secondary: slate-400 (#94a3b8)
-   - Light section bg: #f8fafc (slate-50)   Card border: #e2e8f0 (slate-200)
+   DESIGN TOKENS — matched to the about / contact / enquiry pages
 ═══════════════════════════════════════════════════════════════════ */
 function BlogStyles() {
   return (
@@ -30,7 +29,6 @@ function BlogStyles() {
         .bl-anim-1, .bl-anim-2, .bl-anim-3 { animation: none; opacity: 1; transform: none; }
       }
 
-      /* ── Eyebrow ── */
       .bl-eyebrow {
         display: inline-flex;
         align-items: center;
@@ -49,43 +47,6 @@ function BlogStyles() {
         flex-shrink: 0;
       }
 
-      /* ── CTA pill (read-more arrow link) ── */
-      .bl-cta {
-        display: inline-flex;
-        align-items: center;
-        gap: 0;
-        padding: 7px 7px 7px 26px;
-        border-radius: 100px;
-        background: #2563eb;
-        color: #ffffff;
-        font-family: 'Inter', sans-serif;
-        font-size: 12px;
-        font-weight: 700;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-        text-decoration: none;
-        border: none;
-        cursor: pointer;
-        transition: background 0.22s ease, gap 0.2s ease,
-                    transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-        flex-shrink: 0;
-      }
-      .bl-cta:hover { background: #1d4ed8; gap: 6px; transform: scale(1.03); }
-      .bl-cta-circle {
-        width: 36px; height: 36px;
-        border-radius: 50%;
-        background: #ffffff;
-        color: #0d1b3e;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-left: 16px;
-        flex-shrink: 0;
-        transition: background 0.22s, color 0.22s;
-      }
-      .bl-cta:hover .bl-cta-circle { background: #dbeafe; }
-
-      /* ── Blog cards ── */
       .bl-card {
         background: #ffffff;
         border: 1px solid #e2e8f0;
@@ -94,6 +55,7 @@ function BlogStyles() {
         display: flex;
         flex-direction: column;
         text-decoration: none;
+        width: 100%;
         transition: border-color .25s ease, box-shadow .25s ease, transform .25s ease;
       }
       .bl-card:hover {
@@ -110,7 +72,10 @@ function BlogStyles() {
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
+        background: #f1f5f9;
       }
+      .bl-card-thumb img { transition: transform .4s cubic-bezier(0.22,1,0.36,1); }
+      .bl-card:hover .bl-card-thumb img { transform: scale(1.06); }
       .bl-card-thumb svg { transition: transform .4s cubic-bezier(0.22,1,0.36,1); }
       .bl-card:hover .bl-card-thumb svg { transform: scale(1.08) rotate(-3deg); }
 
@@ -118,6 +83,7 @@ function BlogStyles() {
         position: absolute;
         top: 16px;
         left: 16px;
+        z-index: 1;
         display: inline-flex;
         align-items: center;
         gap: 6px;
@@ -147,6 +113,7 @@ function BlogStyles() {
         font-weight: 500;
         color: #94a3b8;
         margin-bottom: 12px;
+        flex-wrap: wrap;
       }
       .bl-card-meta .sep {
         width: 3px; height: 3px;
@@ -187,84 +154,35 @@ function BlogStyles() {
       }
       .bl-card:hover .bl-card-readmore { gap: 12px; color: #2563eb; }
 
-      /* ── Reusable left-aligned section header ── */
       .bl-section-head {
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 32px;
         margin-bottom: 30px;
+        text-align:center;
       }
-      
+
+      /* ── Self-centering grid: 1 post centers, 2 posts center as a pair,
+           3+ posts fill the row — no per-count layout logic needed ── */
+      .bl-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 360px));
+        justify-content: center;
+        gap: 24px;
+      }
+
+      .bl-empty {
+        text-align: center;
+        padding: 80px 20px;
+        color: #64748b;
+        font-size: 14.5px;
+      }
     `}</style>
   );
 }
 
-/* ─────────────────────────────────────────────────── DUMMY DATA */
-const BLOG_POSTS = [
-  {
-    slug: "signs-your-gutters-need-cleaning",
-    category: "Gutter Care",
-    date: "12 Jun 2026",
-    readTime: "4 min read",
-    title: "5 Warning Signs Your Gutters Need Cleaning Right Now",
-    excerpt:
-      "Overflowing water, sagging brackets, and plant growth are just a few signs your gutters are overdue for a clean. Here's what to watch for before damage sets in.",
-    accent: "#2563eb",
-  },
-  {
-    slug: "how-often-should-you-pressure-wash-driveway",
-    category: "Pressure Washing",
-    date: "05 Jun 2026",
-    readTime: "5 min read",
-    title: "How Often Should You Pressure Wash Your Driveway?",
-    excerpt:
-      "Algae, oil stains, and weather wear build up faster than you'd think. We break down a realistic cleaning schedule for driveways, patios, and paths.",
-    accent: "#1d4ed8",
-  },
-  {
-    slug: "window-cleaning-myths-debunked",
-    category: "Window Cleaning",
-    date: "28 May 2026",
-    readTime: "3 min read",
-    title: "6 Window Cleaning Myths We Hear All the Time",
-    excerpt:
-      "From newspaper-and-vinegar hacks to 'cleaning in sunlight is fine,' we set the record straight on what actually keeps your windows streak-free.",
-    accent: "#3b82f6",
-  },
-  {
-    slug: "protect-your-roof-this-winter",
-    category: "Roof Cleaning",
-    date: "19 May 2026",
-    readTime: "6 min read",
-    title: "Protecting Your Roof Before the Winter Months Hit",
-    excerpt:
-      "Moss, lichen, and trapped moisture are a roof's worst enemy in winter. A few preventative steps now can save thousands in repairs later.",
-    accent: "#0d1b3e",
-  },
-  {
-    slug: "commercial-cleaning-checklist",
-    category: "Commercial",
-    date: "11 May 2026",
-    readTime: "4 min read",
-    title: "The Commercial Property Cleaning Checklist Every Manager Needs",
-    excerpt:
-      "Keeping a commercial building presentable is about more than appearances — it's liability, compliance, and tenant retention. Here's our go-to checklist.",
-    accent: "#2563eb",
-  },
-  {
-    slug: "eco-friendly-cleaning-solutions",
-    category: "Sustainability",
-    date: "02 May 2026",
-    readTime: "3 min read",
-    title: "Why We Switched to Eco-Friendly Cleaning Solutions",
-    excerpt:
-      "Better for your property, better for the planet. Here's a look at the biodegradable products and water-fed systems we use on every job.",
-    accent: "#1d4ed8",
-  },
-];
-
-/* ─────────────────────────────────────────────────── THUMBNAIL */
+/* ─────────────────────────────────────────────────── FALLBACK THUMBNAIL */
 function CardThumb({ accent }: { accent: string }) {
   return (
     <div
@@ -273,12 +191,6 @@ function CardThumb({ accent }: { accent: string }) {
         background: `linear-gradient(135deg, ${accent}1a 0%, ${accent}33 100%)`,
       }}
     >
-      <span className="bl-card-badge">
-        <svg width="8" height="8" viewBox="0 0 8 8" fill={accent}>
-          <circle cx="4" cy="4" r="4" />
-        </svg>
-        Article
-      </span>
       <svg
         width="64"
         height="64"
@@ -297,26 +209,27 @@ function CardThumb({ accent }: { accent: string }) {
   );
 }
 
+const ACCENTS = ["#2563eb", "#1d4ed8", "#3b82f6", "#0d1b3e"];
+
 /* ─────────────────────────────────────────────────── HEADER */
 function HeaderSection() {
   return (
-    <section className="bl-body bg-white pt-16 pb-16 lg:pt-24 lg:pb-20 px-5 sm:px-8 lg:px-16">
+    <section className="bl-body bg-white pb-16 pt-14 lg:pb-20 px-5 sm:px-8 lg:px-16">
       <div className="max-w-7xl mx-auto">
         <div className="bl-section-head">
-          <div className="flex flex-col items-center  gap-5 ">
-            <p className="bl-anim-1 bl-eyebrow text-center">
+          <div className="flex flex-col gap-5 lg:max-w-[55%]">
+            <p className="bl-anim-1 flex justify-center bl-eyebrow">
               <span className="dot" />
               Tips, Guides &amp; News
             </p>
-            <h1 className="bl-anim-2 bl-display text-center text-[36px] sm:text-[46px] lg:text-[52px] font-medium text-[#0d1b3e] leading-[1.05] tracking-[-1px]">
+            <h1 className="bl-anim-2 bl-display text-[36px] sm:text-[46px] lg:text-[52px] font-medium text-[#0d1b3e] leading-[1.05] tracking-[-1px]">
               The Al Grey&apos;s <span className="text-[#2563eb]">Blog</span>
             </h1>
-            <p className="bl-anim-3 text-center text-[#64748b] text-[16px] leading-relaxed lg:max-w-[400px]">
-              Practical advice on gutter care, window cleaning, pressure
-              washing, and keeping your property in top condition all year
-              round.
-            </p>
           </div>
+          <p className="bl-anim-3 text-[#64748b] text-[16px] leading-relaxed lg:max-w-[400px]">
+            Practical advice on gutter care, window cleaning, pressure washing,
+            and keeping your property in top condition all year round.
+          </p>
         </div>
       </div>
     </section>
@@ -324,52 +237,101 @@ function HeaderSection() {
 }
 
 /* ─────────────────────────────────────────────────── GRID */
-function BlogGridSection() {
+async function BlogGridSection() {
+  const collection = await getPostsCollection();
+  const posts = await collection
+    .find({ status: "published" })
+    .sort({ createdAt: -1 })
+    .toArray();
+
   return (
     <section
       className="bl-body pb-20 lg:pb-28 px-5 sm:px-8 lg:px-16"
       style={{ background: "#ffffff" }}
     >
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {BLOG_POSTS.map((post) => (
-            <Link
-              key={post.slug}
-              href={`/blog/${post.slug}`}
-              className="bl-card"
-            >
-              <CardThumb accent={post.accent} />
-              <div className="bl-card-body">
-                <div className="bl-card-meta">
-                  <span>{post.category}</span>
-                  <span className="sep" />
-                  <span>{post.date}</span>
-                  <span className="sep" />
-                  <span>{post.readTime}</span>
-                </div>
-                <h3 className="bl-card-title">{post.title}</h3>
-                <p className="bl-card-excerpt">{post.excerpt}</p>
-                <span className="bl-card-readmore">
-                  Read Article
-                  <svg
-                    width="14"
-                    height="14"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={2.5}
-                    viewBox="0 0 24 24"
+        {posts.length === 0 ? (
+          <div className="bl-empty">
+            No posts published yet — check back soon.
+          </div>
+        ) : (
+          <div className="bl-grid">
+            {posts.map((post, i) => {
+              const accent = ACCENTS[i % ACCENTS.length];
+              const excerpt =
+                post.excerpt?.trim() || makeExcerpt(post.content || "");
+              return (
+                <Link
+                  key={post.slug}
+                  href={`/blog/${post.slug}`}
+                  className="bl-card"
+                >
+                  <div
+                    className="bl-card-thumb"
+                    style={
+                      !post.coverImage
+                        ? {
+                            background: `linear-gradient(135deg, ${accent}1a 0%, ${accent}33 100%)`,
+                          }
+                        : undefined
+                    }
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                    />
-                  </svg>
-                </span>
-              </div>
-            </Link>
-          ))}
-        </div>
+                    {post.coverImage ? (
+                      <Image
+                        src={post.coverImage}
+                        alt={post.title}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      />
+                    ) : (
+                      <CardThumb accent={accent} />
+                    )}
+                    {post.category && (
+                      <span className="bl-card-badge">
+                        <svg
+                          width="8"
+                          height="8"
+                          viewBox="0 0 8 8"
+                          fill={accent}
+                        >
+                          <circle cx="4" cy="4" r="4" />
+                        </svg>
+                        {post.category}
+                      </span>
+                    )}
+                  </div>
+                  <div className="bl-card-body">
+                    <div className="bl-card-meta">
+                      <span>{formatDate(post.createdAt)}</span>
+                      <span className="sep" />
+                      <span>{estimateReadTime(post.content || "")}</span>
+                    </div>
+                    <h3 className="bl-card-title">{post.title}</h3>
+                    <p className="bl-card-excerpt">{excerpt}</p>
+                    <span className="bl-card-readmore">
+                      Read Article
+                      <svg
+                        width="14"
+                        height="14"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth={2.5}
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                        />
+                      </svg>
+                    </span>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        )}
       </div>
     </section>
   );

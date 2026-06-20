@@ -66,8 +66,6 @@ const SLOT_B = [
   },
 ];
 
-
-
 type CardItem = { quote: string; name: string; role: string; initials: string };
 
 function cardHTML(item: CardItem, dark: boolean): string {
@@ -79,14 +77,14 @@ function cardHTML(item: CardItem, dark: boolean): string {
   const nameclr = dark ? "#ffffff" : "#081a3d";
   const roleclr = dark ? "#4a5f8a" : "#94a3b8";
   return `
-    <div style="font-family:Georgia,serif;font-size:22px;color:${qcolor};line-height:0.8;margin-bottom:10px">&ldquo;</div>
-    <p style="font-size:12.5px;color:${qtext};line-height:1.65;margin:0 0 14px;flex:1">${item.quote}</p>
-    <div style="height:1px;background:${divclr};margin-bottom:12px"></div>
-    <div style="display:flex;align-items:center;gap:8px">
-      <div style="width:28px;height:28px;border-radius:50%;background:${inibg};display:flex;align-items:center;justify-content:center;font-family:'Inter Tight',sans-serif;font-size:10px;font-weight:700;color:${iniclr};flex-shrink:0">${item.initials}</div>
+    <div class="tm-quote-mark-dynamic" style="font-family:Georgia,serif;color:${qcolor};line-height:0.8;margin-bottom:var(--space-2xs)">&ldquo;</div>
+    <p class="tm-quote-dynamic" style="color:${qtext};margin:0 0 var(--space-s);flex:1">${item.quote}</p>
+    <div style="height:1px;background:${divclr};margin-bottom:var(--space-xs)"></div>
+    <div style="display:flex;align-items:center;gap:var(--space-2xs)">
+      <div class="tm-initials-dynamic" style="width:28px;height:28px;border-radius:50%;background:${inibg};display:flex;align-items:center;justify-content:center;font-family:var(--font-inter-tight),sans-serif;font-weight:var(--fw-bold);color:${iniclr};flex-shrink:0">${item.initials}</div>
       <div>
-        <div style="font-family:'Inter Tight',sans-serif;font-size:11.5px;font-weight:700;color:${nameclr}">${item.name}</div>
-        <div style="font-size:10.5px;color:${roleclr}">${item.role}</div>
+        <div class="tm-name-dynamic" style="font-family:var(--font-inter-tight),sans-serif;font-weight:var(--fw-bold);color:${nameclr}">${item.name}</div>
+        <div class="tm-role-dynamic" style="color:${roleclr}">${item.role}</div>
       </div>
     </div>`;
 }
@@ -100,8 +98,8 @@ function makeCard(
   const el = document.createElement("div");
   el.style.background = dark ? "#081a3d" : "#ffffff";
   el.style.border = `1px solid ${dark ? "#0d2257" : "#e4e9f4"}`;
-  el.style.borderRadius = "16px";
-  el.style.padding = "22px 20px";
+  el.style.borderRadius = "var(--radius-lg)";
+  el.style.padding = "var(--space-m) var(--space-s)";
   el.style.display = "flex";
   el.style.flexDirection = "column";
   el.style.boxSizing = "border-box";
@@ -119,7 +117,7 @@ export default function TestimonialsSection() {
   const idxBRef = useRef(0);
   const darkARef = useRef(false);
   const darkBRef = useRef(false);
-  const slotH = useRef(310); // just slightly taller than original 300
+  const slotH = useRef(310);
   const intervalA = useRef<ReturnType<typeof setInterval> | null>(null);
   const intervalB = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -140,11 +138,9 @@ export default function TestimonialsSection() {
     const h = slotH.current;
     const next = makeCard(data[idxRef.current], darkRef.current, w, h);
 
-    // position current card absolutely (individual properties, no cssText +=)
     cur.style.position = "absolute";
     cur.style.inset = "0";
 
-    // position next card off-screen
     next.style.position = "absolute";
     next.style.top = "0";
     next.style.left = "0";
@@ -170,7 +166,6 @@ export default function TestimonialsSection() {
     }, 20);
   }
 
-  // ── Card auto-rotation ──
   useEffect(() => {
     const slotA = slotARef.current;
     const slotB = slotBRef.current;
@@ -178,11 +173,9 @@ export default function TestimonialsSection() {
 
     const h = slotH.current;
 
-    // lock slot containers to fixed height
     slotA.style.height = `${h}px`;
     slotB.style.height = `${h}px`;
 
-    // insert first cards with explicit individual style props
     const wA = slotA.getBoundingClientRect().width;
     const firstA = makeCard(SLOT_A[0], false, wA, h);
     firstA.style.position = "absolute";
@@ -199,7 +192,6 @@ export default function TestimonialsSection() {
     firstB.style.right = "0";
     slotB.appendChild(firstB);
 
-    // start intervals
     const tA = setTimeout(() => {
       intervalA.current = setInterval(() => {
         runSlot(slotA, SLOT_A, idxARef, darkARef, "h");
@@ -220,7 +212,6 @@ export default function TestimonialsSection() {
     };
   }, []);
 
-  // ── Scroll-triggered reveal ──
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
@@ -249,12 +240,13 @@ export default function TestimonialsSection() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap');
+        /* ── Keyframes ── */
         @keyframes tmOutL { from{transform:translateX(0);opacity:1}    to{transform:translateX(-108%);opacity:0} }
         @keyframes tmInR  { from{transform:translateX(108%);opacity:0} to{transform:translateX(0);opacity:1} }
         @keyframes tmOutU { from{transform:translateY(0);opacity:1}    to{transform:translateY(-108%);opacity:0} }
         @keyframes tmInB  { from{transform:translateY(108%);opacity:0} to{transform:translateY(0);opacity:1} }
 
+        /* ── Reveal Animation ── */
         [data-reveal] {
           opacity: 0;
           transform: translateY(22px);
@@ -265,50 +257,230 @@ export default function TestimonialsSection() {
           opacity: 1;
           transform: translateY(0);
         }
+        @media (prefers-reduced-motion: reduce) {
+          [data-reveal] { opacity: 1; transform: none; transition: none; }
+        }
 
-        /* Responsive grid */
+        /* ── Section ── */
+        .tm-section {
+          background: #f8f9fc;
+          font-family: var(--font-inter), sans-serif;
+          padding-block: clamp(48px, 8vw, 96px);
+          padding-inline: clamp(16px, 5vw, 40px);
+        }
+
+        /* ── Eyebrow ── */
+        .tm-eyebrow {
+          font-size: var(--step--1);
+          font-weight: var(--fw-semibold);
+          line-height: var(--leading-fine);
+          letter-spacing: 0.18em;
+          text-transform: uppercase;
+          color: #2563eb;
+          margin-bottom: var(--space-s);
+        }
+
+        /* ── Heading ── */
+        .tm-heading {
+          font-family: var(--font-inter-tight), sans-serif;
+          font-size: var(--step-5);
+          font-weight: var(--fw-medium);
+          color: #081a3d;
+          line-height: var(--leading-flat);
+          letter-spacing: -0.02em;
+          margin: 0 0 var(--space-s);
+        }
+
+        /* ── Subtitle ── */
+        .tm-sub {
+          font-size: var(--step-0);
+          color: #6b7a99;
+          line-height: var(--leading-loose);
+          margin: 0;
+        }
+
+        /* ── Cards ── */
+        .tm-card,
+        .tm-card-mid {
+          background: #ffffff;
+          border: 1px solid #e4e9f4;
+          border-radius: var(--radius-2xl);
+          display: flex;
+          flex-direction: column;
+        }
+        .tm-card {
+          padding: clamp(24px, 4vw, 36px) clamp(20px, 3vw, 32px);
+        }
+        .tm-card-mid {
+          padding: clamp(20px, 3vw, 28px) clamp(18px, 2.5vw, 26px);
+        }
+
+        /* ── Quote Mark (ALL cards use same sizes) ── */
+        .tm-quote-mark,
+        .tm-quote-mark-dynamic {
+          font-family: Georgia, serif;
+          color: #2563eb;
+          line-height: 0.8;
+        }
+        .tm-quote-mark {
+          font-size: clamp(1.5rem, 3vw, 2rem);
+          margin-bottom: var(--space-2xs);
+        }
+        .tm-quote-mark-dynamic {
+          font-size: clamp(1.2rem, 2.5vw, 1.56rem);
+          margin-bottom: var(--space-2xs);
+        }
+
+        /* ── Quote Text (ALL cards use same sizes) ── */
+        .tm-quote-text,
+        .tm-quote-dynamic {
+          color: #334155;
+          flex: 1;
+        }
+        .tm-quote-text {
+          font-size: var(--step-0);
+          line-height: var(--leading-loose);
+          margin: 0 0 var(--space-s);
+        }
+        .tm-quote-dynamic {
+          font-size: var(--step--1);
+          line-height: var(--leading-standard);
+          margin: 0 0 var(--space-s);
+        }
+
+        .tm-divider {
+          height: 1px;
+          background: #e4e9f4;
+          margin-bottom: var(--space-s);
+        }
+
+        /* ── Author Row ── */
+        .tm-author-row {
+          display: flex;
+          align-items: center;
+          gap: var(--space-xs);
+          flex-wrap: wrap;
+        }
+
+        /* ── Avatar (ALL cards use same sizes) ── */
+        .tm-avatar,
+        .tm-initials-dynamic {
+          border-radius: var(--radius-full);
+          background: #eff4ff;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-family: var(--font-inter-tight), sans-serif;
+          font-weight: var(--fw-bold);
+          color: #2563eb;
+          flex-shrink: 0;
+        }
+        .tm-avatar {
+          width: 34px;
+          height: 34px;
+          font-size: var(--step--2);
+        }
+        .tm-initials-dynamic {
+          width: 28px;
+          height: 28px;
+          font-size: var(--step--2);
+        }
+
+        /* ── Name (ALL cards use same sizes) ── */
+        .tm-name,
+        .tm-name-dynamic {
+          font-family: var(--font-inter-tight), sans-serif;
+          font-weight: var(--fw-bold);
+          color: #081a3d;
+          font-size: var(--step--1);
+        }
+
+        /* ── Role (ALL cards use same sizes) ── */
+        .tm-role,
+        .tm-role-dynamic {
+          color: #94a3b8;
+          margin-top: 1px;
+          font-size: var(--step--2);
+        }
+
+        /* ── Grid ── */
         .testimonials-grid {
           display: grid;
           grid-template-columns: 1.15fr 0.85fr;
-          gap: 16px;
+          gap: var(--space-s);
           align-items: stretch;
+        }
+
+        .testimonials-right-col {
+          display: flex;
+          flex-direction: column;
+          gap: var(--space-s);
         }
 
         .animated-cards-row {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 12px;
+          gap: var(--space-xs);
         }
 
+        .tm-slot {
+          position: relative;
+          border-radius: var(--radius-lg);
+          overflow: hidden;
+          background: #f8f9fc;
+        }
+
+        /* ── Responsive: Tablet ── */
         @media (max-width: 1024px) {
           .testimonials-grid {
             grid-template-columns: 1fr;
-            gap: 16px;
           }
         }
 
         @media (max-width: 768px) {
           .animated-cards-row {
             grid-template-columns: 1fr;
-            gap: 12px;
           }
         }
 
-        @media (prefers-reduced-motion: reduce) {
-          [data-reveal] { opacity: 1; transform: none; transition: none; }
+        /* ── Responsive: Mobile & Tablet — all cards identical font sizes ── */
+        @media (max-width: 1024px) {
+          .tm-quote-mark,
+          .tm-quote-mark-dynamic {
+            font-size: 1.2rem !important;
+          }
+          .tm-quote-text,
+          .tm-quote-dynamic {
+            font-size: var(--step--1) !important;
+          }
+          .tm-avatar,
+          .tm-initials-dynamic {
+            width: 28px !important;
+            height: 28px !important;
+            font-size: var(--step--2) !important;
+          }
+          .tm-name,
+          .tm-name-dynamic {
+            font-size: var(--step--1) !important;
+          }
+          .tm-role,
+          .tm-role-dynamic {
+            font-size: var(--step--2) !important;
+          }
+        }
+
+        /* ── Responsive: Mobile only — tighter padding ── */
+        @media (max-width: 639px) {
+          .tm-card,
+          .tm-card-mid {
+            padding: var(--space-m) var(--space-s);
+          }
         }
       `}</style>
 
-      <section
-        ref={sectionRef}
-        style={{
-          background: "#f8f9fc",
-          fontFamily: "'Inter', sans-serif",
-          padding: "clamp(48px, 8vw, 96px) clamp(16px, 5vw, 40px)",
-        }}
-      >
+      <section ref={sectionRef} className="tm-section">
         <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-          {/* Header */}
+          {/* ── Header ── */}
           <div
             data-reveal
             data-delay="0"
@@ -318,250 +490,67 @@ export default function TestimonialsSection() {
               margin: "0 auto clamp(32px, 6vw, 64px)",
             }}
           >
-            <div
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 8,
-                fontSize: 11,
-                fontWeight: 700,
-                letterSpacing: "0.18em",
-                textTransform: "uppercase",
-                color: "#2563eb",
-                marginBottom: 18,
-              }}
-            >
-              <div
-                style={{
-                  width: 6,
-                  height: 6,
-                  borderRadius: "50%",
-                  background: "#2563eb",
-                }}
-              />
+            <div className="tm-eyebrow flex items-center justify-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#2563eb] inline-block" />
               Real Reviews
             </div>
-            <h2
-              style={{
-                fontFamily: "'Inter Tight', sans-serif",
-                fontSize: "clamp(40px, 4vw, 48px)",
-                fontWeight: 500,
-                color: "#081a3d",
-                lineHeight: 1.05,
-                letterSpacing: -1.5,
-                margin: "0 0 20px",
-              }}
-            >
-              What Birmingham homeowners say about
-              
-              our <span style={{ color: "#2563eb" }}>cleaning service.</span>
+            <h2 className="tm-heading">
+              What Birmingham homeowners say about our{" "}
+              <span style={{ color: "#2563eb" }}>cleaning service.</span>
             </h2>
-            <p
-              style={{
-                fontSize: "clamp(13px, 1.6vw, 15px)",
-                color: "#6b7a99",
-                lineHeight: 1.75,
-                margin: 0,
-              }}
-            >
+            <p className="tm-sub">
               Don't take our word for it — hear from homeowners across London,
               Surrey and Birmingham who trust us to protect their properties.
               Every review is from a verified customer.
             </p>
           </div>
 
-          {/* Cards grid */}
+          {/* ── Cards Grid ── */}
           <div className="testimonials-grid">
-            {/* Big left card */}
+            {/* Big Left Card */}
             <div
+              className="tm-card"
               data-reveal
               data-delay="80"
-              style={{
-                background: "#ffffff",
-                border: "1px solid #e4e9f4",
-                borderRadius: 20,
-                padding: "clamp(24px, 4vw, 36px) clamp(20px, 3vw, 32px)",
-                display: "flex",
-                minHeight: 550,
-                flexDirection: "column",
-              }}
+              style={{ minHeight: 550 }}
             >
-              <div
-                style={{
-                  fontFamily: "Georgia, serif",
-                  fontSize: "clamp(36px, 5vw, 52px)",
-                  color: "#2563eb",
-                  lineHeight: 0.8,
-                  marginBottom: 20,
-                }}
-              >
-                &ldquo;
-              </div>
-              <p
-                style={{
-                  fontSize: "clamp(13px, 1.6vw, 15px)",
-                  color: "#334155",
-                  lineHeight: 1.8,
-                  flex: 1,
-                  margin: "0 0 28px",
-                }}
-              >
-                {BIG.quote}
-              </p>
-              <div
-                style={{ height: 1, background: "#e4e9f4", marginBottom: 22 }}
-              />
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 12,
-                  flexWrap: "wrap",
-                }}
-              >
-                <div
-                  style={{
-                    width: 40,
-                    height: 40,
-                    borderRadius: "50%",
-                    background: "#eff4ff",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontFamily: "'Inter Tight', sans-serif",
-                    fontSize: 13,
-                    fontWeight: 700,
-                    color: "#2563eb",
-                    flexShrink: 0,
-                  }}
-                >
-                  {BIG.initials}
-                </div>
+              <div className="tm-quote-mark">&ldquo;</div>
+              <p className="tm-quote-text">{BIG.quote}</p>
+              <div className="tm-divider" />
+              <div className="tm-author-row">
+                <div className="tm-avatar">{BIG.initials}</div>
                 <div>
-                  <div
-                    style={{
-                      fontFamily: "'Inter Tight', sans-serif",
-                      fontSize: 14,
-                      fontWeight: 700,
-                      color: "#081a3d",
-                    }}
-                  >
-                    {BIG.name}
-                  </div>
-                  <div style={{ fontSize: 12, color: "#94a3b8", marginTop: 1 }}>
-                    {BIG.role}
-                  </div>
+                  <div className="tm-name">{BIG.name}</div>
+                  <div className="tm-role">{BIG.role}</div>
                 </div>
               </div>
             </div>
 
-            {/* Right column */}
-            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-              {/* Mid card */}
+            {/* Right Column */}
+            <div className="testimonials-right-col">
+              {/* Mid Card */}
               <div
+                className="tm-card-mid"
                 data-reveal
                 data-delay="140"
-                style={{
-                  background: "#ffffff",
-                  border: "1px solid #e4e9f4",
-                  borderRadius: 20,
-                  padding: "clamp(20px, 3vw, 28px) clamp(18px, 2.5vw, 26px)",
-                  display: "flex",
-                  flexDirection: "column",
-                  minHeight: 260,
-                }}
+                style={{ minHeight: 260 }}
               >
-                <div
-                  style={{
-                    fontFamily: "Georgia, serif",
-                    fontSize: "clamp(26px, 3.5vw, 34px)",
-                    color: "#2563eb",
-                    lineHeight: 0.8,
-                    marginBottom: 14,
-                  }}
-                >
-                  &ldquo;
-                </div>
-                <p
-                  style={{
-                    fontSize: "clamp(12px, 1.4vw, 13.5px)",
-                    color: "#334155",
-                    lineHeight: 1.75,
-                    margin: "0 0 20px",
-                    flex: 1,
-                  }}
-                >
-                  {MID.quote}
-                </p>
-                <div
-                  style={{ height: 1, background: "#e4e9f4", marginBottom: 16 }}
-                />
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 10,
-                    flexWrap: "wrap",
-                  }}
-                >
-                  <div
-                    style={{
-                      width: 34,
-                      height: 34,
-                      borderRadius: "50%",
-                      background: "#eff4ff",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontFamily: "'Inter Tight', sans-serif",
-                      fontSize: 11,
-                      fontWeight: 700,
-                      color: "#2563eb",
-                      flexShrink: 0,
-                    }}
-                  >
-                    {MID.initials}
-                  </div>
+                <div className="tm-quote-mark">&ldquo;</div>
+                <p className="tm-quote-text">{MID.quote}</p>
+                <div className="tm-divider" />
+                <div className="tm-author-row">
+                  <div className="tm-avatar">{MID.initials}</div>
                   <div>
-                    <div
-                      style={{
-                        fontFamily: "'Inter Tight', sans-serif",
-                        fontSize: 13,
-                        fontWeight: 700,
-                        color: "#081a3d",
-                      }}
-                    >
-                      {MID.name}
-                    </div>
-                    <div
-                      style={{ fontSize: 11, color: "#94a3b8", marginTop: 1 }}
-                    >
-                      {MID.role}
-                    </div>
+                    <div className="tm-name">{MID.name}</div>
+                    <div className="tm-role">{MID.role}</div>
                   </div>
                 </div>
               </div>
 
-              {/* Animated bottom row */}
+              {/* Animated Cards Row */}
               <div data-reveal data-delay="200" className="animated-cards-row">
-                <div
-                  ref={slotARef}
-                  style={{
-                    position: "relative",
-                    borderRadius: 16,
-                    overflow: "hidden",
-                    background: "#f8f9fc",
-                  }}
-                />
-                <div
-                  ref={slotBRef}
-                  style={{
-                    position: "relative",
-                    borderRadius: 16,
-                    overflow: "hidden",
-                    background: "#f8f9fc",
-                  }}
-                />
+                <div ref={slotARef} className="tm-slot" />
+                <div ref={slotBRef} className="tm-slot" />
               </div>
             </div>
           </div>

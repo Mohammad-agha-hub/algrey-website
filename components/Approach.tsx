@@ -7,7 +7,22 @@ const STEPS = [
   {
     title: "Free Assessment",
     desc: "We assess your property, discuss your requirements, and provide a clear, no-obligation quote.",
-    icon: "ti-clipboard-list",
+    icon: (
+      <svg
+        width="24"
+        height="24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15a2.25 2.25 0 012.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z"
+        />
+      </svg>
+    ),
     bullets: [
       "Free site visit or photo assessment",
       "Clear and transparent pricing",
@@ -19,7 +34,22 @@ const STEPS = [
   {
     title: "Professional Cleaning",
     desc: "Our team arrives fully equipped and completes the work using the safest and most effective cleaning methods.",
-    icon: "ti-wash",
+    icon: (
+      <svg
+        width="24"
+        height="24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.876-5.814a1.151 1.151 0 00-1.597-1.597L14.146 6.32a15.996 15.996 0 00-4.649 4.763m3.42 3.42a6.776 6.776 0 00-3.42-3.42"
+        />
+      </svg>
+    ),
     bullets: [
       "Specialist exterior cleaning equipment",
       "Safe cleaning methods for every surface",
@@ -31,7 +61,22 @@ const STEPS = [
   {
     title: "Final Inspection",
     desc: "We check the completed work, ensure everything meets our standards, and leave your property looking its best.",
-    icon: "ti-circle-check",
+    icon: (
+      <svg
+        width="24"
+        height="24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+        />
+      </svg>
+    ),
     bullets: [
       "Quality inspection carried out",
       "Before & after photos available",
@@ -45,10 +90,6 @@ const STEPS = [
 export default function ApproachSection() {
   const sectionRef = useRef<HTMLElement>(null);
 
-  // Same scroll-reveal convention as About/Stats/WhyClean/Services/Gallery:
-  // IntersectionObserver adds .ap2-visible to each [data-reveal] node as it
-  // enters the viewport. Replaces the previous framer-motion implementation
-  // so this section uses the same engine (and no extra dependency) as the rest.
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
@@ -77,11 +118,9 @@ export default function ApproachSection() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap');
-        @import url('https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.30.0/dist/tabler-icons.min.css');
-
+        /* ── Base Typography ── */
         .ap2-section {
-          font-family: 'Inter', sans-serif;
+          font-family: var(--font-inter), sans-serif;
           background: #f8f9fc;
           padding: clamp(56px, 9vw, 96px) 0;
         }
@@ -92,7 +131,7 @@ export default function ApproachSection() {
           padding: 0 clamp(20px, 5vw, 40px);
         }
 
-        /* ── Scroll reveal ── */
+        /* ── Reveal Animation ── */
         [data-reveal] {
           opacity: 0;
           transform: translateY(22px);
@@ -103,7 +142,6 @@ export default function ApproachSection() {
           opacity: 1;
           transform: translateY(0);
         }
-        /* Cards travel further, matching the previous y:46 framer-motion offset */
         .ap2-card[data-reveal] {
           transform: translateY(46px);
           transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
@@ -116,143 +154,120 @@ export default function ApproachSection() {
           [data-reveal] { opacity: 1; transform: none; transition: none; }
         }
 
-        /* ── Header ── */
+        /* ── Header Row ── */
         .ap2-header-row {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          gap: 40px;
+          gap: var(--space-xl);
           margin-bottom: clamp(40px, 7vw, 64px);
         }
 
-        .ap2-header-left { flex: 1; min-width: 0; }
+        .ap2-header-left { 
+          flex: 1; 
+          min-width: 0; 
+        }
 
         .ap2-header-right {
           display: flex;
           flex-direction: column;
           align-items: flex-start;
-          gap: 24px;
+          gap: var(--space-m);
           max-width: 340px;
           margin-top: 3rem;
         }
 
+        /* ── Eyebrow (matches all other sections) ── */
         .ap2-eyebrow {
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          font-family: 'Inter', sans-serif;
-          font-size: 11px;
-          font-weight: 700;
+          font-size: var(--step--1);
+          font-weight: var(--fw-semibold);
+          line-height: var(--leading-fine);
           letter-spacing: 0.2em;
           text-transform: uppercase;
           color: #2563eb;
-          margin-bottom: 18px;
-        }
-        .ap2-eyebrow::before {
-          content: '';
-          display: block;
-          width: 6px;
-          height: 6px;
-          border-radius: 50%;
-          background: #2563eb;
-          flex-shrink: 0;
+          margin-bottom: var(--space-s);
         }
 
+        /* ── Heading ── */
         .ap2-heading {
-          font-family: 'Inter Tight', sans-serif;
-          font-size: clamp(32px, 5vw, 50px);
-          font-weight: 500;
+          font-family: var(--font-inter-tight), sans-serif;
+          font-size: var(--step-5);
+          font-weight: var(--fw-medium);
           color: #081a3d;
-          line-height: 1.1;
-          letter-spacing: clamp(-0.5px, -0.1vw, -1.5px);
+          line-height: var(--leading-flat);
+          letter-spacing: -0.02em;
           margin: 0;
         }
 
-        .ap2-heading .word-dark { color: #081a3d; }
-        .ap2-heading .word-blue { color: #2563eb; }
-
-        .ap2-heading .word-underline {
-          color: #081a3d;
-          display: inline-block;
-          position: relative;
-          white-space: nowrap;
-        }
-        .ap2-heading .word-underline::after {
-          content: '';
-          position: absolute;
-          left: 0;
-          bottom: -4px;
-          width: 100%;
-          height: 3px;
-          border-radius: 2px;
-          background: #2563eb;
-        }
-
+        /* ── Subtitle ── */
         .ap2-sub {
-          font-size: 15px;
-          font-weight: 400;
+          font-size: var(--step-0);
+          font-weight: var(--fw-normal);
           color: #6b7a99;
-          line-height: 1.65;
+          line-height: var(--leading-standard);
           max-width: 380px;
           margin: 0;
         }
 
-        /* CTA pill */
+        /* ── CTA Button (matches hero/about/whyclean/services) ── */
         .ap2-cta {
           display: inline-flex;
           align-items: center;
-          gap: 0;
-          padding: 7px 7px 7px 26px;
-          border-radius: 100px;
+          gap: var(--space-s);
+          padding: var(--space-2xs) var(--space-s);
+          padding-left: var(--space-m);
+          border-radius: var(--radius-full);
           background: #2563eb;
           color: #ffffff;
-          font-family: 'Inter', sans-serif;
-          font-size: 12px;
-          font-weight: 700;
+          font-family: var(--font-inter), sans-serif;
+          font-size: var(--step--1);
+          font-weight: var(--fw-bold);
           letter-spacing: 0.14em;
+          line-height: 1;
           text-transform: uppercase;
           text-decoration: none;
-          transition: background 0.22s ease, gap 0.2s ease,
-                      transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+          transition: background 0.22s ease, padding 0.2s ease;
           flex-shrink: 0;
+          white-space: nowrap;
         }
         .ap2-cta:hover {
-          background: #2563eb;
-          gap: 6px;
-          transform: scale(1.03);
+          background: #1d4ed8;
+          padding-right: calc(var(--space-s) + 0.5rem);
         }
-        .ap2-cta:active {
-          transform: scale(0.96);
+        .ap2-cta:focus-visible {
+          outline: 2px solid #2563eb;
+          outline-offset: 3px;
         }
         .ap2-cta-circle {
           width: 36px;
           height: 36px;
-          border-radius: 50%;
+          border-radius: var(--radius-full);
           background: #ffffff;
           color: #081a3d;
           display: flex;
           align-items: center;
           justify-content: center;
-          margin-left: 16px;
           flex-shrink: 0;
           transition: background 0.22s, color 0.22s;
         }
-        .ap2-cta:hover .ap2-cta-circle { background: #dbeafe; }
+        .ap2-cta:hover .ap2-cta-circle { 
+          background: #dbeafe; 
+        }
 
-        /* ── Cards grid — staggered offset ── */
+        /* ── Cards Grid ── */
         .ap2-grid {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
-          gap: 20px;
+          gap: var(--space-s);
           align-items: start;
         }
 
         .ap2-card {
           background: #ffffff;
-          border-radius: 20px;
+          border-radius: var(--radius-2xl);
           border: 1px solid #e4e9f4;
-          padding: 36px 32px 40px;
-          box-shadow: 0 2px 12px rgba(8,26,61,0.06);
+          padding: var(--space-xl) var(--space-l) var(--space-2xl);
+          box-shadow: 0 2px 12px rgba(8, 26, 61, 0.06);
           transition: box-shadow 0.26s ease, border-color 0.26s ease,
                       transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
           position: relative;
@@ -260,26 +275,25 @@ export default function ApproachSection() {
           will-change: transform;
         }
         .ap2-card:hover {
-          box-shadow: 0 16px 40px rgba(8,26,61,0.13);
+          box-shadow: 0 16px 40px rgba(8, 26, 61, 0.13);
           border-color: #bfdbfe;
           transform: translateY(-8px);
         }
 
-        /* stagger: card 2 down, card 3 down more */
         .ap2-card:nth-child(2) { margin-top: 48px; }
         .ap2-card:nth-child(3) { margin-top: 96px; }
 
+        /* ── Card Icon ── */
         .ap2-card-icon {
           width: 54px;
           height: 54px;
-          border-radius: 14px;
+          border-radius: var(--radius-lg);
           background: #eff4ff;
           color: #2563eb;
           display: flex;
           align-items: center;
           justify-content: center;
-          margin-bottom: 28px;
-          font-size: 24px;
+          margin-bottom: var(--space-l);
           transition: background 0.22s ease, color 0.22s ease,
                       transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
@@ -289,119 +303,152 @@ export default function ApproachSection() {
           transform: rotate(-8deg) scale(1.08);
         }
 
+        /* ── Card Number (watermark) ── */
         .ap2-card-num {
           position: absolute;
-          top: 28px;
-          right: 28px;
-          font-family: 'Inter Tight', sans-serif;
-          font-size: 52px;
-          font-weight: 800;
+          top: var(--space-l);
+          right: var(--space-l);
+          font-family: var(--font-inter-tight), sans-serif;
+          font-size: var(--step-5);
+          font-weight: var(--fw-extrabold);
           color: #081a3d;
           opacity: 0.06;
           line-height: 1;
-          letter-spacing: -2px;
+          letter-spacing: -0.04em;
           pointer-events: none;
           user-select: none;
         }
 
+        /* ── Card Title ── */
         .ap2-card-title {
-          font-family: 'Inter Tight', sans-serif;
-          font-size: 22px;
-          font-weight: 700;
+          font-family: var(--font-inter-tight), sans-serif;
+          font-size: var(--step-2);
+          font-weight: var(--fw-bold);
           color: #081a3d;
-          line-height: 1.2;
-          letter-spacing: -0.4px;
-          margin-bottom: 12px;
+          line-height: var(--leading-tight);
+          letter-spacing: -0.02em;
+          margin-bottom: var(--space-xs);
         }
 
+        /* ── Card Description ── */
         .ap2-card-desc {
-          font-size: 14px;
-          font-weight: 400;
+          font-size: var(--step--1);
+          font-weight: var(--fw-normal);
           color: #6b7a99;
-          line-height: 1.65;
-          margin-bottom: 28px;
+          line-height: var(--leading-standard);
+          margin-bottom: var(--space-l);
         }
 
+        /* ── Divider ── */
         .ap2-divider {
           height: 1px;
           background: #e4e9f4;
-          margin-bottom: 24px;
+          margin-bottom: var(--space-m);
         }
 
+        /* ── Bullet Points ── */
         .ap2-bullet {
           display: flex;
           align-items: flex-start;
-          gap: 11px;
-          margin-bottom: 11px;
+          gap: var(--space-xs);
+          margin-bottom: var(--space-xs);
         }
         .ap2-bullet:last-child { margin-bottom: 0; }
 
         .ap2-check {
           width: 20px;
           height: 20px;
-          border-radius: 50%;
+          border-radius: var(--radius-full);
           background: #eff4ff;
           border: 1px solid #bfd0f7;
           display: flex;
           align-items: center;
           justify-content: center;
           flex-shrink: 0;
-          margin-top: 1px;
+          margin-top: 2px;
         }
 
         .ap2-bullet-text {
-          font-size: 13.5px;
-          font-weight: 500;
+          font-size: var(--step--1);
+          font-weight: var(--fw-medium);
           color: #374151;
-          line-height: 1.5;
+          line-height: var(--leading-fine);
         }
 
-        /* ── Responsive: tablet & below ── */
+        /* ── Responsive: Tablet ── */
         @media (max-width: 1023px) {
-          .ap2-grid { grid-template-columns: 1fr; gap: 16px; }
+          .ap2-grid { 
+            grid-template-columns: 1fr; 
+            gap: var(--space-s); 
+          }
           .ap2-card:nth-child(2),
-          .ap2-card:nth-child(3) { margin-top: 0; }
-          .ap2-header-row { flex-direction: column; align-items: flex-start; gap: 28px; }
-          .ap2-header-right { max-width: 100%; margin-top: 0; }
-          .ap2-cta { align-self: flex-start; }
+          .ap2-card:nth-child(3) { 
+            margin-top: 0; 
+          }
+          .ap2-header-row { 
+            flex-direction: column; 
+            align-items: flex-start; 
+            gap: var(--space-l); 
+          }
+          .ap2-header-right { 
+            max-width: 100%; 
+            margin-top: 0; 
+          }
         }
 
-        /* ── Responsive: tablet 2-up ── */
         @media (min-width: 640px) and (max-width: 1023px) {
-          .ap2-grid { grid-template-columns: repeat(2, 1fr); }
-          .ap2-card:nth-child(3) { grid-column: 1 / -1; }
+          .ap2-grid { 
+            grid-template-columns: repeat(2, 1fr); 
+          }
+          .ap2-card:nth-child(3) { 
+            grid-column: 1 / -1; 
+          }
         }
 
-        /* ── Responsive: phones ── */
+        /* ── Responsive: Mobile ── */
         @media (max-width: 639px) {
-          .ap2-sub { max-width: 100%; }
-          .ap2-card { padding: 28px 22px 30px; }
-          .ap2-card-num { font-size: 40px; top: 20px; right: 20px; }
-          .ap2-cta { padding: 6px 6px 6px 20px; font-size: 11px; }
+          .ap2-sub { 
+            max-width: 100%; 
+          }
+          .ap2-card { 
+            padding: var(--space-l) var(--space-m) var(--space-xl); 
+          }
+          .ap2-card-num { 
+            font-size: var(--step-4); 
+            top: var(--space-s); 
+            right: var(--space-s); 
+          }
         }
 
-        /* ── Responsive: small phones ── */
         @media (max-width: 420px) {
-          .ap2-card { padding: 24px 18px 26px; border-radius: 16px; }
-          .ap2-card-icon { width: 46px; height: 46px; font-size: 20px; margin-bottom: 22px; }
-          .ap2-card-title { font-size: 19px; }
-          .ap2-card-desc { font-size: 13.5px; }
-          .ap2-bullet-text { font-size: 13px; }
-          .ap2-eyebrow { font-size: 10px; }
+          .ap2-card { 
+            padding: var(--space-m) var(--space-s) var(--space-l); 
+            border-radius: var(--radius-lg); 
+          }
+          .ap2-card-icon { 
+            width: 46px; 
+            height: 46px; 
+            margin-bottom: var(--space-m); 
+          }
+          .ap2-card-title { 
+            font-size: var(--step-2); 
+          }
         }
       `}</style>
 
       <section id="approach" ref={sectionRef} className="ap2-section">
         <div className="ap2-container">
-          {/* ── Header row ── */}
+          {/* ── Header Row ── */}
           <div className="ap2-header-row">
             <div className="ap2-header-left" data-reveal data-delay="0">
-              <p className="ap2-eyebrow">Our Process</p>
+              <p className="ap2-eyebrow flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#2563eb] inline-block" />
+                Our Process
+              </p>
               <h2 className="ap2-heading">
                 How We Get
                 <br />
-                <span>Outstanding</span>{" "}
-                <span className="word-blue">Results.</span>
+                Outstanding <span className="text-[#2563eb]">Results.</span>
               </h2>
             </div>
 
@@ -445,9 +492,7 @@ export default function ApproachSection() {
                   {String(i + 1).padStart(2, "0")}
                 </span>
 
-                <div className="ap2-card-icon">
-                  <i className={`ti ${step.icon}`} aria-hidden="true" />
-                </div>
+                <div className="ap2-card-icon">{step.icon}</div>
 
                 <p className="ap2-card-title">{step.title}</p>
                 <p className="ap2-card-desc">{step.desc}</p>

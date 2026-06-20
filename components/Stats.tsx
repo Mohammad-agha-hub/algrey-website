@@ -28,8 +28,6 @@ const STATS = [
 const Stats = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
 
-  // Same scroll-reveal convention as the About section: IntersectionObserver
-  // adds .st-visible to each [data-reveal] node as it enters the viewport.
   useEffect(() => {
     const root = sectionRef.current;
     if (!root) return;
@@ -88,7 +86,6 @@ const Stats = () => {
         .hs-stat .hs-underline {
           height: 2px;
           width: 28px;
-          margin: 10px auto 0;
           background: #3b82f6;
           border-radius: 2px;
           transform: scaleX(0);
@@ -97,6 +94,35 @@ const Stats = () => {
         }
         .hs-stat:hover .hs-underline {
           transform: scaleX(1);
+        }
+
+        /* ── Stats Typography ── */
+        .hs-stat-value {
+          font-family: var(--font-inter-tight), sans-serif;
+          font-size: var(--step-5);
+          font-weight: var(--fw-normal);
+          line-height: var(--leading-flat);
+          color: #ffffff;
+        }
+        .hs-stat-suffix {
+          font-family: var(--font-inter-tight), sans-serif;
+          color: #3b82f6;
+          transition: color 0.25s ease;
+        }
+        .hs-stat-label {
+          font-size: var(--step--1);
+          font-weight: var(--fw-normal);
+          line-height: var(--leading-tight);
+          color: #d1d5db;
+          max-width: 180px;
+          margin-top: var(--space-2xs);
+         
+        }
+
+        @media (min-width: 1024px) {
+          .hs-stat-value {
+            font-size: var(--step-6);
+          }
         }
       `}</style>
 
@@ -118,14 +144,12 @@ const Stats = () => {
                   data-reveal
                   data-delay={i * 90}
                 >
-                  <p className="hs-display text-[56px] lg:text-[62px] font-normal text-white leading-none mb-2">
+                  <p className="hs-stat-value mb-2">
                     {s.value}
-                    <span className="hs-suffix text-[#3b82f6]">{s.suffix}</span>
+                    <span className="hs-stat-suffix">{s.suffix}</span>
                   </p>
                   <div className="hs-underline" />
-                  <p className="text-gray-300 text-[13px] leading-snug mx-auto max-w-[160px] mt-2">
-                    {s.label}
-                  </p>
+                  <p className="hs-stat-label mx-auto">{s.label}</p>
                 </div>
               ))}
             </div>

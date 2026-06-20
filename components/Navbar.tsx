@@ -9,6 +9,7 @@ const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "About Us", href: "/about-us" },
   { label: "Services", href: "/services", hasDropdown: true },
+  { label: "Blogs", href: "/blog"},
   { label: "Contact Us", href: "/contact-us" },
 ];
 
@@ -91,7 +92,7 @@ export default function Navbar() {
         opacity: 1,
       });
     },
-    [pathname], // eslint-disable-line react-hooks/exhaustive-deps
+    [pathname],
   );
 
   useEffect(() => {
@@ -131,31 +132,109 @@ export default function Navbar() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-        .nb { font-family: 'Inter', sans-serif; }
+        /* ── Base Typography ── */
+        .nb { 
+          font-family: var(--font-inter), sans-serif; 
+        }
 
-        /* ── CTA pill — same pattern as AboutSection's .btn-quote ── */
+        /* ── Nav Links ── */
+        .nb-link {
+          font-size: var(--step-0);
+          font-weight: var(--fw-medium);
+          line-height: var(--leading-fine);
+          transition: color 0.2s;
+        }
+
+        /* ── Dropdown Category Headings ── */
+        .nb-dropdown-category {
+          font-size: var(--step--2);
+          font-weight: var(--fw-bold);
+          line-height: var(--leading-fine);
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          color: #94a3b8;
+          margin-bottom: var(--space-2xs);
+          padding-inline: var(--space-2xs);
+        }
+
+        /* ── Dropdown Links ── */
+        .nb-dropdown-link {
+          font-size: var(--step--1);
+          font-weight: var(--fw-medium);
+          line-height: var(--leading-fine);
+        }
+
+        /* ── Dropdown Footer Text ── */
+        .nb-dropdown-footer-text {
+          font-size: var(--step--1);
+          font-weight: var(--fw-normal);
+          line-height: var(--leading-fine);
+          color: #64748b;
+        }
+
+        /* ── Mobile Nav Links ── */
+        .nb-mobile-link {
+          font-size: var(--step-3);
+          font-weight: var(--fw-bold);
+          line-height: var(--leading-tight);
+          letter-spacing: 0.05em;
+          text-transform: uppercase;
+        }
+
+        /* ── Mobile Category Headings ── */
+        .nb-mobile-category {
+          font-size: var(--step--2);
+          font-weight: var(--fw-bold);
+          line-height: var(--leading-fine);
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+        }
+
+        /* ── Mobile Sub-links ── */
+        .nb-mobile-sublink {
+          font-size: var(--step--1);
+          font-weight: var(--fw-medium);
+          line-height: var(--leading-fine);
+        }
+
+        /* ── Mobile Phone Text ── */
+        .nb-mobile-phone {
+          font-size: var(--step-1);
+          font-weight: var(--fw-semibold);
+          line-height: var(--leading-fine);
+        }
+
+        .nb-mobile-area {
+          font-size: var(--step--1);
+          font-weight: var(--fw-normal);
+          line-height: var(--leading-fine);
+          color: #d1d5db;
+        }
+
+        /* ── CTA Button (matches all other sections) ── */
         .nb-cta {
           display: inline-flex;
           align-items: center;
-          gap: 0;
-          padding: 7px 7px 7px 22px;
-          border-radius: 100px;
+          gap: var(--space-s);
+          padding: var(--space-2xs) var(--space-2xs);
+          padding-left: var(--space-m);
+          border-radius: var(--radius-full);
           background: #2563eb;
           color: #ffffff;
-          font-family: 'Inter', sans-serif;
-          font-size: 12px;
-          font-weight: 700;
+          font-family: var(--font-inter), sans-serif;
+          font-size: var(--step--1);
+          font-weight: var(--fw-bold);
           letter-spacing: 0.12em;
+          line-height: 1;
           text-transform: uppercase;
           text-decoration: none;
-          transition: background 0.22s ease, padding-right 0.2s ease;
+          transition: background 0.22s ease, padding 0.2s ease;
           flex-shrink: 0;
           white-space: nowrap;
         }
         .nb-cta:hover {
           background: #1d4ed8;
-          padding-right: 9px;
+          padding-right: var(--space-xs);
         }
         .nb-cta:focus-visible {
           outline: 2px solid #2563eb;
@@ -164,22 +243,29 @@ export default function Navbar() {
         .nb-cta-arrow {
           width: 32px;
           height: 32px;
-          border-radius: 50%;
+          border-radius: var(--radius-full);
           background: #ffffff;
           color: #2563eb;
           display: flex;
           align-items: center;
           justify-content: center;
-          margin-left: 14px;
           flex-shrink: 0;
           transition: background 0.22s, color 0.22s;
         }
         .nb-cta:hover .nb-cta-arrow {
           background: #dbeafe;
         }
+
+        /* ── Mobile Full CTA ── */
+        @media (max-width: 1023px) {
+          .nb-cta.nb-cta-mobile {
+            width: 100%;
+            justify-content: center;
+          }
+        }
       `}</style>
 
-      <header className="nb sticky top-0 left-0 right-0 z-50 bg-white ">
+      <header className="nb sticky top-0 left-0 right-0 z-50 bg-white">
         <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 flex items-center justify-between h-[68px]">
           {/* Logo */}
           <Link href="/" className="flex items-center select-none shrink-0">
@@ -197,7 +283,6 @@ export default function Navbar() {
             ref={navRef}
             className="hidden lg:flex items-center gap-0 relative"
           >
-            {/* Sliding underline indicator */}
             <span
               className="absolute bottom-0 h-[2px] rounded-full pointer-events-none transition-all duration-300 ease-out"
               style={{
@@ -228,7 +313,7 @@ export default function Navbar() {
                       linkRefs.current[i] = el;
                     }}
                     className={[
-                      "flex items-center gap-1 px-4 py-2 text-[15px] font-medium transition-colors duration-200",
+                      "nb-link flex items-center gap-1 px-4 py-2",
                       isActive(href, true)
                         ? "text-[#0d1b3e] font-semibold"
                         : "text-gray-600 hover:text-[#0d1b3e]",
@@ -266,7 +351,7 @@ export default function Navbar() {
                           key={group.category}
                           className={`p-3 rounded-xl ${gi < SERVICES_DROPDOWN.length - 1 ? "border-r border-gray-100" : ""}`}
                         >
-                          <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400 mb-3 px-2">
+                          <p className="nb-dropdown-category">
                             {group.category}
                           </p>
                           <ul className="space-y-0.5">
@@ -276,7 +361,7 @@ export default function Navbar() {
                                   href={lhref}
                                   onClick={() => setDropdownOpen(false)}
                                   className={[
-                                    "flex items-center gap-2.5 text-sm py-2 px-3 rounded-lg font-medium transition-all duration-150 group/item",
+                                    "nb-dropdown-link flex items-center gap-2.5 py-2 px-3 rounded-lg transition-all duration-150 group/item",
                                     pathname === lhref
                                       ? "text-blue-600 bg-blue-50"
                                       : "text-slate-600 hover:text-blue-600 hover:bg-slate-50",
@@ -309,7 +394,7 @@ export default function Navbar() {
                           />
                         </svg>
                       </div>
-                      <p className="text-xs text-slate-500">
+                      <p className="nb-dropdown-footer-text">
                         Not sure which service?{" "}
                         <a
                           href="tel:08001234567"
@@ -331,7 +416,7 @@ export default function Navbar() {
                   onMouseEnter={() => updateIndicator(i)}
                   onMouseLeave={() => updateIndicator(null)}
                   className={[
-                    "px-4 py-2 text-[15px] font-medium transition-colors duration-200",
+                    "nb-link px-4 py-2",
                     isActive(href)
                       ? "text-[#0d1b3e] font-semibold"
                       : "text-gray-600 hover:text-[#0d1b3e]",
@@ -343,7 +428,7 @@ export default function Navbar() {
             )}
           </nav>
 
-          {/* CTA pill — matches AboutSection's btn-quote style */}
+          {/* Desktop CTA */}
           <Link href="/enquiry-now" className="hidden lg:inline-flex nb-cta">
             Get Quote
             <span className="nb-cta-arrow">
@@ -363,8 +448,8 @@ export default function Navbar() {
               </svg>
             </span>
           </Link>
-            
-          {/* Mobile hamburger */}
+
+          {/* Mobile Hamburger */}
           <button
             className="lg:hidden flex flex-col justify-center items-center w-10 h-10 gap-[5px]"
             aria-label={menuOpen ? "Close menu" : "Open menu"}
@@ -383,7 +468,7 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* ── Mobile full-screen menu ── */}
+      {/* ── Mobile Menu ── */}
       <div
         className={[
           "fixed inset-0 z-40 bg-[#0d1b3e] flex flex-col px-6 pt-24 pb-10 overflow-y-auto",
@@ -396,7 +481,7 @@ export default function Navbar() {
         <div className="flex flex-col gap-3 mb-8 border-b border-white/10 pb-6">
           <a
             href="tel:08001234567"
-            className="flex items-center gap-3 text-blue-400 font-semibold text-lg"
+            className="nb-mobile-phone flex items-center gap-3 text-blue-400"
           >
             <svg
               className="w-5 h-5"
@@ -413,7 +498,7 @@ export default function Navbar() {
             </svg>
             0800 123 456
           </a>
-          <span className="text-gray-300 text-sm">
+          <span className="nb-mobile-area">
             Serving Birmingham &amp; Surrounding Areas
           </span>
         </div>
@@ -426,7 +511,7 @@ export default function Navbar() {
                   onClick={() => setMobileServicesOpen((v) => !v)}
                   style={{ transitionDelay: menuOpen ? `${i * 50}ms` : "0ms" }}
                   className={[
-                    "w-full flex items-center justify-between text-2xl font-bold uppercase tracking-wide py-3 border-b border-white/10 transition-all duration-300",
+                    "nb-mobile-link w-full flex items-center justify-between py-3 border-b border-white/10 transition-all duration-300",
                     isActive(href, true)
                       ? "text-blue-400"
                       : "text-white hover:text-blue-400",
@@ -455,7 +540,7 @@ export default function Navbar() {
                 >
                   {SERVICES_DROPDOWN.map((group) => (
                     <div key={group.category} className="mb-4">
-                      <p className="text-[11px] font-bold uppercase tracking-widest text-blue-400 px-2 mb-2">
+                      <p className="nb-mobile-category text-blue-400 px-2 mb-2">
                         {group.category}
                       </p>
                       {group.links.map(({ label: lbl, href: lhref }) => (
@@ -466,7 +551,7 @@ export default function Navbar() {
                             setMenuOpen(false);
                             setMobileServicesOpen(false);
                           }}
-                          className={`flex items-center gap-2.5 text-sm py-2 px-4 rounded-lg mb-0.5 font-medium transition-colors duration-150 ${pathname === lhref ? "text-blue-400" : "text-gray-300 hover:text-blue-400"}`}
+                          className={`nb-mobile-sublink flex items-center gap-2.5 py-2 px-4 rounded-lg mb-0.5 transition-colors duration-150 ${pathname === lhref ? "text-blue-400" : "text-gray-300 hover:text-blue-400"}`}
                         >
                           <span
                             className={`w-1.5 h-1.5 rounded-full shrink-0 ${pathname === lhref ? "bg-blue-400" : "bg-blue-600"}`}
@@ -485,7 +570,7 @@ export default function Navbar() {
                 onClick={() => setMenuOpen(false)}
                 style={{ transitionDelay: menuOpen ? `${i * 50}ms` : "0ms" }}
                 className={[
-                  "text-2xl font-bold uppercase tracking-wide py-3 border-b border-white/10 transition-all duration-300",
+                  "nb-mobile-link py-3 border-b border-white/10 transition-all duration-300",
                   isActive(href)
                     ? "text-blue-400"
                     : "text-white hover:text-blue-400",
@@ -503,7 +588,7 @@ export default function Navbar() {
         <Link
           href="/enquiry-now"
           onClick={() => setMenuOpen(false)}
-          className="nb-cta mt-8 w-full flex justify-center"
+          className="nb-cta nb-cta-mobile mt-8"
         >
           Get Free Quote
           <span className="nb-cta-arrow">

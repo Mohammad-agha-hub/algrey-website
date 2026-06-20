@@ -47,7 +47,7 @@ const PAIRS = [
 
 export default function BeforeAfterSection() {
   const [pairIndex, setPairIndex] = useState(0);
-  const [sliderPos, setSliderPos] = useState(50); // percent 0–100
+  const [sliderPos, setSliderPos] = useState(50);
   const [dragging, setDragging] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
@@ -55,14 +55,10 @@ export default function BeforeAfterSection() {
   const total = PAIRS.length;
   const pair = PAIRS[pairIndex];
 
-  /* ── Reset slider to centre whenever pair changes ── */
   useEffect(() => {
     setSliderPos(50);
   }, [pairIndex]);
 
-  /* ── Same scroll-reveal convention as About/Stats/WhyClean/Services/Gallery/Approach:
-     IntersectionObserver adds .ba-visible to each [data-reveal] node as it enters
-     the viewport. ── */
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
@@ -88,7 +84,6 @@ export default function BeforeAfterSection() {
     return () => observer.disconnect();
   }, []);
 
-  /* ── Calculate position from pointer/touch ── */
   const getPct = useCallback((clientX: number) => {
     if (!containerRef.current) return 50;
     const { left, width } = containerRef.current.getBoundingClientRect();
@@ -96,7 +91,6 @@ export default function BeforeAfterSection() {
     return Math.min(100, Math.max(0, pct));
   }, []);
 
-  /* ── Mouse events ── */
   const onMouseDown = (e: React.MouseEvent) => {
     e.preventDefault();
     setDragging(true);
@@ -111,7 +105,6 @@ export default function BeforeAfterSection() {
   );
   const onMouseUp = useCallback(() => setDragging(false), []);
 
-  /* ── Touch events ── */
   const onTouchStart = (e: React.TouchEvent) => {
     setDragging(true);
     setSliderPos(getPct(e.touches[0].clientX));
@@ -144,10 +137,15 @@ export default function BeforeAfterSection() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap');
-        .ba-root    { font-family: 'Inter', sans-serif; }
-        .ba-display { font-family: 'Inter Tight', sans-serif; }
+        /* ── Base Typography ── */
+        .ba-root { 
+          font-family: var(--font-inter), sans-serif; 
+        }
+        .ba-display { 
+          font-family: var(--font-inter-tight), sans-serif; 
+        }
 
+        /* ── Reveal Animation ── */
         [data-reveal] {
           opacity: 0;
           transform: translateY(24px);
@@ -162,11 +160,48 @@ export default function BeforeAfterSection() {
           [data-reveal] { opacity: 1; transform: none; transition: none; }
         }
 
+        /* ── Eyebrow ── */
+        .ba-eyebrow {
+          font-size: var(--step--1);
+          font-weight: var(--fw-semibold);
+          line-height: var(--leading-fine);
+          letter-spacing: 0.22em;
+          text-transform: uppercase;
+          color: #2563eb;
+        }
+
+        /* ── Heading ── */
+        .ba-heading {
+          font-family: var(--font-inter-tight), sans-serif;
+          font-size: var(--step-5);
+          font-weight: var(--fw-medium);
+          line-height: var(--leading-flat);
+          letter-spacing: -0.02em;
+          color: #0d1b3e;
+        }
+
+        /* ── Body Text ── */
+        .ba-body {
+          font-size: var(--step-0);
+          font-weight: var(--fw-normal);
+          line-height: var(--leading-standard);
+          color: #64748b;
+        }
+
+        /* ── Counter ── */
+        .ba-counter {
+          font-size: var(--step--1);
+          font-weight: var(--fw-medium);
+          line-height: var(--leading-fine);
+          color: #94a3b8;
+        }
+
+        /* ── Slider Container ── */
         .ba-container {
           position: relative;
           width: 100%;
           aspect-ratio: 16 / 9;
-          border-radius: 20px;
+          border-radius: var(--radius-2xl);
           overflow: hidden;
           cursor: ew-resize;
           user-select: none;
@@ -178,7 +213,6 @@ export default function BeforeAfterSection() {
           .ba-container { aspect-ratio: 4 / 3; }
         }
 
-        /* After image — full width underneath */
         .ba-after {
           position: absolute;
           inset: 0;
@@ -187,10 +221,6 @@ export default function BeforeAfterSection() {
           object-fit: cover;
         }
 
-        /* Before image — wrapper always stays full container size;
-           clip-path reveals only the left sliderPos% of it. This
-           keeps the image's own scale constant, so it never re-zooms
-           as the wrapper's visible width changes. */
         .ba-before-wrap {
           position: absolute;
           inset: 0;
@@ -203,7 +233,7 @@ export default function BeforeAfterSection() {
           object-fit: cover;
         }
 
-        /* Divider line */
+        /* ── Divider Line ── */
         .ba-line {
           position: absolute;
           top: 0;
@@ -212,31 +242,31 @@ export default function BeforeAfterSection() {
           background: white;
           transform: translateX(-50%);
           pointer-events: none;
-          box-shadow: 0 0 8px rgba(0,0,0,0.4);
+          box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
         }
 
-        /* Drag handle circle */
+        /* ── Handle ── */
         .ba-handle {
           position: absolute;
           top: 50%;
           width: 48px;
           height: 48px;
-          border-radius: 50%;
+          border-radius: var(--radius-full);
           background: white;
           transform: translate(-50%, -50%);
           display: flex;
           align-items: center;
           justify-content: center;
-          box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
           pointer-events: none;
           gap: 3px;
         }
 
-        /* Nav buttons */
+        /* ── Navigation Buttons ── */
         .ba-nav {
           width: 44px;
           height: 44px;
-          border-radius: 50%;
+          border-radius: var(--radius-full);
           border: 1.5px solid #e2e8f0;
           background: white;
           display: flex;
@@ -255,11 +285,11 @@ export default function BeforeAfterSection() {
         .ba-nav:hover svg { stroke: white; }
         .ba-nav:active { transform: translateY(0) scale(0.94); }
 
-        /* Dot indicators */
+        /* ── Dot Indicators ── */
         .ba-dot {
           width: 8px;
           height: 8px;
-          border-radius: 50%;
+          border-radius: var(--radius-full);
           background: #cbd5e1;
           transition: background 0.2s, transform 0.2s;
           cursor: pointer;
@@ -270,6 +300,13 @@ export default function BeforeAfterSection() {
         .ba-dot.active {
           background: #2563eb;
           transform: scale(1.3);
+        }
+
+        @media (max-width: 639px) {
+          .ba-handle {
+            width: 40px;
+            height: 40px;
+          }
         }
       `}</style>
 
@@ -282,25 +319,21 @@ export default function BeforeAfterSection() {
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-12 lg:mb-14">
             <div className="flex flex-col gap-5 lg:max-w-[52%]">
               <p
-                className="flex items-center gap-2 text-[#2563eb] font-semibold text-[12px] uppercase tracking-[0.22em]"
+                className="ba-eyebrow flex items-center gap-2"
                 data-reveal
                 data-delay="0"
               >
                 <span className="w-1.5 h-1.5 rounded-full bg-[#2563eb] inline-block" />
                 Before &amp; After
               </p>
-              <h2
-                className="ba-display text-[40px] sm:text-[48px] lg:text-[50px] font-medium text-[#0d1b3e] leading-[1.05] tracking-[-1px]"
-                data-reveal
-                data-delay="80"
-              >
+              <h2 className="ba-heading" data-reveal data-delay="80">
                 See the difference
                 <br />
                 we <span className="text-[#2563eb]">make.</span>
               </h2>
             </div>
             <p
-              className="text-[#64748b] text-[16px] leading-relaxed lg:max-w-[360px]"
+              className="ba-body lg:max-w-[360px]"
               data-reveal
               data-delay="160"
             >
@@ -315,12 +348,12 @@ export default function BeforeAfterSection() {
             data-reveal
             data-delay="220"
           >
-            <span className="text-[#94a3b8] text-[14px] font-medium">
+            <span className="ba-counter">
               {pairIndex + 1} / {total}
             </span>
           </div>
 
-          {/* ── Before / After slider ── */}
+          {/* ── Before / After Slider ── */}
           <div
             ref={containerRef}
             className="ba-container"
@@ -329,23 +362,25 @@ export default function BeforeAfterSection() {
             data-reveal
             data-delay="280"
           >
-            {/* After — full image behind */}
+            {/* After image */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
+              key={`after-${pairIndex}`}
               src={pair.after}
               alt={`${pair.label} after`}
               className="ba-after"
               draggable={false}
             />
 
-            {/* Before — full-size image, clipped via clip-path so it
-                never has to rescale as sliderPos changes */}
+            {/* Before image */}
             <div
+              key={`wrap-${pairIndex}`}
               className="ba-before-wrap"
               style={{ clipPath: `inset(0 ${100 - sliderPos}% 0 0)` }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
+                key={`before-${pairIndex}`}
                 src={pair.before}
                 alt={`${pair.label} before`}
                 className="ba-before"
@@ -358,7 +393,6 @@ export default function BeforeAfterSection() {
 
             {/* Handle */}
             <div className="ba-handle" style={{ left: `${sliderPos}%` }}>
-              {/* Left arrow */}
               <svg
                 width="10"
                 height="10"
@@ -373,7 +407,6 @@ export default function BeforeAfterSection() {
                   d="M15 19l-7-7 7-7"
                 />
               </svg>
-              {/* Vertical grip bars */}
               <div style={{ display: "flex", gap: "2px" }}>
                 {[0, 1, 2].map((b) => (
                   <div
@@ -387,7 +420,6 @@ export default function BeforeAfterSection() {
                   />
                 ))}
               </div>
-              {/* Right arrow */}
               <svg
                 width="10"
                 height="10"
@@ -411,7 +443,6 @@ export default function BeforeAfterSection() {
             data-reveal
             data-delay="340"
           >
-            {/* Prev / Next */}
             <div className="flex items-center gap-3">
               <button
                 className="ba-nav"
@@ -449,7 +480,6 @@ export default function BeforeAfterSection() {
               </button>
             </div>
 
-            {/* Dot indicators */}
             <div className="flex items-center gap-2">
               {PAIRS.map((_, i) => (
                 <button

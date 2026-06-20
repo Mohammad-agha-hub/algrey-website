@@ -29,7 +29,7 @@ const FALLBACK_HALF_WIDTH = COLLAGE.length * 380;
 function InfiniteStrip() {
   const x = useMotionValue(0);
   const hovering = useRef(false);
-  const visibleRef = useRef(true); // flipped by IO — stops the rAF loop when off-screen
+  const visibleRef = useRef(true);
   const trackRef = useRef<HTMLDivElement>(null);
   const halfWidthRef = useRef(FALLBACK_HALF_WIDTH);
   const shouldReduceMotion = useReducedMotion();
@@ -38,13 +38,11 @@ function InfiniteStrip() {
     const track = trackRef.current;
     if (!track) return;
 
-    // ── 1. Measure half-width for seamless loop reset ──
     const measure = () => {
       halfWidthRef.current = track.scrollWidth / 2;
     };
     measure();
 
-    // passive: true — no preventDefault call, so browser skips the check
     let raf: number;
     const onResize = () => {
       cancelAnimationFrame(raf);
@@ -52,9 +50,6 @@ function InfiniteStrip() {
     };
     window.addEventListener("resize", onResize, { passive: true });
 
-    // ── 2. IO pauses the animation loop when strip leaves the viewport ──
-    // threshold: 0 fires as soon as even 1px exits, giving us the earliest
-    // possible signal to stop ticking — no need for a higher threshold here.
     const io = new IntersectionObserver(
       ([entry]) => {
         visibleRef.current = entry.isIntersecting;
@@ -71,8 +66,6 @@ function InfiniteStrip() {
   }, []);
 
   useAnimationFrame((_, delta) => {
-    // Skip the frame entirely if reduced-motion is on OR the strip is off-screen.
-    // This is the main perf win — zero rAF work while the user is below the fold.
     if (shouldReduceMotion || !visibleRef.current) return;
 
     const safeDelta = Math.min(delta, 100);
@@ -145,42 +138,71 @@ export default function HeroSection() {
   return (
     <>
       <style>{`
-        .hs-root    { font-family: var(--font-inter), sans-serif; }
+        /* ── Base Typography ── */
+        .hs-root { 
+          font-family: var(--font-inter), sans-serif; 
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
+        .hs-root * { font-family: inherit; }
         .hs-display { font-family: var(--font-inter-tight), sans-serif; }
+        .hs-display * { font-family: inherit; }
 
+        /* ── Container ── */
         .hs-hero-inner {
-          padding-top: clamp(64px, 12vw, 104px);
-          padding-bottom: 0;
+          padding-block: var(--space-xl) 0;
+          padding-inline: var(--space-s);
         }
 
+        /* ── Tagline ── */
+        .hs-tag {
+          font-size: var(--step--1);
+          font-weight: var(--fw-medium);
+          line-height: var(--leading-fine);
+          letter-spacing: -0.01em;
+          color: rgba(255, 255, 255, 0.65);
+        }
+
+        /* ── Heading ── */
         .hs-heading {
-          font-size: clamp(40px, 7vw, 68px);
-          font-weight: 400;
-          line-height: 1.06;
-          letter-spacing: -0.5px;
+          font-size: var(--step-6);
+          font-weight: var(--fw-normal);
+          line-height: var(--leading-flat);
+          letter-spacing: -0.02em;
         }
 
+        /* ── Body Text ── */
+        .hs-body {
+          font-size: var(--step-0);
+          font-weight: var(--fw-normal);
+          line-height: var(--leading-standard);
+          color: #d1d5db;
+        }
+
+        /* ── CTA Button ── */
         .hs-btn-book {
           display: inline-flex;
           align-items: center;
-          gap: 0;
-          padding: 7px 7px 7px 26px;
+          gap: var(--space-s);
+          padding: var(--space-2xs) var(--space-s);
+          padding-left: var(--space-m);
           border-radius: 100px;
           background: #2563eb;
           color: #ffffff;
           font-family: var(--font-inter), sans-serif;
-          font-size: 12px;
-          font-weight: 700;
+          font-size: var(--step--1);
+          font-weight: var(--fw-bold);
           letter-spacing: 0.14em;
+          line-height: 1;
           text-transform: uppercase;
           text-decoration: none;
-          transition: background 0.22s ease, padding-right 0.2s ease;
+          transition: background 0.22s ease, padding 0.2s ease;
           flex-shrink: 0;
           white-space: nowrap;
         }
         .hs-btn-book:hover {
           background: #1d4ed8;
-          padding-right: 13px;
+          padding-right: calc(var(--space-s) + 0.5rem);
         }
         .hs-btn-book .hs-arrow {
           width: 36px;
@@ -191,27 +213,38 @@ export default function HeroSection() {
           display: flex;
           align-items: center;
           justify-content: center;
-          margin-left: 16px;
           flex-shrink: 0;
           transition: background 0.22s, color 0.22s;
         }
-        .hs-btn-book:hover .hs-arrow { background: #dbeafe; }
+        .hs-btn-book:hover .hs-arrow { 
+          background: #dbeafe; 
+        }
 
+        /* ── Secondary Link ── */
         .hs-btn-learn {
           display: inline-flex;
           align-items: center;
-          gap: 5px;
-          color: rgba(255,255,255,0.7);
-          font-size: 15px;
-          font-weight: 500;
-          transition: color .2s;
+          gap: var(--space-3xs);
+          color: rgba(255, 255, 255, 0.7);
+          font-size: var(--step-0);
+          font-weight: var(--fw-medium);
+          line-height: var(--leading-fine);
+          transition: color 0.2s ease;
           text-decoration: none;
           white-space: nowrap;
         }
-        .hs-btn-learn:hover { color: #fff; }
-        .hs-btn-learn:hover .hs-learn-arrow { transform: translateX(3px); }
-        .hs-learn-arrow { display: flex; transition: transform .2s ease; }
+        .hs-btn-learn:hover { 
+          color: #fff; 
+        }
+        .hs-btn-learn:hover .hs-learn-arrow { 
+          transform: translateX(3px); 
+        }
+        .hs-learn-arrow { 
+          display: flex; 
+          transition: transform 0.2s ease; 
+        }
 
+        /* ── Infinite Strip ── */
         .hs-strip {
           width: 95%;
           margin: 0 auto;
@@ -223,7 +256,7 @@ export default function HeroSection() {
         .hs-track {
           display: flex;
           align-items: flex-end;
-          gap: 15px;
+          gap: var(--space-s);
           width: max-content;
           will-change: transform;
         }
@@ -236,23 +269,34 @@ export default function HeroSection() {
         .hs-collage-img.is-a { width: 350px; height: 400px; }
         .hs-collage-img.is-b { width: 400px; height: 300px; }
 
+        /* ── Responsive: Tablet ── */
         @media (max-width: 1023px) {
-          .hs-track { gap: 12px; }
+          .hs-track { gap: var(--space-xs); }
           .hs-collage-img.is-a { width: 250px; height: 290px; }
           .hs-collage-img.is-b { width: 290px; height: 220px; }
         }
 
+        /* ── Responsive: Mobile ── */
         @media (max-width: 639px) {
-          .hs-hero-inner { padding-left: 20px; padding-right: 20px; }
-          .hs-track { gap: 8px; }
+          .hs-hero-inner { 
+            padding-block: var(--space-l) 0;
+            padding-inline: var(--space-s);
+          }
+          .hs-track { gap: var(--space-2xs); }
           .hs-collage-img.is-a { width: 180px; height: 210px; }
           .hs-collage-img.is-b { width: 210px; height: 160px; }
-          .hs-btn-book { padding: 6px 6px 6px 22px; font-size: 11px; }
-          .hs-btn-book .hs-arrow { width: 32px; height: 32px; }
+          .hs-btn-book .hs-arrow { 
+            width: 32px; 
+            height: 32px; 
+          }
         }
 
+        /* ── Responsive: Small Mobile ── */
         @media (max-width: 420px) {
-          .hs-strip { width: 100%; border-radius: 14px; }
+          .hs-strip { 
+            width: 100%; 
+            border-radius: 14px; 
+          }
           .hs-collage-img.is-a { width: 150px; height: 175px; }
           .hs-collage-img.is-b { width: 175px; height: 130px; }
         }
@@ -264,7 +308,8 @@ export default function HeroSection() {
           style={{ borderTopLeftRadius: "20px", borderTopRightRadius: "20px" }}
           className="relative w-[97%] bg-[#0d1b3e] text-white"
         >
-          <div className="hs-hero-inner max-w-7xl mx-auto px-5 sm:px-8 lg:px-14">
+          <div className="hs-hero-inner max-w-7xl mx-auto">
+            {/* Tags */}
             <motion.div
               className="flex items-center gap-2 mb-7 flex-wrap"
               {...itemReveal(0)}
@@ -274,10 +319,7 @@ export default function HeroSection() {
                 "Exterior Cleaning Specialists",
                 "Birmingham & UK",
               ].map((tag) => (
-                <span
-                  key={tag}
-                  className="flex items-center gap-1.5 text-[14px] font-medium text-white/65"
-                >
+                <span key={tag} className="hs-tag flex items-center gap-1.5">
                   <svg
                     width="15"
                     height="15"
@@ -297,6 +339,7 @@ export default function HeroSection() {
               ))}
             </motion.div>
 
+            {/* Content */}
             <div className="flex flex-col lg:flex-row lg:items-start gap-8 lg:gap-16 pb-10">
               <div className="flex-1 min-w-0">
                 <motion.h1
@@ -315,7 +358,7 @@ export default function HeroSection() {
                 className="lg:max-w-[360px] flex flex-col justify-center gap-6 lg:pt-3 shrink-0"
                 {...itemReveal(0.18)}
               >
-                <p className="text-gray-300 text-[16px] leading-relaxed">
+                <p className="hs-body">
                   Professional roof, gutter, driveway and patio cleaning
                   services for homes and businesses across the UK.
                 </p>
