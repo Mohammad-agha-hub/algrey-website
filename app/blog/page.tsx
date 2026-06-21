@@ -13,10 +13,8 @@ export const revalidate = 60; // re-fetch from Mongo at most once a minute
 function BlogStyles() {
   return (
     <style>{`
-      @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
-
-      .bl-display { font-family: 'Inter Tight', sans-serif; }
-      .bl-body    { font-family: 'Inter', sans-serif; }
+      .bl-display { font-family: var(--font-inter-tight), sans-serif; }
+      .bl-body    { font-family: var(--font-inter), sans-serif; }
 
       @keyframes bl-fadeUp {
         from { opacity: 0; transform: translateY(24px); }

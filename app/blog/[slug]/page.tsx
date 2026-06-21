@@ -65,110 +65,165 @@ export async function generateMetadata({
 function PostStyles() {
   return (
     <style>{`
-      @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+      /* ── Base Typography ── */
+      .bp-display { font-family: var(--font-inter-tight), sans-serif; }
+      .bp-body    { font-family: var(--font-inter), sans-serif; }
 
-      .bp-display { font-family: 'Inter Tight', sans-serif; }
-      .bp-body    { font-family: 'Inter', sans-serif; }
-
-      /* ── flex (not inline-flex) so this is a block-level box that
-           always starts its own line and pushes siblings below it ── */
+      /* ── Back Link ── */
       .bp-back {
         display: flex;
         width: fit-content;
         align-items: center;
-        gap: 6px;
-        font-size: 13px;
-        font-weight: 600;
+        gap: var(--space-3xs);
+        font-size: var(--step--1);
+        font-weight: var(--fw-semibold);
         color: #64748b;
+        line-height: var(--leading-fine);
         transition: color .2s ease, gap .2s ease;
+        text-decoration: none;
       }
-      .bp-back:hover { color: #2563eb; gap: 10px; }
+      .bp-back:hover { color: #2563eb; gap: var(--space-2xs); }
 
+      /* ── Eyebrow ── */
       .bp-eyebrow {
         display: flex;
         width: fit-content;
         align-items: center;
-        gap: 8px;
-        font-weight: 600;
-        font-size: 12px;
+        gap: var(--space-2xs);
+        font-size: var(--step--1);
+        font-weight: var(--fw-semibold);
         letter-spacing: 0.22em;
         text-transform: uppercase;
         color: #2563eb;
-      }
-      .bp-eyebrow .dot {
-        width: 6px; height: 6px;
-        border-radius: 50%;
-        background: #2563eb;
-        flex-shrink: 0;
+        line-height: var(--leading-fine);
+        margin-bottom: var(--space-s);
       }
 
+      /* ── Meta ── */
       .bp-meta {
         display: flex;
         align-items: center;
-        gap: 10px;
-        font-size: 13px;
-        font-weight: 500;
+        gap: var(--space-2xs);
+        font-size: var(--step--1);
+        font-weight: var(--fw-medium);
         color: #94a3b8;
         flex-wrap: wrap;
+        line-height: var(--leading-fine);
       }
-      .bp-meta .sep { width: 3px; height: 3px; border-radius: 50%; background: #cbd5e1; }
+      .bp-meta .sep {
+        width: 3px; height: 3px;
+        border-radius: var(--radius-full);
+        background: #cbd5e1;
+        flex-shrink: 0;
+      }
 
+      /* ── Post Heading ── */
+      .bp-heading {
+        font-family: var(--font-inter-tight), sans-serif;
+        font-size: var(--step-5);
+        font-weight: var(--fw-medium);
+        color: #0d1b3e;
+        line-height: var(--leading-tight);
+        letter-spacing: -0.02em;
+        margin-bottom: var(--space-s);
+      }
+
+      @media (min-width: 1024px) {
+        .bp-heading {
+          font-size: clamp(2.2rem, 3.5vw, 2.875rem);
+        }
+      }
+
+      /* ── Tag ── */
       .bp-tag {
         display: inline-flex;
         align-items: center;
         background: #eff4ff;
         color: #2563eb;
-        font-size: 12px;
-        font-weight: 600;
-        padding: 5px 12px;
-        border-radius: 99px;
+        font-size: var(--step--1);
+        font-weight: var(--fw-semibold);
+        padding: var(--space-3xs) var(--space-xs);
+        border-radius: var(--radius-full);
+        line-height: var(--leading-fine);
       }
 
-      /* ── Article body — styles the raw HTML from the rich text editor ── */
+      /* ── Article Body (prose) ── */
       .bp-prose {
         color: #334155;
-        font-size: 16.5px;
+        font-size: var(--step-0);
         line-height: 1.8;
       }
       .bp-prose h2 {
-        font-family: 'Inter Tight', sans-serif;
-        font-size: 28px;
-        font-weight: 600;
+        font-family: var(--font-inter-tight), sans-serif;
+        font-size: var(--step-3);
+        font-weight: var(--fw-semibold);
         color: #0d1b3e;
-        letter-spacing: -0.4px;
-        margin: 40px 0 16px;
-        line-height: 1.25;
+        letter-spacing: -0.02em;
+        margin: var(--space-2xl) 0 var(--space-s);
+        line-height: var(--leading-tight);
       }
       .bp-prose h3 {
-        font-family: 'Inter Tight', sans-serif;
-        font-size: 22px;
-        font-weight: 600;
+        font-family: var(--font-inter-tight), sans-serif;
+        font-size: var(--step-2);
+        font-weight: var(--fw-semibold);
         color: #0d1b3e;
-        letter-spacing: -0.3px;
-        margin: 32px 0 14px;
-        line-height: 1.3;
+        letter-spacing: -0.01em;
+        margin: var(--space-xl) 0 var(--space-s);
+        line-height: var(--leading-tight);
       }
-      .bp-prose p { margin: 0 0 20px; }
-      .bp-prose ul, .bp-prose ol { margin: 0 0 20px; padding-left: 24px; }
-      .bp-prose li { margin-bottom: 8px; }
+      .bp-prose p { margin: 0 0 var(--space-s); }
+      .bp-prose ul, .bp-prose ol { margin: 0 0 var(--space-s); padding-left: var(--space-m); }
+      .bp-prose li { margin-bottom: var(--space-2xs); }
       .bp-prose a { color: #2563eb; text-decoration: underline; text-decoration-color: #bfdbfe; }
       .bp-prose a:hover { text-decoration-color: #2563eb; }
       .bp-prose blockquote {
         border-left: 3px solid #2563eb;
         background: #f8fafc;
-        padding: 16px 20px;
-        margin: 24px 0;
-        border-radius: 0 10px 10px 0;
+        padding: var(--space-s) var(--space-s);
+        margin: var(--space-m) 0;
+        border-radius: 0 var(--radius-md) var(--radius-md) 0;
         color: #475569;
         font-style: italic;
       }
       .bp-prose img {
         width: 100%;
-        border-radius: 14px;
-        margin: 28px 0;
+        border-radius: var(--radius-lg);
+        margin: var(--space-l) 0;
       }
-      .bp-prose strong { color: #0d1b3e; font-weight: 700; }
-      .bp-prose hr { border: none; border-top: 1px solid #e2e8f0; margin: 36px 0; }
+      .bp-prose strong { color: #0d1b3e; font-weight: var(--fw-bold); }
+      .bp-prose hr { border: none; border-top: 1px solid #e2e8f0; margin: var(--space-xl) 0; }
+
+      /* ── Cover Image ── */
+      .bp-cover {
+        position: relative;
+        width: 100%;
+        height: 260px;
+        border-radius: var(--radius-2xl);
+        overflow: hidden;
+        box-shadow: 0 20px 48px rgba(13,27,62,0.10);
+      }
+
+      @media (min-width: 640px) {
+        .bp-cover { height: 380px; }
+      }
+      @media (min-width: 1024px) {
+        .bp-cover { height: 460px; }
+      }
+
+      /* ── Consistent Section Padding ── */
+      .bp-section-padding {
+        padding-inline: clamp(20px, 5vw, 40px);
+      }
+
+      /* ── Responsive ── */
+      @media (max-width: 639px) {
+        .bp-section-padding {
+          padding-inline: var(--space-s);
+        }
+        .bp-prose {
+          font-size: var(--step--1);
+        }
+      }
     `}</style>
   );
 }
@@ -216,7 +271,7 @@ export default async function BlogPostPage({
 
       <article className="bp-body bg-white">
         {/* ── Header ── */}
-        <header className="pt-14 pb-10  lg:pb-14 px-5 sm:px-8 lg:px-16">
+        <header className="pt-14 pb-10 lg:pb-14 bp-section-padding">
           <div className="max-w-3xl mx-auto">
             <Link href="/blog" className="bp-back mb-8">
               <svg
@@ -237,15 +292,13 @@ export default async function BlogPostPage({
             </Link>
 
             {post.category && (
-              <p className="bp-eyebrow mb-4">
-                <span className="dot" />
+              <p className="bp-eyebrow">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#2563eb] inline-block" />
                 {post.category}
               </p>
             )}
 
-            <h1 className="bp-display text-[32px] sm:text-[42px] lg:text-[46px] font-medium text-[#0d1b3e] leading-[1.12] tracking-[-1px] mb-5">
-              {post.title}
-            </h1>
+            <h1 className="bp-heading">{post.title}</h1>
 
             <div className="bp-meta">
               <span>{formatDate(post.createdAt)}</span>
@@ -255,10 +308,10 @@ export default async function BlogPostPage({
           </div>
         </header>
 
-        {/* ── Cover image ── */}
+        {/* ── Cover Image ── */}
         {post.coverImage && (
-          <div className="max-w-5xl mx-auto px-5 sm:px-8 lg:px-16 mb-12">
-            <div className="relative w-full h-[260px] sm:h-[380px] lg:h-[460px] rounded-2xl overflow-hidden shadow-[0_20px_48px_rgba(13,27,62,0.10)]">
+          <div className="max-w-5xl mx-auto bp-section-padding mb-12">
+            <div className="bp-cover">
               <Image
                 src={post.coverImage}
                 alt={post.title}
@@ -273,7 +326,7 @@ export default async function BlogPostPage({
         )}
 
         {/* ── Body ── */}
-        <div className="max-w-3xl mx-auto px-5 sm:px-8 lg:px-16 pb-16">
+        <div className="max-w-3xl mx-auto bp-section-padding pb-16">
           <div
             className="bp-prose"
             dangerouslySetInnerHTML={{ __html: cleanContent }}
