@@ -18,10 +18,15 @@ export default async function EditPostPage({
   if (!post) notFound();
 
   return (
-    <div>
-      <h1 className="text-[#0d1b3e] text-2xl font-semibold mb-6 max-w-4xl mx-auto">
-        Edit Post
-      </h1>
+    <div className="max-w-4xl mx-auto">
+      <div className="mb-8">
+        <p className="adm-page-eyebrow">
+          <span className="adm-page-eyebrow-dot" />
+          Post Editor
+        </p>
+        <h1 className="adm-page-title">Edit Post</h1>
+        <p className="adm-page-subtitle">Update "{post.title}".</p>
+      </div>
       <PostForm
         mode="edit"
         initialData={{

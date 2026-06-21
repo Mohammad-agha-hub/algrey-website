@@ -12,7 +12,10 @@ interface RichTextEditorProps {
   onChange: (html: string) => void;
 }
 
-export default function RichTextEditor({ value, onChange }: RichTextEditorProps) {
+export default function RichTextEditor({
+  value,
+  onChange,
+}: RichTextEditorProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const editor = useEditor({
@@ -42,7 +45,9 @@ export default function RichTextEditor({ value, onChange }: RichTextEditorProps)
 
   const handleImageClick = () => fileInputRef.current?.click();
 
-  const handleImageSelected = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageSelected = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -50,7 +55,10 @@ export default function RichTextEditor({ value, onChange }: RichTextEditorProps)
     formData.append("file", file);
 
     try {
-      const res = await fetch("/api/admin/upload", { method: "POST", body: formData });
+      const res = await fetch("/api/admin/upload", {
+        method: "POST",
+        body: formData,
+      });
       const data = await res.json();
       if (data.success) {
         editor.chain().focus().setImage({ src: data.url }).run();
@@ -76,17 +84,15 @@ export default function RichTextEditor({ value, onChange }: RichTextEditorProps)
     <button
       type="button"
       onClick={onClick}
-      className={`px-2.5 py-1.5 rounded-md text-sm font-medium transition-colors ${
-        active ? "bg-[#2563eb] text-white" : "text-[#0d1b3e] hover:bg-[#eff4ff]"
-      }`}
+      className={`adm-editor-btn ${active ? "is-active" : ""}`}
     >
       {label}
     </button>
   );
 
   return (
-    <div className="border border-[#e2e8f0] rounded-lg overflow-hidden">
-      <div className="flex flex-wrap items-center gap-1 px-2 py-2 border-b border-[#e2e8f0] bg-[#f8fafc]">
+    <div className="adm-editor">
+      <div className="adm-editor-toolbar">
         <Btn
           label="B"
           active={editor.isActive("bold")}
@@ -97,16 +103,22 @@ export default function RichTextEditor({ value, onChange }: RichTextEditorProps)
           active={editor.isActive("italic")}
           onClick={() => editor.chain().focus().toggleItalic().run()}
         />
+        <span className="adm-editor-divider" />
         <Btn
           label="H2"
           active={editor.isActive("heading", { level: 2 })}
-          onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+          onClick={() =>
+            editor.chain().focus().toggleHeading({ level: 2 }).run()
+          }
         />
         <Btn
           label="H3"
           active={editor.isActive("heading", { level: 3 })}
-          onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+          onClick={() =>
+            editor.chain().focus().toggleHeading({ level: 3 }).run()
+          }
         />
+        <span className="adm-editor-divider" />
         <Btn
           label="• List"
           active={editor.isActive("bulletList")}
@@ -117,6 +129,7 @@ export default function RichTextEditor({ value, onChange }: RichTextEditorProps)
           active={editor.isActive("orderedList")}
           onClick={() => editor.chain().focus().toggleOrderedList().run()}
         />
+        <span className="adm-editor-divider" />
         <Btn
           label="Quote"
           active={editor.isActive("blockquote")}
@@ -124,6 +137,7 @@ export default function RichTextEditor({ value, onChange }: RichTextEditorProps)
         />
         <Btn label="Link" active={editor.isActive("link")} onClick={setLink} />
         <Btn label="Image" onClick={handleImageClick} />
+        <span className="adm-editor-divider" />
         <Btn label="Undo" onClick={() => editor.chain().focus().undo().run()} />
         <Btn label="Redo" onClick={() => editor.chain().focus().redo().run()} />
         <input
@@ -136,7 +150,7 @@ export default function RichTextEditor({ value, onChange }: RichTextEditorProps)
       </div>
       <EditorContent
         editor={editor}
-        className="prose prose-sm max-w-none px-4 py-3 min-h-[280px] [&_.ProseMirror]:min-h-[260px] [&_.ProseMirror]:outline-none"
+        className="adm-editor-content prose prose-sm max-w-none px-4 py-3 min-h-[280px] [&_.ProseMirror]:min-h-[260px] [&_.ProseMirror]:outline-none"
       />
     </div>
   );

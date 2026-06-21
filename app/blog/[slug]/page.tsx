@@ -10,7 +10,7 @@ import { formatDate, estimateReadTime, makeExcerpt } from "@/lib/blog-helpers";
 
 export const revalidate = 60;
 
-const BASE_URL = "http://localhost:3000"; // ← matches serviceMetadata.ts, update if that changes
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL!;
 
 async function getPost(slug: string) {
   const collection = await getPostsCollection();

@@ -16,6 +16,13 @@ export default function AdminLayout({
 }) {
   const pathname = usePathname();
 
+  // The login page is reachable while logged out and renders its own
+  // full-page shell. It must never get the authenticated header / nav /
+  // logout chrome wrapped around it, so we bail out early here.
+  if (pathname === "/admin/login") {
+    return <>{children}</>;
+  }
+
   return (
     <div className="adm-root min-h-screen bg-[#f8fafc]">
       <style>{`
@@ -360,6 +367,71 @@ export default function AdminLayout({
         .adm-badge-draft { background: #f1f5f9; color: #64748b; }
         .adm-badge-published { background: #f0fdf4; color: #16a34a; }
         .adm-badge-dot { width: 6px; height: 6px; border-radius: 999px; background: currentColor; }
+
+        /* ── Table ── */
+        .adm-th {
+          padding: var(--space-xs) var(--space-m);
+          font-size: var(--step--2);
+          font-weight: var(--fw-bold);
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          color: #94a3b8;
+        }
+        .adm-tr {
+          border-top: 1px solid #e2e8f0;
+          transition: background 0.15s;
+        }
+        .adm-tr:hover {
+          background: #f8fafc;
+        }
+        .adm-td {
+          padding: var(--space-s) var(--space-m);
+          font-size: var(--step--1);
+          color: #0d1b3e;
+          vertical-align: middle;
+        }
+        .adm-td-title {
+          font-weight: var(--fw-semibold);
+          color: #0d1b3e;
+          text-decoration: none;
+          transition: color 0.15s;
+        }
+        .adm-td-title:hover {
+          color: #2563eb;
+        }
+        .adm-td-muted {
+          color: #64748b;
+        }
+        .adm-row-action {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 30px;
+          height: 30px;
+          border-radius: var(--radius-full);
+          background: transparent;
+          border: none;
+          color: #94a3b8;
+          cursor: pointer;
+          text-decoration: none;
+          transition: color 0.2s, background 0.2s;
+        }
+        .adm-row-action:hover {
+          color: #2563eb;
+          background: #eff6ff;
+        }
+        .adm-row-action-danger:hover {
+          color: #dc2626;
+          background: #fef2f2;
+        }
+        .adm-row-action:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+        .adm-row-action:focus-visible {
+          outline: 2px solid #2563eb;
+          outline-offset: 2px;
+        }
 
         /* ── Upload dropzone ── */
         .adm-upload-zone {

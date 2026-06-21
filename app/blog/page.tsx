@@ -226,7 +226,7 @@ function HeaderSection() {
               The Al Grey&apos;s <span className="text-[#2563eb]">Blog</span>
             </h1>
           </div>
-          <p className="bl-anim-3 text-[#64748b] text-[16px] leading-relaxed lg:max-w-[400px]">
+          <p className="bl-anim-3 text-[#64748b] text-[16px] leading-relaxed lg:max-w-[420px]">
             Practical advice on gutter care, window cleaning, pressure washing,
             and keeping your property in top condition all year round.
           </p>
