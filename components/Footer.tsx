@@ -143,7 +143,7 @@ export default function Footer() {
               <div className="lg:max-w-[280px]">
                 <div>
                   <Image
-                    src="/logos.webp"
+                    src="/logo.webp"
                     width={200}
                     height={200}
                     alt="logo"
