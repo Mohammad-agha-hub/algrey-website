@@ -421,13 +421,13 @@ function ServiceStyles() {
       }
       .spt-new-proc-title {
         font-family: var(--font-inter-tight), sans-serif;
-        font-size: var(--step-2);
+        font-size: var(--step-1);
         font-weight: var(--fw-bold);
         color: #081a3d; line-height: var(--leading-tight);
         letter-spacing: -0.02em; margin-bottom: var(--space-xs);
       }
       .spt-new-proc-desc {
-        font-size: var(--step-0); font-weight: var(--fw-normal);
+        font-size: var(--step--1); font-weight: var(--fw-normal);
         color: #6b7a99; line-height: var(--leading-standard);
         margin-bottom: var(--space-l);
       }
@@ -449,7 +449,7 @@ function ServiceStyles() {
         flex-shrink: 0; margin-top: 2px;
       }
       .spt-new-proc-bullet-text {
-        font-size: var(--step-0); font-weight: var(--fw-medium);
+        font-size: var(--step--1); font-weight: var(--fw-medium);
         color: #374151; line-height: var(--leading-fine);
       }
 
